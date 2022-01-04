@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    {% block head %}{% endblock %}
+</head>
+<body>
+<div class="topnav">
+  <ul>
+  <li class="menu"><a href=""><img id="logo" src="../static/images/spedu_logo.png" alt="Spedu"></a></li>
+  <li class="menu">
+
+      <div class="search_bar">
+        <img id="magnifying_glass" src="../static/images/magnifying-glass.png" alt="search">
+        <input type="text" placeholder="Search for anything">
+      </div>
+
+  </li>
+ 
+        <li class="menu"><a class="option" href="">Spedu Store</a></li>
+        <li class="menu"><a class="option" href="">Sports Courses</a></li>
+        <li class="menu"><a class="option" href="">My Learning</a></li>
+ 
+</ul>
+
+</div>
+{% block body %}{% endblock %}
+</body>
+</html>
