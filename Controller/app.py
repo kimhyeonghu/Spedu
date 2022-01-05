@@ -13,6 +13,7 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 db = firebase.database()
 auth = firebase.auth()
 storage = firebase.storage()
+
 app = Flask(__name__, template_folder='../View/HTML', static_folder='../View/static')
 
 user_email = 'test@gmail.com'
