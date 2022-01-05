@@ -1,8 +1,13 @@
-{% extends 'base.html' %}
+
+
+{% if login_stat_html is sameas true %}
+    {% extends 'base_signed_in.html' %}
+{% else %}
+    {% extends 'base.html' %}
+{% endif %}
 
 {% block head %}
 {% endblock %}
 
 {% block body %}
-
 {% endblock %}

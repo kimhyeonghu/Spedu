@@ -41,7 +41,13 @@ ul {
   margin-right: 10px;
   
 }
-.mypage {
+.login-signup li{
+  display: inline-block;
+  text-align: center;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.mypage{
   float: right;
   text-align: center;
   margin-right: 15px;
@@ -106,13 +112,53 @@ ul {
   transition-duration: 0.4s;
   cursor: pointer;
   background-color: white;
-  border: 2px solid #555555;
+  border: 2px solid black;
 }
-#mylearning-button:hover {
+#login-button{
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 13px;
+  font-weight: bolder;
+  height: 36px;
+  width: 80px;
+  margin: auto;
+  margin-top: 4px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  border: 2px solid black;
+}
+#signup-button{
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 13px;
+  font-weight: bolder;
+  height: 36px;
+  width: 80px;
+  margin: auto;
+  margin-top: 4px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: rgb(31, 31, 31);
+  border: 2px solid rgb(31, 31, 31);
+  color:white;
+}
+#mylearning-button:hover{
   text-decoration: none;
   background-color: #000000;
   color: white;
-  
+}
+#login-button:hover{
+  text-decoration: none;
+  background-color: #f1f1f1;
+  color: black;
+}
+#signup-button:hover{
+  text-decoration: none;
+  background-color: black;
+  color: white;
 }
 #shopping-cart {
   height: 17px;
