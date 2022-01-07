@@ -1,0 +1,13 @@
+{% if login_stat_html is sameas true %}
+    {% extends 'base_signed_in.html' %}
+{% else %}
+    {% extends 'base.html' %}
+{% endif %}
+
+{% block head %}
+    <title>Sports Courses</title>
+{% endblock %}
+
+{% block body %}
+    <h2>Sports Course</h2>
+{% endblock %}
