@@ -1,0 +1,52 @@
+{% extends "base_signed_in.html"%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}{% endblock %}
+</head>>
+<style>
+#promo{
+  width: 300px;
+  margin: 0 auto;
+}
+#checkout{
+  width: 70px;
+  margin-left: 1100px;
+  background-color:#1E5D63;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+</style>
+<body>
+<h1><center>My Shopping Cart</center></h1>
+<hr>
+<table class="tbl-cart" cellpadding="10" cellspacing="1">
+			<tbody>
+				<tr>
+					<th style="text-align:left;">Product(s)</th>
+					<th style="text-align:right;" width="30%">Unit Price</th>
+					<th style="text-align:right;" width="25%">Quantity</th>
+					<th style="text-align:right;" width="30%">Total Price</th>
+					<th style="text-align:center;" width="15%">Actions</th>
+				</tr>
+      </tbody>
+</table>
+
+
+<hr>
+<form id="promo">
+  <label for="promocodes">Pls choose a Promo code(If any)</label>
+  <select name="promocodes">
+    <option value="code1">code1</option>
+  </select>
+</form>
+<a href="checkout.html" id="checkout"><strong>Check out</strong></a>
+
+
+</body>
+</html>
