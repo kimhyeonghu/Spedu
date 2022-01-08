@@ -6,8 +6,52 @@
 
 {% block head %}
     <title>Sports Courses</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sports_courses.css') }}">
 {% endblock %}
 
 {% block body %}
-    <h2>Sports Course</h2>
+    <div class="course-panel">
+        <ul>
+          <li><h3 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Sports Course</h3></li>
+          <li>
+            <label for="dropdown" style="font-size:14px;font-weight:bold;">Sort by : </label>
+            <div class="dropdown" >
+              <button class="dropbtn" id="dropbtn">Popularity</button>
+              <div class="dropdown-content">
+                <a onclick="sort(0)">Popularity</a>
+                <a onclick="sort(1)">Price low to high</a>
+                <a onclick="sort(2)">Rating high to low</a>
+              </div>
+            </div>
+          </li>
+        </ul>
+
+    </div>
+    <div class="view-courses">
+      <div class="course-filter">
+        <ul>
+          <li style="">
+            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+            <h6>Ratings</h6>
+          </li>
+          <li style="">
+            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+            <h6>Price</h6>
+          </li>
+          <li style="">
+            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+            <h6>Levels</h6>
+          </li>
+          <li style="">
+            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+            <h6>Video Duration</h6>
+          </li>
+        </ul>
+      </div>
+
+      <div class="courses-list">
+            hi
+      </div>
+    </div>
+
 {% endblock %}
