@@ -1,16 +1,17 @@
 {% extends "base_signed_in.html"%}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
     {% block head %}{% endblock %}
-</head>>
+{% block body %}
 <style>
+h1{
+ text-align: center;
+}
 #promo{
   width: 300px;
   margin: 0 auto;
 }
 #checkout{
-  width: 70px;
+  width: 150px;
   margin-left: 1100px;
   background-color:#1E5D63;
   border: none;
@@ -22,8 +23,7 @@
   font-size: 16px;
 }
 </style>
-<body>
-<h1><center>My Shopping Cart</center></h1>
+<h1>My Shopping Cart</h1>
 <hr>
 <table class="tbl-cart" cellpadding="10" cellspacing="1">
 			<tbody>
@@ -47,6 +47,6 @@
 </form>
 <a href="checkout.html" id="checkout"><strong>Check out</strong></a>
 
+{% endblock %}
 
-</body>
-</html>
+
