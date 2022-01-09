@@ -65,5 +65,8 @@ def sports_courses():
 @app.route('/Shopping Cart/')
 def shopping_cart():
     return render_template('Shopping Cart.html',login_stat_html=login_stat)
+@app.route('/Checkout/')
+def Checkout():
+    return render_template('Checkout.html', login_stat_html=login_stat)
 if __name__ == "__main__":
      app.run(debug=True)

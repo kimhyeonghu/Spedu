@@ -1,6 +1,12 @@
-{% extends "base_signed_in.html"%}
+{% if login_stat_html is sameas true %}
+    {% extends 'base_signed_in.html' %}
+{% else %}
+    {% extends 'base.html' %}
+{% endif %}
 
-    {% block head %}{% endblock %}
+{% block head %}
+{% endblock %}
+
 {% block body %}
 <style>
 h1{
@@ -22,6 +28,9 @@ h1{
   display: inline-block;
   font-size: 16px;
 }
+#fees{
+  margin-left: 1100px;
+}
 </style>
 <h1>My Shopping Cart</h1>
 <hr>
@@ -39,13 +48,18 @@ h1{
 
 
 <hr>
+<br>
 <form id="promo">
   <label for="promocodes">Pls choose a Promo code(If any)</label>
   <select name="promocodes">
     <option value="code1">code1</option>
   </select>
 </form>
-<a href="checkout.html" id="checkout"><strong>Check out</strong></a>
+<div id = "fees">
+	<p>(place total price here)</p>
+</div>
+<br>
+<a href="/Checkout/" id="checkout"><strong>Check out</strong></a>
 
 {% endblock %}
 

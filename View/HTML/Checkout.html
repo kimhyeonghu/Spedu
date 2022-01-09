@@ -1,0 +1,61 @@
+{% if login_stat_html is sameas true %}
+    {% extends 'base_signed_in.html' %}
+{% else %}
+    {% extends 'base.html' %}
+{% endif %}
+
+{% block head %}
+{% endblock %}
+{% block body %}
+<style>
+h1{
+text-align:center;
+}
+#promo{
+text-align:center;
+}
+#prices{
+  border-spacing: 10px;
+  width: 200px;
+  margin-left: 1100px;
+}
+#price{
+text-align:right;
+color: red;
+}
+</style>
+<h1>Checkout</h1>
+<hr>
+<table class="tbl-cart" cellpadding="10" cellspacing="1">
+			<tbody>
+				<tr>
+					<th style="text-align:left;" >Product(s)</th>
+					<th style="text-align:right;" width="33%">Unit Price</th>
+					<th style="text-align:right;" width="33%">Quantity</th>
+					<th style="text-align:center;"width="30%">Total Price</th>
+				</tr>
+      </tbody>
+</table>
+<hr>
+<div id="promo">
+	<p>Promo code used:</p>
+</div>
+<table id="prices">
+	<tbody>
+	<tr><td>Grand Total Of Items:</td><td id="price">$1234</td></tr>
+	<tr><td>Discount:</td><td id="price">$5</td></tr>
+	<tr><td>Shipping Fee:</td><td id="price">$10</td></tr>
+	</tbody>
+</table>
+<hr>
+<h1>Address</h1>
+<hr>
+<h2>Fill in the Mailing Address</h2>
+<p>Fill in the address where you want your product to be mailed to(For products only)</p>
+<p style="color: red">*Only fill in this part if you are buying any merchandise*</p>
+<hr>
+<h1>Payment</h1>
+<hr>
+<h2>Fill in Credit/Debit Card details</h2>
+<p>Fill in the details of your credit/debit card to be able to purchase the items</p>
+{% endblock %}
