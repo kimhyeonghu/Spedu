@@ -89,5 +89,13 @@ def shopping_cart():
 @app.route('/Checkout/')
 def Checkout():
     return render_template('Checkout.html', login_stat_html=login_stat)
+@app.route('/admin_page/')
+def admin_page():
+    return render_template('admin_page.html')
+
+@app.route('/admin_page/courses/')
+def admin_page_courses():
+    return render_template('admin_page_courses.html')
+    
 if __name__ == "__main__":
      app.run(debug=True)
