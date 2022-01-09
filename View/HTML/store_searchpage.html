@@ -1,6 +1,6 @@
 {% extends "base_signed_in.html"%}
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Spedu SearchPage</title>
@@ -45,18 +45,8 @@
      margin-left: 135px;
 }
 
-.small-container {
-    max-width: 1300px;
-    margin: auto;
-}
 
-.small-container .row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: -100px;
-}
+
 
 .dropdown-content {
   display: none;
@@ -109,12 +99,48 @@
   top: 82px;
 }
 
-
-
-.row img {
-   width: 300px;
-
+* {
+  box-sizing: border-box;
 }
+.column {
+  float: left;
+  width: 33.3%;
+  padding: 70px 0px 0px 20px;
+}
+
+.column img {
+  width: 380px;
+}
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+#design-cast {
+    position: relative;
+    overflow: hidden;
+}
+
+.member {
+    float: left;
+    width: 20%;
+    margin: 3% 1% 70px 3.25%;
+}
+
+.name {
+    position: absolute;
+    bottom: 0px;
+}
+
+.member img {
+    width: 100%;
+    display: block;
+}
+
+
+
 </style>
 <body>
 <div class ="tags">
@@ -136,15 +162,99 @@
     <a href=""><button id ="brands">Puma</button></a>
     <a href=""><button id ="brands">Reebok</button></a>
 
-</div>
-
-<div class="small-container">
-    <div class ="row">
-        <a href="">
-            <img id="jordan-zoom" src="../static/images/jordan-zoom.jpg" alt="search"></a>
-        <h4>Jordan Zoom Separate PF</h4>
-
+<div id="design-cast">
+    <div class="member">
+        <a href=""><img id="jordan-zoom" src="../static/images/jordan-zoom.jpg" alt="Spedu"></a>
+        <div class="name">Jordan Zoom Separate PF
+            <br>Basketball Shoes
+            <br>$179
+        </div>
+    </div>
+    <div class="member">
+        <a href=""><img id="kyrie-infinity" src="../static/images/kyrie-infinity.jpg" alt="Spedu"></a>
+        <div class="name">Kyrie Infinity EP
+            <br>Basketball Shoes
+            <br>$209
+        </div>
+    </div>
+    <div class="member">
+        <a href=""><img id="renew-elevate" src="../static/images/renew-elevate.jpg" alt="Spedu"></a>
+        <div class="name">Nike Renew Elevate 2
+            <br>Basketball Shoes
+            <br>$129
+        </div>
+    </div>
+    <div class="member">
+        <a href=""><img id="giannis-immortality" src="../static/images/giannis-immortality.jpg" alt="Spedu"></a>
+        <div class="name">Giannis Immortality
+            <br>Basketball Shoes
+            <br>$129
+        </div>
     </div>
 </div>
+</div>
+<div id="design-cast">
+<div class="member">
+        <a href=""><img id="nike tack" src="../static/images/nike tack.jpg" alt="Spedu"></a>
+        <div class="name">Nike Versa Tack
+            <br>Basketball
+            <br>$45
+
+        </div>
+    </div>
+    <div class="member">
+        <a href=""><img id="elite championship" src="../static/images/elite-championship.jpg" alt="Spedu"></a>
+        <div class="name">Nike Elite Championship 8P
+            <br>Basketball
+            <br>$26
+        </div>
+    </div>
+    <div class="member">
+        <a href=""><img id="nike 8p" src="../static/images/nike 8p.jpg" alt="Spedu"></a>
+        <div class="name">Nike Versa Tack 8P
+            <br>Basketball
+            <br>$45
+        </div>
+    </div>
+    <div class="member">
+        <a href=""><img id="nike revival" src="../static/images/nike revival.jpg" alt="Spedu"></a>
+        <div class="name">Nike Revival 8P
+            <br>Basketball
+            <br>$20
+        </div>
+    </div>
+</div>
+<div id="design-cast">
+    <div class="member">
+        <a href=""><img id="headband" src="../static/images/nike headband.jpg" alt="Spedu"></a>
+        <div class="name">Nike Jordan Jumpman Headband
+            <br>Accessories
+            <br>$12
+        </div>
+    </div>
+    <div class="member">
+        <a href=""><img id="lebron" src="../static/images/lebron.jpg" alt="Spedu"></a>
+        <div class="name">LeBron
+            <br>Accessories
+            <br>$125
+        </div>
+    </div>
+    <div class="member">
+        <a href=""><img id="nike heritage" src="../static/images/nike heritage.jpg" alt="Spedu"></a>
+        <div class="name">Nike Heritage86
+            <br>Accessories
+            <br>$25
+        </div>
+    </div>
+    <div class="member">
+        <a href=""><img id="jordan beanie" src="../static/images/jordan beanie.jpg" alt="Spedu"></a>
+        <div class="name">Jordan
+            <br>Accessories
+            <br>$39
+        </div>
+    </div>
+</div>
+</div>
+
 </body>
 </html>
