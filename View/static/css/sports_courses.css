@@ -59,9 +59,7 @@
 .view-courses {
   height: 500px;
   width: 100%;
-}
-.view-courses ul {
-  height:
+
 }
 .course-filter {
   height: 100%;
@@ -75,6 +73,53 @@
   font-weight:700;
 }
 .courses-list {
-  height: 100%;
+  padding-left: 270px;
   width:auto;
+}
+.courses-list-box {
+  width: auto%;
+  height: 140px;
+  margin-right: 20px;
+}
+.courses-list-box a{
+  color: black;
+}
+.course-img {
+  margin-top: 10px;
+  display: inline-block;
+  overflow: auto;
+}
+.course-description {
+  padding-left: 15px;
+  margin-right: 20px;
+  width: 600px;
+  display: inline-block;
+  overflow: auto;
+  position: absolute;
+}
+.name {
+  font-size: 18px;
+  font-weight: bold;
+}
+.description {
+  font-size: 13px;
+  margin-top: 5px;
+  margin-bottom: 8px;
+  word-wrap: break-word;
+}
+.trainer {
+  font-size: 13px;
+}
+.rating {
+  font-size: 15px;
+  color:#EBC805;
+}
+.price {
+  font-size: 18px;
+  font-weight: bold;
+  display: inline-block;
+  width: 90px;
+  position: absolute;
+  right: 0px;
+  padding-left: 0px;
 }
