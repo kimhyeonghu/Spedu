@@ -1,0 +1,150 @@
+{% extends "base_signed_in.html"%}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Spedu SearchPage</title>
+    {% block head %}{% endblock %}
+</head>
+<style>
+#brands {
+    background: #ff523b;
+    color: #fff;
+    padding: 8px 10px;
+    border-radius: 30px;
+    border: none;
+    width: 70px;
+    height: 27px;
+    transition: background 0.5s;
+    font-size: 12px;
+    position: relative;
+    margin-left: 50px;
+    top: 12px;
+    left: 550px;
+}
+
+#brands:hover {
+    background: #563434;
+}
+
+#tag {
+    position: relative;
+    top: 50px;
+    margin-left: 550px;
+}
+
+#sort {
+     position: fixed;
+     top: 125px;
+     margin-left: 200px;
+}
+
+#drop {
+     position: relative;
+     top: 82px;
+     margin-left: 135px;
+}
+
+.small-container {
+    max-width: 1300px;
+    margin: auto;
+}
+
+.small-container .row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: -100px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 5px 10px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  background-color: white;
+}
+
+.dropbtn {
+  background-color: white;
+  color: black;
+  padding: 4px;
+  margin-left: 5px;
+  margin-top: 78px;
+  font-size: 14px;
+  cursor: pointer;
+  border-width: thin;
+}
+
+.dropdown {
+  position: absolute;
+  display: inline-block;
+  font-size: 14px;
+}
+
+#labels {
+  margin-left: 250px;
+  position: relative;
+  top: 82px;
+}
+
+
+
+.row img {
+   width: 300px;
+
+}
+</style>
+<body>
+<div class ="tags">
+    <label for="dropdown" id="labels" style="font-size:14px;font-weight:bold;">Sort by : </label>
+    <div class="dropdown">
+        <button class="dropbtn" id="dropbtn">Default</button>
+        <div class="dropdown-content">
+            <a onclick="sort(0)">Default</a>
+            <a onclick="sort(1)">Popularity</a>
+            <a onclick="sort(2)">Price low to high</a>
+            <a onclick="sort(3)">Rating high to low</a>
+        </div>
+
+    </div>
+
+    <p id="tag">Tags:</p>
+    <a href=""><button id ="brands">Nike</button></a>
+    <a href=""><button id ="brands">Adidas</button></a>
+    <a href=""><button id ="brands">Puma</button></a>
+    <a href=""><button id ="brands">Reebok</button></a>
+
+</div>
+
+<div class="small-container">
+    <div class ="row">
+        <a href="">
+            <img id="jordan-zoom" src="../static/images/jordan-zoom.jpg" alt="search"></a>
+        <h4>Jordan Zoom Separate PF</h4>
+
+    </div>
+</div>
+</body>
+</html>
