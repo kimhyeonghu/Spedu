@@ -66,6 +66,7 @@
 .courses-list-box {
   width: auto;
   height: 140px;
+  margin-top: 20px;
 }
 .courses-list-box a{
   color: black;
