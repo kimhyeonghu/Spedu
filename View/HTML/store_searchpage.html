@@ -3,13 +3,13 @@
 {% else %}
     {% extends 'base.html' %}
 {% endif %}
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <title>Spedu SearchPage</title>
-    {% block head %}{% endblock %}
-</head>
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+
 <style>
 #brands {
     background: #ff523b;
@@ -146,7 +146,6 @@
 
 
 </style>
-<body>
 <div class ="tags">
     <label for="dropdown" id="labels" style="font-size:14px;font-weight:bold;">Sort by : </label>
     <div class="dropdown">
@@ -258,7 +257,4 @@
         </div>
     </div>
 </div>
-</div>
-
-</body>
-</html>
+{% endblock %}
