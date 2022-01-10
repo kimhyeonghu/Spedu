@@ -1,7 +1,36 @@
 {% extends 'admin_page.html' %}
 {% block head %}
 <title>Admin Page Courses</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_page_courses.css') }}">
+
 {% endblock %}
 {% block body %}
-<h1>hi</h1>
+  <div class="search_courses horizontal">
+    <p>Search For Courses</p>
+  </div>
+  <div class="search_bar horizontal">
+    <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
+    <input type="text" placeholder="Search for courses">
+  </div>
+  <a href="/admin_page/courses/new_course"><button class="new-course-btn">New Course</button></a>
+
+  <div class="courses-list">
+    {% for i in range(courses|length) %}
+      <div class="courses-list-box">
+        <a href="/">
+          <img class="course-image" src="../../static/images/yoga_image.png" style="width:auto;height:140px;" alt="yoga_image" >
+          <ul class="course-description">
+            <li class="name">{{courses[i].name}}</li>
+            <li class="description">{{courses[i].description}}</li>
+            <li class="trainer">{{courses[i].trainer}}</li>
+            <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{courses[i].duration}} total hours | For {{courses[i].level}}</li>
+            <li class="rating">★{{'%0.1f'| format(courses[i].rating|float)}}</li>
+          </ul>
+          <div class="price">${{'%0.2f'| format(courses[i].price|float)}}</div>
+        </a>
+        <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:10px;margin-bottom:8;">
+      </div>
+    {% endfor %}
+
+  </div>
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import pyrebase
 import sys
 sys.path.insert(0, '../Model')
@@ -72,6 +72,7 @@ def load_courses():
         trainer = doc.to_dict()['trainer'];
         course = Course(description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer)
         courses.append(course)
+
     return courses
 
 
@@ -95,7 +96,38 @@ def admin_page():
 
 @app.route('/admin_page/courses/')
 def admin_page_courses():
-    return render_template('admin_page_courses.html')
-    
+    return render_template('admin_page_courses.html',courses=load_courses())
+@app.route('/admin_page/courses/new_course')
+def new_course():
+    return render_template('new_course.html')
+@app.route('/create_new_course', methods=['POST'])
+def create_new_course():
+    course_name = request.form['course_name']
+    course_trainer = request.form['course_trainer']
+    course_short_desc = request.form['course_short_desc']
+    course_desc = request.form['course_desc']
+    course_duration = request.form['course_duration']
+    course_price = request.form['course_price']
+    learning_outcome = request.form['learning_outcome']
+    course_level = request.form['course_level']
+    video_link = request.form['video_link']
+    course_image = request.form['course_image']
+    new_course_data = {
+        'description':course_desc,
+        'duration':course_duration,
+        'image':course_image,
+        'learning_outcome':learning_outcome,
+        'level':course_level,
+        'name':course_name,
+        'price':course_price,
+        'rating':0,
+        'reviews':[{"rating":0,'review':"",'reviewer':""}],
+        'short_description':course_short_desc,
+        'video_link':video_link,
+        'students_count':0,
+        'trainer':course_trainer,
+    }
+    db.collection('Courses').document().set(new_course_data)
+    return ""
 if __name__ == "__main__":
      app.run(debug=True)
