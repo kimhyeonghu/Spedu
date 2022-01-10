@@ -87,6 +87,9 @@ def sports_courses():
 @app.route('/Shopping Cart/')
 def shopping_cart():
     return render_template('Shopping Cart.html',login_stat_html=login_stat)
+@app.route('/spedu_store/')
+def spedu_store():
+    return render_template('store_searchpage.html', login_stat_html=login_stat)
 @app.route('/Checkout/')
 def Checkout():
     return render_template('Checkout.html', login_stat_html=login_stat)
@@ -125,7 +128,7 @@ def create_new_course():
         'short_description':course_short_desc,
         'video_link':video_link,
         'students_count':0,
-        'trainer':course_trainer,
+        'trainer':course_trainer
     }
     db.collection('Courses').document().set(new_course_data)
     return ""

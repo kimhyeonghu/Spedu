@@ -1,4 +1,8 @@
-{% extends "base_signed_in.html"%}
+{% if login_stat_html is sameas true %}
+    {% extends 'base_signed_in.html' %}
+{% else %}
+    {% extends 'base.html' %}
+{% endif %}
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
 <head>
