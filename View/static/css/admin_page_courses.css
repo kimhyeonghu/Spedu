@@ -33,11 +33,14 @@
 .search_bar input:focus {
   outline:none;
 }
+.new-course-btn-div{
+  float: right;
+  display: inline-block;
+}
 .new-course-btn {
   height: 40px;
   width: 140px;
-  float: right;
-  padding-bottom: 0px;
+
   text-decoration: none;
   display: block;
   margin-top: 40px;
@@ -59,9 +62,13 @@
   color: #1E5D63;
 }
 .courses-list {
-  padding-left: 220px;
-  padding-top: 20px;
-  width:auto;
+  top: 20px;
+  bottom:0;
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  margin-top: 20px;
+  width:calc(100% - 220px);
 }
 .courses-list-box {
   width: auto;

@@ -5,6 +5,7 @@
 
 {% endblock %}
 {% block body %}
+<div style="padding-top:30px;position:fixed;width:100%;">
   <div class="search_courses horizontal">
     <p>Search For Courses</p>
   </div>
@@ -12,9 +13,14 @@
     <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
     <input type="text" placeholder="Search for courses">
   </div>
-  <a href="/admin_page/courses/new_course"><button class="new-course-btn">New Course</button></a>
+  <div class="new-course-btn-div">
+    <a href="/admin_page/courses/new_course"><button class="new-course-btn">New Course</button></a>
+  </div>
 
-  <div class="courses-list">
+</div>
+
+
+  <div class="courses-list" style="position:absolute;margin-top:100px;margin-left:220px;">
     {% for i in range(courses|length) %}
       <div class="courses-list-box">
         <a href="/">

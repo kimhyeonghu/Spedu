@@ -18,7 +18,7 @@ a {
   overflow: hidden;
   background-color: #ffffff;
   height:50px;
-  position: relative;
+  position: fixed;
   width: 100%;
   box-shadow: 0 0 20px 0px rgba(0,0,0,0.1);
 }
@@ -48,8 +48,9 @@ a {
 .menu {
   height: 100%;
   width:200px;
+  margin-top: 50px;
   float: left;
-  position: absolute;
+  position: fixed;
   background-color:#297F87;
 }
 .option {
