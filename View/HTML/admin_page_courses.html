@@ -5,10 +5,8 @@
 
 {% endblock %}
 {% block body %}
-<div style="padding-top:30px;position:fixed;width:100%;">
-  <div class="search_courses horizontal">
-    <p>Search For Courses</p>
-  </div>
+<div class="search_courses" >
+  <p>Search For Courses</p>
   <div class="search_bar horizontal">
     <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
     <input type="text" placeholder="Search for courses">
@@ -23,10 +21,12 @@
   <div class="courses-list" style="position:absolute;margin-top:100px;margin-left:220px;">
     {% for i in range(courses|length) %}
       <div class="courses-list-box">
-        <a href="/">
+<!--        <form action="{{ url_for('selected_course') }}" method="post" enctype="multipart/form-data">-->
+        <a href='/admin_page/courses/edit_course'>
           <img class="course-image" src="../../static/images/yoga_image.png" style="width:auto;height:140px;" alt="yoga_image" >
           <ul class="course-description">
-            <li class="name">{{courses[i].name}}</li>
+
+            <li name='name' class="name">{{courses[i].name}}</li>
             <li class="description">{{courses[i].description}}</li>
             <li class="trainer">{{courses[i].trainer}}</li>
             <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{courses[i].duration}} total hours | For {{courses[i].level}}</li>
@@ -35,6 +35,7 @@
           <div class="price">${{'%0.2f'| format(courses[i].price|float)}}</div>
         </a>
         <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:10px;margin-bottom:8;">
+        </form>
       </div>
     {% endfor %}
 

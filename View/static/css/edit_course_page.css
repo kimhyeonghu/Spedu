@@ -1,13 +1,11 @@
-
-.search_courses{
-top:50px;
-left:220px;
-position:fixed;
-width:calc(100% - 220px);
+.search_courses {
+  padding-left: 220px;
+  height: 70px;
+  width: auto;
+  color: black;
 }
+
 .search_courses p {
-    width: auto;
-    display:inline-block;
   padding-top: 30px;
   font-size: 20px;
   font-weight: 500;
@@ -64,7 +62,7 @@ width:calc(100% - 220px);
   color: #1E5D63;
 }
 .courses-list {
-  top: 40px;
+  top: 20px;
   bottom:0;
   position: fixed;
   overflow-x: hidden;
@@ -76,46 +74,4 @@ width:calc(100% - 220px);
   width: auto;
   height: 140px;
   margin-top: 20px;
-}
-.courses-list-box a{
-  color: black;
-}
-.course-img {
-  margin-top: 10px;
-  display: inline-block;
-  overflow: auto;
-}
-.course-description {
-  padding-left: 15px;
-  margin-right: 20px;
-  width: 600px;
-  display: inline-block;
-  overflow: auto;
-  position: absolute;
-}
-.name {
-  font-size: 18px;
-  font-weight: bold;
-}
-.description {
-  font-size: 13px;
-  margin-top: 5px;
-  margin-bottom: 8px;
-  word-wrap: break-word;
-}
-.trainer {
-  font-size: 13px;
-}
-.rating {
-  font-size: 15px;
-  color:#EBC805;
-}
-.price {
-  font-size: 18px;
-  font-weight: bold;
-  display: inline-block;
-  width: 90px;
-  position: absolute;
-  right: 0px;
-  padding-left: 0px;
 }

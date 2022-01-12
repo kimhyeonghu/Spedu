@@ -1,0 +1,27 @@
+{% extends 'admin_page.html' %}
+{% block head %}
+<title>Edit Selected Course</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/edit_course_page.css') }}">
+
+{% endblock %}
+{% block body %}
+<div style="padding-top:30px;position:fixed;width:100%;">
+  <div class="search_courses horizontal">
+    <p>Search For Courses</p>
+  </div>
+  <div class="search_bar horizontal">
+    <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
+    <input type="text" placeholder="Search for courses">
+  </div>
+  <div class="new-course-btn-div">
+    <a href="/admin_page/courses/new_course"><button class="new-course-btn">New Course</button></a>
+  </div>
+
+</div>
+
+
+  <div class="courses-list" style="position:absolute;margin-top:100px;margin-left:220px;">
+    {{selected_course}}
+
+  </div>
+{% endblock %}

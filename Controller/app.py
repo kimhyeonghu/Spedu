@@ -103,7 +103,7 @@ def admin_page_courses():
 @app.route('/admin_page/courses/new_course')
 def new_course():
     return render_template('new_course.html')
-@app.route('/create_new_course', methods=['POST'])
+@app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
     course_name = request.form['course_name']
     course_trainer = request.form['course_trainer']
@@ -131,6 +131,11 @@ def create_new_course():
         'trainer':course_trainer
     }
     db.collection('Courses').document().set(new_course_data)
-    return ""
+    return render_template('admin_page_courses.html',courses=load_courses())
+@app.route('/admin_page/courses/edit_course', methods=['POST'])
+def selected_course():
+    course_name = request.form['name']
+    return render_template('edit_course_page.html', selected_course=course_name)
+
 if __name__ == "__main__":
      app.run(debug=True)
