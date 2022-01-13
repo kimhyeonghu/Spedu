@@ -3,6 +3,7 @@ import pyrebase
 import sys
 sys.path.insert(0, '../Model')
 from Course import Course
+from Product import Product
 import firebase_admin
 from firebase_admin import credentials, firestore
 firebaseConfig = {
@@ -76,33 +77,52 @@ def load_courses():
     return courses
 
 
+def load_products():
+    products = []
+    products_docs = db.collection('Products').get()
+    for doc in products_docs:
+        category = doc.to_dict()['category'];
+        image = doc.to_dict()['image'];
+        name = doc.to_dict()['name'];
+        price = doc.to_dict()['price'];
+        reviews = doc.to_dict()['reviews'];
+        rating = doc.to_dict()['rating'];
+        product = Product(category, image, name, price, reviews, rating,)
+        products.append(product)
+
+    return products
+
 
 @app.route('/')
 def homepage():
     return render_template('homepage.html',login_stat_html=login_stat)
 @app.route('/sports_courses/')
 def sports_courses():
-
     return render_template('sports_courses.html',login_stat_html=login_stat,courses=load_courses())
 @app.route('/Shopping Cart/')
 def shopping_cart():
     return render_template('Shopping Cart.html',login_stat_html=login_stat)
 @app.route('/spedu_store/')
 def spedu_store():
-    return render_template('store_searchpage.html', login_stat_html=login_stat)
+    return render_template('store_searchpage.html', login_stat_html=login_stat, products=load_products())
 @app.route('/Checkout/')
 def Checkout():
     return render_template('Checkout.html', login_stat_html=login_stat)
 @app.route('/admin_page/')
 def admin_page():
     return render_template('admin_page.html')
-
+@app.route('/admin_page/products/')
+def admin_page_products():
+    return render_template('admin_page_products.html', products=load_products())
 @app.route('/admin_page/courses/')
 def admin_page_courses():
-    return render_template('admin_page_courses.html',courses=load_courses())
+    return render_template('admin_page_courses.html', courses=load_courses())
 @app.route('/admin_page/courses/new_course')
 def new_course():
     return render_template('new_course.html')
+@app.route('/admin_page/courses/new_product')
+def new_product():
+    return render_template('new_product.html')
 @app.route('/create_new_course', methods=['POST'])
 def create_new_course():
     course_name = request.form['course_name']
@@ -132,5 +152,24 @@ def create_new_course():
     }
     db.collection('Courses').document().set(new_course_data)
     return ""
+
+@app.route('/create_new_product', methods=['POST'])
+def create_new_product():
+    product_name = request.form['product_name']
+    product_price = request.form['product_price']
+    product_image = request.form['product_image']
+    product_category = request.form['product_category']
+    new_product_data = {
+        'category': product_category,
+        'image': product_image,
+        'name': product_name,
+        'price': product_price,
+        'reviews': [{"rating": 0, 'review': "", 'reviewer': ""}],
+        'rating': 0,
+        'stock': 100,
+    }
+    db.collection('Products').document().set(new_product_data)
+    return ""
+
 if __name__ == "__main__":
      app.run(debug=True)
