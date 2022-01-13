@@ -135,10 +135,10 @@ def admin_page():
 @app.route('/admin_page/courses/')
 def admin_page_courses():
     return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
-@app.route('/admin_page/courses/about_course')
+@app.route('/admin_page/courses/new_course')
 def new_course():
     return render_template('new_course.html')
-@app.route('/admin_page/courses/new_course',methods=['GET'])
+@app.route('/admin_page/courses/about_course',methods=['GET'])
 def view_admin_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
