@@ -5,8 +5,8 @@
 {% endif %}
 
 {% block head %}
-    <title>Sports Courses</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sports_courses.css') }}">
+<title>Sports Courses</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sports_courses.css') }}">
 
 
 {% endblock %}
@@ -50,23 +50,34 @@
         </ul>
       </div>
       <div class="courses-list">
+      <form action='/sports_courses/about_course/' id="selected_course_form" method="get">
+        <input id="input" type="text" name="selected_courseID" value="" style="display:none;">
         {% for i in range(courses|length) %}
+        {% set course = courses[i] %}
+        <a onclick="submit('{{course.courseID}}')">
           <div class="courses-list-box">
-            <a href="/">
               <img class="course-image" src="../static/images/yoga_image.png" style="width:auto;height:140px;" alt="yoga_image" >
               <ul class="course-description">
-                <li class="name">{{courses[i].name}}</li>
-                <li class="description">{{courses[i].description}}</li>
-                <li class="trainer">{{courses[i].trainer}}</li>
-                <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{courses[i].duration}} total hours | For {{courses[i].level}}</li>
-                <li class="rating">★{{'%0.1f'| format(courses[i].rating|float)}}</li>
+                <li class="name" id="name_{{course.name}}">{{course.name}}</li>
+                <li class="description">{{course.description}}</li>
+                <li class="trainer">{{course.trainer}}</li>
+                <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+                <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
               </ul>
-              <div class="price">${{'%0.2f'| format(courses[i].price|float)}}</div>
-            </a>
+              <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
             <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:10px;margin-bottom:8;">
           </div>
+        </a>
         {% endfor %}
 
+
+        <script type="text/javascript">
+          function submit(id) {
+              document.getElementById('input').value = id;
+              document.getElementById('selected_course_form').submit();
+          }
+        </script>
+      </form>
       </div>
     </div>
 

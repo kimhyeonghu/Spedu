@@ -1,0 +1,32 @@
+{% if login_stat_html is sameas true %}
+    {% extends 'base_signed_in.html' %}
+{% else %}
+    {% extends 'base.html' %}
+{% endif %}
+
+{% block head %}
+<title>Sports Courses</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/selected_course.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="course_overview_div">
+  <h2>{{selected_course.name}}</h2>
+  <br>
+  <ul>
+    <li class="short_description">{{selected_course.description}}</li>
+    <li class="trainer" style="color:#AFADAD;">{{selected_course.trainer}}</li>
+    <li class="trainer" style="font-weight:light;">{{selected_course.duration}} total hours | For {{selected_course.level}}</li>
+    <li class="rating">★{{'%0.1f'| format(selected_course.rating|float)}} <p style="color:#AFADAD;display:inline-block;">| {{selected_course.students_count}} students are enrolled</p></li>
+  </ul>
+</div>
+<div class="course_purchas_div">
+  <img src="../../static/images/yoga_image.png" style="width:280px;height:auto;" alt="">
+  <h4 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h4>
+  <button type="button" name="button"></button>
+  <button type="button" name="button"></button>
+</div>
+<div class="course_description_div">
+
+</div>
+{% endblock %}

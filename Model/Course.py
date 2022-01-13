@@ -1,6 +1,8 @@
 class Course:
-    def __init__(self, description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer):
+    def __init__(self, courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer, video_link):
+        self.courseID = courseID
         self.description = description
+        self.short_description = short_description
         self.duration = duration
         self.image = image
         self.learning_outcome = learning_outcome
@@ -11,3 +13,4 @@ class Course:
         self.reviews = reviews
         self.students_count = students_count
         self.trainer = trainer
+        self.video_link = video_link

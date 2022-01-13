@@ -1,0 +1,49 @@
+.course_overview_div{
+  background-color: #297F87;
+  height: 300px;
+  width: 100%;
+  padding-left: 400px;
+  padding-top: 50px;
+  padding-right: 50px;
+  color: white;
+  position: absolute;
+
+}
+.course_purchas_div{
+  position: absolute;
+  background-color: white;
+  height: 500px;
+  width: 300px;
+  margin-left: 50px;
+  margin-top: 50px;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+  box-shadow: 0 0 20px 10px rgba(0,0,0,0.1);
+
+}
+.course_purchas_div h4 {
+  margin-top: 15px;
+  margin-left: 5px;
+}
+.course_description_div{
+  height: 1000px;
+  background-color: blue;
+  width: 100%;
+  padding-left: 400px;
+  padding-top: 50px;
+}
+.short_description {
+  font-size: 15px;
+  margin-top: 5px;
+  margin-bottom: 8px;
+  word-wrap: break-word;
+}
+.trainer {
+  font-size: 15px;
+}
+.rating {
+  font-size: 15px;
+  color:#EBC805;
+}
