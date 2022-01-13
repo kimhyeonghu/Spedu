@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import pyrebase
 import sys
 sys.path.insert(0, '../Model')
+import random
 from Course import Course
 import firebase_admin
 from firebase_admin import credentials, firestore
@@ -51,29 +52,51 @@ else:
 
 
 
-
-
-
-def load_courses():
-    courses = []
-    courses_docs = db.collection('Courses').get()
-    for doc in courses_docs:
-
-        description = doc.to_dict()['description'];
-        duration = doc.to_dict()['duration'];
-        image = doc.to_dict()['image'];
-        learning_outcome = doc.to_dict()['learning_outcome'];
-        level = doc.to_dict()['level'];
-        name = doc.to_dict()['name'];
-        price = doc.to_dict()['price'];
-        rating = doc.to_dict()['rating'];
-        reviews = doc.to_dict()['reviews'];
-        students_count = doc.to_dict()['students_count'];
-        trainer = doc.to_dict()['trainer'];
-        course = Course(description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer)
-        courses.append(course)
-
-    return courses
+def course_CRUD(course,method):
+    if method == 'create':
+        new_course_data = {
+        'courseID':course.courseID,
+        'description':course.description,
+        'short_description':course.short_description,
+        'duration':course.duration,
+        'image':course.image,
+        'learning_outcome':course.learning_outcome,
+        'level':course.level,
+        'name':course.name,
+        'price':course.price,
+        'rating':course.rating,
+        'reviews':course.reviews,
+        'students_count':course.students_count,
+        'trainer':course.trainer,
+        'video_link':course.video_link,
+        }
+        db.collection('Courses').document().set(new_course_data)
+        pass
+    elif method == 'load':
+        courses = []
+        courses_docs = db.collection('Courses').get()
+        for doc in courses_docs:
+            courseID = doc.to_dict()['courseID']
+            description = doc.to_dict()['description']
+            short_description = doc.to_dict()['short_description']
+            duration = doc.to_dict()['duration']
+            image = doc.to_dict()['image']
+            learning_outcome = doc.to_dict()['learning_outcome']
+            level = doc.to_dict()['level']
+            name = doc.to_dict()['name']
+            price = doc.to_dict()['price']
+            rating = doc.to_dict()['rating']
+            reviews = doc.to_dict()['reviews']
+            students_count = doc.to_dict()['students_count']
+            trainer = doc.to_dict()['trainer']
+            video_link = doc.to_dict()['video_link']
+            course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer, video_link)
+            courses.append(course)
+        return courses
+    elif method == 'update':
+        pass
+    elif method == 'delete':
+        pass
 
 
 
@@ -82,8 +105,20 @@ def homepage():
     return render_template('homepage.html',login_stat_html=login_stat)
 @app.route('/sports_courses/')
 def sports_courses():
+    return render_template('sports_courses.html',login_stat_html=login_stat,courses=course_CRUD(course=None,method='load'))
 
-    return render_template('sports_courses.html',login_stat_html=login_stat,courses=load_courses())
+
+@app.route('/sports_courses/about_course/', methods=['GET'])
+def view_selected_course():
+    selected_courseID = request.args.get("selected_courseID")
+    print(selected_courseID)
+    selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
+    return render_template('selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
+
+
+
+
+
 @app.route('/Shopping Cart/')
 def shopping_cart():
     return render_template('Shopping Cart.html',login_stat_html=login_stat)
@@ -99,13 +134,21 @@ def admin_page():
 
 @app.route('/admin_page/courses/')
 def admin_page_courses():
-    return render_template('admin_page_courses.html',courses=load_courses())
-@app.route('/admin_page/courses/new_course')
+    return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
+@app.route('/admin_page/courses/about_course')
 def new_course():
     return render_template('new_course.html')
-@app.route('/create_new_course', methods=['POST'])
+@app.route('/admin_page/courses/new_course',methods=['GET'])
+def view_admin_selected_course():
+    selected_courseID = request.args.get("selected_courseID")
+    print(selected_courseID)
+    selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
+    return render_template('selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
+@app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
+
     course_name = request.form['course_name']
+    courseID = course_name.split(' ')[0][0] + course_name.split(' ')[0][1] + str(random.randrange(0, 1000))
     course_trainer = request.form['course_trainer']
     course_short_desc = request.form['course_short_desc']
     course_desc = request.form['course_desc']
@@ -115,22 +158,16 @@ def create_new_course():
     course_level = request.form['course_level']
     video_link = request.form['video_link']
     course_image = request.form['course_image']
-    new_course_data = {
-        'description':course_desc,
-        'duration':course_duration,
-        'image':course_image,
-        'learning_outcome':learning_outcome,
-        'level':course_level,
-        'name':course_name,
-        'price':course_price,
-        'rating':0,
-        'reviews':[{"rating":0,'review':"",'reviewer':""}],
-        'short_description':course_short_desc,
-        'video_link':video_link,
-        'students_count':0,
-        'trainer':course_trainer
-    }
-    db.collection('Courses').document().set(new_course_data)
-    return ""
+    course_rating = 0
+    course_reviews = []
+    students_count = 0
+    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
+    course_CRUD(course=new_course,method='create')
+    return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
+@app.route('/admin_page/courses/edit_course', methods=['POST'])
+def selected_course():
+    course_name = request.form['name']
+    return render_template('edit_course_page.html', selected_course=course_name)
+
 if __name__ == "__main__":
      app.run(debug=True)
