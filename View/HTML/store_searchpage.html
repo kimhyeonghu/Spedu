@@ -11,7 +11,7 @@
 
 
 <style>
-#brands {
+.brands {
     background: #ff523b;
     color: #fff;
     padding: 8px 10px;
@@ -23,13 +23,13 @@
     font-size: 12px;
     position: relative;
     margin-left: 50px;
-    top: 12px;
+    top: 11px;
     left: 550px;
 }
 
 
 
-#brands:hover {
+.brands:hover {
     background: #563434;
 }
 
@@ -105,46 +105,46 @@
   top: 82px;
 }
 
-* {
-  box-sizing: border-box;
-}
-.column {
-  float: left;
-  width: 33.3%;
-  padding: 70px 0px 0px 20px;
+.small-container {
+    max-width: 1300px;
+    margin: auto;
 }
 
-.column img {
-  width: 380px;
-}
-/* Clear floats after image containers */
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
+.small-container .row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: -100px;
 }
 
-#design-cast {
-    position: relative;
-    overflow: hidden;
+.small-container .row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: -100px;
 }
 
-.member {
-    float: left;
-    width: 20%;
-    margin: 3% 1% 70px 3.25%;
+.col-3 {
+    flex-basis: 25%;
+    min-width: 50px;
+    height: 376px;
+    margin-bottom: -100px;
+    margin-top: 180px;
+    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+    background: #F8F8F8;
+    cursor: pointer;
+    transition: transform 0.5s;
 }
 
-.name {
-    position: absolute;
-    bottom: 0px;
+.col-3 img {
+    width: 100%
 }
 
-.member img {
-    width: 100%;
-    display: block;
+.col-3:hover {
+    transform: translateY(-7px);
 }
-
 
 
 </style>
@@ -158,105 +158,25 @@
             <a onclick="sort(2)">Price low to high</a>
             <a onclick="sort(3)">Rating high to low</a>
         </div>
-
     </div>
-
     <p id="tag">Tags:</p>
-    <a href=""><button id ="brands">Nike</button></a>
-    <a href=""><button id ="brands">Adidas</button></a>
-    <a href=""><button id ="brands">Puma</button></a>
-    <a href=""><button id ="brands">Reebok</button></a>
+    <a href=""><button class ="brands">Nike</button></a>
+    <a href=""><button class ="brands">Adidas</button></a>
+    <a href=""><button class ="brands">Puma</button></a>
+    <a href=""><button class ="brands">Reebok</button></a>
+</div>
 
-<div id="design-cast">
-    <div class="member">
-        <a href=""><img id="jordan-zoom" src="../static/images/jordan-zoom.jpg" alt="Spedu"></a>
-        <div class="name">Jordan Zoom Separate PF
-            <br>Basketball Shoes
-            <br>$179
+<div class="small-container">
+  {% for i in range(products|length) %}
+    <div class="row">
+        <div class="col-3">
+            <a href=""><img id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu"></a>
+            <h5 class="name">{{products[i].name}}</h5>
+            <p class="category">{{products[i].category}}</p>
+            <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>
         </div>
     </div>
-    <div class="member">
-        <a href=""><img id="kyrie-infinity" src="../static/images/kyrie-infinity.jpg" alt="Spedu"></a>
-        <div class="name">Kyrie Infinity EP
-            <br>Basketball Shoes
-            <br>$209
-        </div>
-    </div>
-    <div class="member">
-        <a href="/admin_page/"><img id="renew-elevate" src="../static/images/renew-elevate.jpg" alt="Spedu"></a>
-        <div class="name">Nike Renew Elevate 2
-            <br>Basketball Shoes
-            <br>$129
-        </div>
-    </div>
-    <div class="member">
-        <a href=""><img id="giannis-immortality" src="../static/images/giannis-immortality.jpg" alt="Spedu"></a>
-        <div class="name">Giannis Immortality
-            <br>Basketball Shoes
-            <br>$129
-        </div>
-    </div>
-</div>
-</div>
-<div id="design-cast">
-<div class="member">
-        <a href=""><img id="nike tack" src="../static/images/nike tack.jpg" alt="Spedu"></a>
-        <div class="name">Nike Versa Tack
-            <br>Basketball
-            <br>$45
-
-        </div>
-    </div>
-    <div class="member">
-        <a href=""><img id="elite championship" src="../static/images/elite-championship.jpg" alt="Spedu"></a>
-        <div class="name">Nike Elite Championship 8P
-            <br>Basketball
-            <br>$26
-        </div>
-    </div>
-    <div class="member">
-        <a href=""><img id="nike 8p" src="../static/images/nike 8p.jpg" alt="Spedu"></a>
-        <div class="name">Nike Versa Tack 8P
-            <br>Basketball
-            <br>$45
-        </div>
-    </div>
-    <div class="member">
-        <a href=""><img id="nike revival" src="../static/images/nike revival.jpg" alt="Spedu"></a>
-        <div class="name">Nike Revival 8P
-            <br>Basketball
-            <br>$20
-        </div>
-    </div>
-</div>
-<div id="design-cast">
-    <div class="member">
-        <a href=""><img id="headband" src="../static/images/nike headband.jpg" alt="Spedu"></a>
-        <div class="name">Jumpman Headband
-            <br>Accessories
-            <br>$12
-        </div>
-    </div>
-    <div class="member">
-        <a href=""><img id="lebron" src="../static/images/lebron.jpg" alt="Spedu"></a>
-        <div class="name">LeBron
-            <br>Accessories
-            <br>$125
-        </div>
-    </div>
-    <div class="member">
-        <a href=""><img id="nike heritage" src="../static/images/nike heritage.jpg" alt="Spedu"></a>
-        <div class="name">Nike Heritage86
-            <br>Accessories
-            <br>$25
-        </div>
-    </div>
-    <div class="member">
-        <a href=""><img id="jordan beanie" src="../static/images/jordan beanie.jpg" alt="Spedu"></a>
-        <div class="name">Jordan
-            <br>Accessories
-            <br>$39
-        </div>
-    </div>
+  {% endfor %}
 </div>
 {% endblock %}
+</div>

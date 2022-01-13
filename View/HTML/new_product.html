@@ -1,0 +1,80 @@
+{% extends 'admin_page.html' %}
+{% block head %}
+<title>New Product</title>
+
+{% endblock %}
+{% block body %}
+<style>
+  .new_product {
+  margin-left: 230px;
+  margin-right: 30px;
+  height: auto;
+  width: calc(100% - 230px);
+  top: 55px;
+  bottom:40px;
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: scroll
+}
+.new_product li {
+  padding-top: 0px;
+  vertical-align: top;
+  text-align: left;
+  margin-top: 10px;
+}
+.new_product p {
+  margin-top: 0px;
+  font-size: 15px;
+  font-weight: 500;
+  display: inline-block;
+  width: 210px;
+}
+.new_product textarea {
+  display: inline-block;
+  width: calc(100% - 230px);
+  font-size: 15px;
+  vertical-align: top;
+  text-align: left;
+  resize: none;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.new-product-btn {
+  height: 40px;
+  width: 140px;
+  float: right;
+  padding-bottom: 0px;
+  text-decoration: none;
+  display: block;
+  margin-top: 40px;
+  margin-right: 20px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+  padding-right: 20px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  color: white;
+  background-color: #1E5D63;
+  border: 2px solid #1E5D63;
+
+}
+.new-product-btn:hover{
+  text-decoration: none;
+  background-color: white;
+  color: #1E5D63;
+}
+
+</style>
+<div class="new_product">
+  <form action="{{ url_for('create_new_product') }}" method="post" enctype="multipart/form-data">
+  <ul>
+    <li style="height:40px;"><h2>New Product</h2></li>
+    <li style="height:50px;margin-top:20px;"><p>Product Name</p><textarea name='product_name' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;margin-top:20px;"><p>Product Category</p><textarea name='product_category' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;margin-top:20px;"><p>Product Price</p><textarea name='product_price' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;"><p>Product Image</p><textarea name='product_image' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;"><input type="submit" value="Create" class="new-product-btn"></button></li>
+  </ul>
+</form>
+</div>
+{% endblock %}

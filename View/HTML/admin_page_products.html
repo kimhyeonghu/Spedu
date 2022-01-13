@@ -5,15 +5,14 @@
 {% block body %}
 <style>
 .search_products {
-  padding-left: 220px;
+  padding-left: 230px;
   height: 25px;
   width: auto;
   color: black;
 }
 
 .search_products p {
-  padding-top: 30px;
-  padding-left: 20px;
+  padding-top: 50px;
   font-size: 20px;
   font-weight: 500;
 }
@@ -23,79 +22,31 @@
   padding-bottom: 5px;
   height:30px;
   width: 400px;
-  margin-left: 420px;
+  margin-left: 15px;
+  position: relative;
+  top: -8px;
   background-color: white;
   border: 1px solid #919191;
 }
-
 #magnifying-glass {
   height: 15px;
   margin-left: 10px;
+  position: relative;
+  top: 8px;
 }
 
 .search_bar input{
   border:none;
   width:85%;
   font-size: 14px;
-  height:35px;
+  position: relative;
+  top: 6px;
+  height: 10px;
   background-color: transparent;
 }
 
 .search_bar input:focus {
   outline:none;
-}
-
-
-#design-cast {
-    position: relative;
-    overflow: hidden;
-}
-
-.member {
-    float: left;
-    width: 20%;
-    margin: 3% 1% 70px 3.25%;
-}
-
-.name {
-    position: absolute;
-    bottom: 0px;
-    padding-left: 120px;
-
-}
-
-.member img {
-    width: 60%;
-    display: inline-block;
-    padding-left: 100px;
-}
-
-#move img {
-    padding-left: 220px;
-}
-
-#move2 img {
-    padding-left: 120px;
-}
-
-#move3 img {
-    padding-left: 20px;
-}
-
-#move4 img {
-    margin-left: -180px;
-}
-
-#desc {
-    padding-left: 220px;
-}
-
-#desc2 {
-    padding-left: 20px;
-}
-
-#desc3 {
-    margin-left: -200px;
 }
 
 .new-product-btn {
@@ -106,7 +57,7 @@
   text-decoration: none;
   display: block;
   font-size: 17px;
-  margin-top: -40px;
+  margin-top: -46px;
   margin-right: 250px;
   text-align: center;
   font-weight: 600;
@@ -122,112 +73,76 @@
   background-color: white;
   color: #1E5D63;
 }
+
+.small-container {
+    max-width: 1300px;
+    margin: auto;
+}
+
+.small-container .row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: -100px;
+}
+
+.small-container .row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: -100px;
+}
+
+.col-3 {
+    flex-basis: 25%;
+    min-width: 50px;
+    margin-top: 150px;;
+    left: 280px;
+    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+    background: #F8F8F8;
+    cursor: pointer;
+    transition: transform 0.5s;
+}
+
+.col-3 img {
+    width: 100%
+}
+
+.col-3:hover {
+    transform: translateY(-7px);
+}
+
+
+
+
 </style>
 <div style="padding-top:30px;width:100%;">
   <div class="search_products horizontal">
     <p>Search For Products</p>
-
   </div>
   <div class="search_bar horizontal">
-    <img id="magnifying-glass" src="../static/images/magnifying-glass.png" alt="search">
+    <img id="magnifying-glass" src="../../static/images/magnifying-glass.png" alt="search">
     <input type="text" placeholder="Search for products">
   </div>
   <div class="new-product-btn-div">
-    <a href="/admin_page/courses/new_course"><button class="new-product-btn">New Product</button></a>
+    <a href="/admin_page/courses/new_product"><button class="new-product-btn">New Product</button></a>
   </div>
 </div>
-<div id="design-cast">
-    <div class="member" id="move">
-        <a href=""><img id="jordan-zoom" src="../static/images/jordan-zoom.jpg" alt="Spedu"></a>
-        <div class="name" id="desc">Jordan Zoom Separate PF
-            <br>Basketball Shoes
-            <br>$179
-        </div>
-    </div>
-    <div class="member" id="move2">
-        <a href=""><img id="kyrie-infinity" src="../static/images/kyrie-infinity.jpg" alt="Spedu"></a>
-        <div class="name">Kyrie Infinity EP
-            <br>Basketball Shoes
-            <br>$209
-        </div>
-    </div>
-    <div class="member" id="move3">
-        <a href="/admin_page/"><img id="renew-elevate" src="../static/images/renew-elevate.jpg" alt="Spedu"></a>
-        <div class="name" id="desc2">Nike Renew Elevate 2
-            <br>Basketball Shoes
-            <br>$129
-        </div>
-    </div>
-    <div class="member" id="move4">
-        <a href=""><img id="giannis-immortality" src="../static/images/giannis-immortality.jpg" alt="Spedu"></a>
-        <div class="name" id="desc3">Giannis Immortality
-            <br>Basketball Shoes
-            <br>$129
-        </div>
-    </div>
-</div>
-</div>
-<div id="design-cast">
-<div class="member" id="move">
-        <a href=""><img id="nike tack" src="../static/images/nike tack.jpg" alt="Spedu"></a>
-        <div class="name" id="desc">Nike Versa Tack
-            <br>Basketball
-            <br>$45
 
+<div class="small-container">
+  {% for i in range(products|length) %}
+    <div class="row">
+        <div class="col-3">
+            <a href=""><img id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu"></a>
+            <h5 class="name">{{products[i].name}}</h5>
+            <p class="category">{{products[i].category}}</p>
+            <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>
         </div>
-    </div>
-    <div class="member" id="move2">
-        <a href=""><img id="elite championship" src="../static/images/elite-championship.jpg" alt="Spedu"></a>
-        <div class="name">Nike Elite Championship
-            <br>Basketball
-            <br>$26
-        </div>
-    </div>
-    <div class="member" id="move3">
-        <a href=""><img id="nike 8p" src="../static/images/nike 8p.jpg" alt="Spedu"></a>
-        <div class="name" id="desc2">Nike Versa Tack 8P
-            <br>Basketball
-            <br>$45
-        </div>
-    </div>
-    <div class="member" id="move4">
-        <a href=""><img id="nike revival" src="../static/images/nike revival.jpg" alt="Spedu"></a>
-        <div class="name" id="desc3">Nike Revival 8p
-            <br>Basketball
-            <br>$20
-        </div>
-    </div>
-</div>
-<div id="design-cast">
-    <div class="member" id="move">
-        <a href=""><img id="headband" src="../static/images/nike headband.jpg" alt="Spedu"></a>
-        <div class="name" id="desc">Jumpman Headband
-            <br>Accessories
-            <br>$12
-        </div>
-    </div>
-    <div class="member" id="move2">
-        <a href=""><img id="lebron" src="../static/images/lebron.jpg" alt="Spedu"></a>
-        <div class="name">LeBron
-            <br>Accessories
-            <br>$125
-        </div>
-    </div>
-    <div class="member" id="move3">
-        <a href=""><img id="nike heritage" src="../static/images/nike heritage.jpg" alt="Spedu"></a>
-        <div class="name" id="desc2">Nike Heritage86
-            <br>Accessories
-            <br>$25
-        </div>
-    </div>
-    <div class="member" id="move4">
-        <a href=""><img id="jordan beanie" src="../static/images/jordan beanie.jpg" alt="Spedu"></a>
-        <div class="name" id="desc3">Jordan
-            <br>Accessories
-            <br>$39
-        </div>
-    </div>
-</div>
 
-    {% endfor %}
+    </div>
+  {% endfor %}
+</div>
 {% endblock %}
+
