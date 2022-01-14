@@ -5,41 +5,47 @@
 {% endblock %}
 
 {% block body %}
-<div class="course_overview_div">
-  <h2>{{selected_course.name}}</h2>
+<div class="about_course_div">
+  <div class="course_overview_div">
+    <h1>{{selected_course.name}}</h1>
+    <br>
+    <ul>
+      <li class="short_description">{{selected_course.short_description}}</li>
+      <li class="trainer" style="color:#AFADAD;">{{selected_course.trainer}}</li>
+      <li class="trainer" style="font-weight:light;">{{selected_course.duration}} total hours | For {{selected_course.level}}</li>
+      <li class="rating">★{{'%0.1f'| format(selected_course.rating|float)}} <p style="color:#AFADAD;display:inline-block;">| {{selected_course.students_count}} students are enrolled</p></li>
+    </ul>
+  </div>
+  <div class="course_purchase_div">
+    <img src="../../../static/images/yoga_image.png" style="width:280px;height:auto;" alt="">
+    <h2 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h2>
+      <form action="{{ url_for('delete_course') }}" method="post" enctype="multipart/form-data">
+        <input type="text" name="course_to_delete" value="{{selected_course.courseID}}" style="display:none;">
+      <button class="add_to_cart_btn" type="submit" name="button">Update</button>
+      <button class="buy_now_btn" type="submit" name="button">Delete</button>
+    </form>
+    <br>
+    <p style="font-weight:bold;">What you will learn</p>
+    <p>{{selected_course.learning_outcome}}</p>
+  </div>
+  <div class="course_description_div">
+  <h3>Description</h3>
+  <p>{{selected_course.description}}</p>
   <br>
-  <ul>
-    <li class="short_description">{{selected_course.short_description}}</li>
-    <li class="trainer" style="color:#AFADAD;">{{selected_course.trainer}}</li>
-    <li class="trainer" style="font-weight:light;">{{selected_course.duration}} total hours | For {{selected_course.level}}</li>
-    <li class="rating">★{{'%0.1f'| format(selected_course.rating|float)}} <p style="color:#AFADAD;display:inline-block;">| {{selected_course.students_count}} students are enrolled</p></li>
-  </ul>
-</div>
-<div class="course_purchase_div">
-  <img src="../../static/images/yoga_image.png" style="width:280px;height:auto;" alt="">
-  <h4 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h4>
-  <button class="add_to_cart_btn" type="button" name="button">Add to cart</button>
-  <button class="buy_now_btn" type="button" name="button">Buy now</button>
-  <br>
-  <p style="font-weight:bold;">What you will learn</p>
-  <p>{{selected_course.learning_outcome}}</p>
-</div>
-<div class="course_description_div">
-<h4>Description</h4>
-<p>{{selected_course.description}}</p>
-<br>
-<h4>Review</h4>
-{% for review in selected_course.reviews %}
-<div id="review_div">
-  <script type="text/javascript">
-    const review_json = JSON.parse('{{review|tojson}}');
-    document.getElementById('review_div').innerHTML = "<p>"+review_json.reviewer+"</p>" + "<p>"+review_json.rating+"</p>" +"<p>"+review_json.review+"</p>"
+  <h3>Review</h3>
+  {% for review in selected_course.reviews %}
+  <div id="review_div">
+    <script type="text/javascript">
+      const review_json = JSON.parse('{{review|tojson}}');
+      document.getElementById('review_div').innerHTML = "<p>"+review_json.reviewer+"</p>" + "<p>"+review_json.rating+"</p>" +"<p>"+review_json.review+"</p>"
 
-  </script>
-  <p id="reviewer"></p>
+    </script>
+    <p id="reviewer"></p>
+  </div>
+
+  {% endfor %}
+
+  </div>
 </div>
 
-{% endfor %}
-
-</div>
 {% endblock %}
