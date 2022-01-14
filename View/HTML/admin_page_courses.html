@@ -19,7 +19,7 @@
 
 
   <div class="courses-list" style="position:absolute;margin-top:100px;margin-left:220px;">
-    <form action='/sports_courses/about_course/' id="selected_course_form" method="get">
+    <form action='/admin_page/courses/about_course/' id="selected_course_form" method="get">
       <input id="input" type="text" name="selected_courseID" value="" style="display:none;">
       {% for i in range(courses|length) %}
       {% set course = courses[i] %}

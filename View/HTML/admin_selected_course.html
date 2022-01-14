@@ -1,12 +1,7 @@
-{% if login_stat_html is sameas true %}
-    {% extends 'base_signed_in.html' %}
-{% else %}
-    {% extends 'base.html' %}
-{% endif %}
-
+{% extends 'admin_page.html' %}
 {% block head %}
-<title>Sports Courses</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/selected_course.css') }}">
+<title>Admin Sports Courses</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_selected_course.css') }}">
 {% endblock %}
 
 {% block body %}

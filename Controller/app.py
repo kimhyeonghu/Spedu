@@ -103,6 +103,7 @@ def course_CRUD(course,method):
 @app.route('/')
 def homepage():
     return render_template('homepage.html',login_stat_html=login_stat)
+
 @app.route('/sports_courses/')
 def sports_courses():
     return render_template('sports_courses.html',login_stat_html=login_stat,courses=course_CRUD(course=None,method='load'))
@@ -117,17 +118,18 @@ def view_selected_course():
 
 
 
-
-
 @app.route('/Shopping Cart/')
 def shopping_cart():
     return render_template('Shopping Cart.html',login_stat_html=login_stat)
+
 @app.route('/spedu_store/')
 def spedu_store():
     return render_template('store_searchpage.html', login_stat_html=login_stat)
+
 @app.route('/Checkout/')
 def Checkout():
     return render_template('Checkout.html', login_stat_html=login_stat)
+
 @app.route('/admin_page/')
 def admin_page():
     return render_template('admin_page.html')
@@ -135,20 +137,22 @@ def admin_page():
 @app.route('/admin_page/courses/')
 def admin_page_courses():
     return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
+
 @app.route('/admin_page/courses/new_course')
 def new_course():
     return render_template('new_course.html')
-@app.route('/admin_page/courses/about_course',methods=['GET'])
+
+@app.route('/admin_page/courses/about_course/',methods=['GET'])
 def view_admin_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
     selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
-    return render_template('selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
+    return render_template('admin_selected_course.html',selected_course=selected_course)
+
 @app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
-
     course_name = request.form['course_name']
-    courseID = course_name.split(' ')[0][0] + course_name.split(' ')[0][1] + str(random.randrange(0, 1000))
+    courseID = course_name.split(' ')[0][0] + course_name.split(' ')[0][1] + str(random.randrange(0,999))
     course_trainer = request.form['course_trainer']
     course_short_desc = request.form['course_short_desc']
     course_desc = request.form['course_desc']
@@ -164,6 +168,7 @@ def create_new_course():
     new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=new_course,method='create')
     return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
+
 @app.route('/admin_page/courses/edit_course', methods=['POST'])
 def selected_course():
     course_name = request.form['name']
