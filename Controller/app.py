@@ -4,6 +4,7 @@ import sys
 sys.path.insert(0, '../Model')
 import random
 from Course import Course
+from Product import Product
 import firebase_admin
 from firebase_admin import credentials, firestore
 firebaseConfig = {
@@ -146,7 +147,6 @@ def view_admin_selected_course():
     return render_template('selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
 @app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
-
     course_name = request.form['course_name']
     courseID = course_name.split(' ')[0][0] + course_name.split(' ')[0][1] + str(random.randrange(0, 1000))
     course_trainer = request.form['course_trainer']
@@ -164,10 +164,50 @@ def create_new_course():
     new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=new_course,method='create')
     return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
-@app.route('/admin_page/courses/edit_course', methods=['POST'])
-def selected_course():
-    course_name = request.form['name']
-    return render_template('edit_course_page.html', selected_course=course_name)
 
+
+@app.route('/admin_page/products/')
+def admin_page_products():
+    return render_template('admin_page_products.html', products=load_products())
+
+@app.route('/admin_page/products/new_product')
+def new_product():
+    return render_template('new_product.html')
+
+@app.route('/admin_page/products/update_product')
+def update_product():
+    return render_template('update_product.html')
+
+def load_products():
+    products = []
+    products_docs = db.collection('Products').get()
+    for doc in products_docs:
+        category = doc.to_dict()['category']
+        image = doc.to_dict()['image']
+        name = doc.to_dict()['name']
+        price = doc.to_dict()['price']
+        reviews = doc.to_dict()['reviews']
+        rating = doc.to_dict()['rating']
+        product = Product(category, image, name, price, reviews, rating,)
+        products.append(product)
+
+    return products
+@app.route('/admin_page/products/', methods=['POST'])
+def create_new_product():
+    product_name = request.form['product_name']
+    product_price = request.form['product_price']
+    product_image = request.form['product_image']
+    product_category = request.form['product_category']
+    new_product_data = {
+        'category': product_category,
+        'image': product_image,
+        'name': product_name,
+        'price': product_price,
+        'reviews': [{"rating": 0, 'review': "", 'reviewer': ""}],
+        'rating': 0,
+        'stock': 100,
+    }
+    db.collection('Products').document().set(new_product_data)
+    return render_template('admin_page_courses.html',products=load_products())
 if __name__ == "__main__":
      app.run(debug=True)
