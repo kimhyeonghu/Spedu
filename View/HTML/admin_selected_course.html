@@ -21,7 +21,7 @@
     <h2 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h2>
       <form action="{{ url_for('delete_course') }}" method="post" enctype="multipart/form-data">
         <input type="text" name="course_to_delete" value="{{selected_course.courseID}}" style="display:none;">
-      <button class="add_to_cart_btn" type="submit" name="button">Update</button>
+      <button class="add_to_cart_btn" type="button">Update</button>
       <button class="buy_now_btn" type="submit" name="button">Delete</button>
     </form>
     <br>
