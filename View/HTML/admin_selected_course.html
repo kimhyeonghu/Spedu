@@ -19,11 +19,24 @@
   <div class="course_purchase_div">
     <img src="../../../static/images/yoga_image.png" style="width:280px;height:auto;" alt="">
     <h2 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h2>
-      <form action="{{ url_for('delete_course') }}" method="post" enctype="multipart/form-data">
-        <input type="text" name="course_to_delete" value="{{selected_course.courseID}}" style="display:none;">
-      <button class="add_to_cart_btn" type="button">Update</button>
-      <button class="buy_now_btn" type="submit" name="button">Delete</button>
-    </form>
+      <form action="{{ url_for('update_delete_course') }}" id="selected_action" method="post" enctype="multipart/form-data">
+      <input type="text" name="current_course" value="{{selected_course.courseID}}" style="display:none;">
+      <input type="text" id="action_input" name="action_input" style="display:none;">
+      <a onclick="submit('update')"><button class="add_to_cart_btn" type="button" >Update</button></a>
+      <a onclick="submit('delete')"><button class="buy_now_btn" type="button" name="button">Delete</button></a>
+      <script type="text/javascript">
+        function submit(action) {
+          action_input_value = document.getElementById('action_input')
+          if (action=='delete') {
+            action_input_value.value = 'delete'
+
+          } else if (action=='update') {
+            action_input_value.value = 'update'
+          }
+          document.getElementById('selected_action').submit()
+        }
+      </script>
+      </form>
     <br>
     <p style="font-weight:bold;">What you will learn</p>
     <p>{{selected_course.learning_outcome}}</p>

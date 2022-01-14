@@ -5,23 +5,26 @@
 
 {% endblock %}
 {% block body %}
-<div style="padding-top:30px;position:fixed;width:100%;">
-  <div class="search_courses horizontal">
-    <p>Search For Courses</p>
-  </div>
-  <div class="search_bar horizontal">
-    <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
-    <input type="text" placeholder="Search for courses">
-  </div>
-  <div class="new-course-btn-div">
-    <a href="/admin_page/courses/new_course"><button class="new-course-btn">New Course</button></a>
-  </div>
 
+
+
+<div class="current_course_div">
+  <form action="{{ url_for('update_course') }}" method="post" enctype="multipart/form-data">
+    <input type="text" name="courseID" value="{{selected_course.courseID}}" style="display:none;">
+  <ul>
+    <li style="height:40px;"><h2>Update Course</h2></li>
+    <li style="height:50px;margin-top:20px;"><p>Course Name</p>{{selected_course.name}}</li>
+    <li style="height:50px;margin-top:20px;"><p>Course Price</p><textarea name='course_price' type="text" placeholder="">{{selected_course.price}}</textarea></li>
+    <li style="height:50px;"><p>Course Trainer</p><textarea name='course_trainer' type="text" placeholder="">{{selected_course.trainer}}</textarea></li>
+    <li style="height:100px;"><p>Course Short Description</p><textarea name='course_short_desc' style="height:80px;" type="text" placeholder="">{{selected_course.short_description}}</textarea></li>
+    <li style="height:180px;"><p>Course Description</p><textarea name='course_desc' style="height:160px;" type="text" placeholder="">{{selected_course.description}}</textarea></li>
+    <li style="height:100px;"><p>Learning Outcome</p><textarea name='learning_outcome' style="height:80px;" type="text" placeholder="">{{selected_course.learning_outcome}}</textarea></li>
+    <li style="height:50px;"><p>Course Level</p><textarea name='course_level' type="text" placeholder="">{{selected_course.level}}</textarea></li>
+    <li style="height:50px;"><p>Video Link</p><textarea name='video_link' type="text" placeholder="">{{selected_course.video_link}}</textarea></li>
+    <li style="height:50px;"><p>Course Duration</p><textarea name='course_duration' type="text" placeholder="">{{selected_course.duration}}</textarea></li>
+    <li style="height:50px;"><p>Course Image</p><textarea name='course_image' type="text" placeholder="">{{selected_course.image}}</textarea></li>
+    <li style="height:50px;"><input type="submit" value="Update" class="update-course-btn"></li>
+  </ul>
+</form>
 </div>
-
-
-  <div class="courses-list" style="position:absolute;margin-top:100px;margin-left:220px;">
-    {{selected_course}}
-
-  </div>
 {% endblock %}

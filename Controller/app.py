@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 import pyrebase
 import sys
 sys.path.insert(0, '../Model')
@@ -69,7 +69,7 @@ def course_CRUD(course,method):
         'reviews':course.reviews,
         'students_count':course.students_count,
         'trainer':course.trainer,
-        'video_link':course.video_link,
+        'video_link':course.video_link
         }
         db.collection('Courses').document().set(new_course_data)
         pass
@@ -95,7 +95,20 @@ def course_CRUD(course,method):
             courses.append(course)
         return courses
     elif method == 'update':
-        pass
+        docs = db.collection('Courses').where("courseID","==",course.courseID).get()
+        for doc in docs:
+            key = doc.id
+            db.collection('Courses').document(key).update({
+                'description':course.description,
+                'short_description':course.short_description,
+                'duration':course.duration,
+                'image':course.image,
+                'learning_outcome':course.learning_outcome,
+                'level':course.level,
+                'price':course.price,
+                'trainer':course.trainer,
+                'video_link':course.video_link
+            })
     elif method == 'delete':
         courseID = course
         docs = db.collection('Courses').where("courseID","==",courseID).get()
@@ -145,12 +158,14 @@ def admin_page_courses():
 @app.route('/admin_page/courses/new_course')
 def new_course():
     return render_template('new_course.html')
+
 @app.route('/admin_page/courses/about_course/',methods=['GET'])
 def view_admin_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
     selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
     return render_template('admin_selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
+
 @app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
 
@@ -166,24 +181,54 @@ def create_new_course():
     video_link = request.form['video_link']
     course_image = request.form['course_image']
     course_rating = 0
-    course_reviews = []
+    course_reviews = [{'rating':0,'reviewer':'','review':''}]
     students_count = 0
     new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=new_course,method='create')
     return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
-@app.route('/admin_page/courses/edit_course', methods=['POST'])
-def selected_course():
-    course_name = request.form['name']
-    return render_template('edit_course_page.html', selected_course=course_name)
-
-@app.route('/admin_page/courses/about_course', methods=['POST'])
-def delete_course():
-    selected_courseID = request.form['course_to_delete']
-    course_CRUD(course=selected_courseID,method='delete')
-    return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
 
 
+@app.route('/admin_page/courses/about_course/', methods=['POST'])
+def update_delete_course():
+    current_courseID = request.form['current_course']
+    action_input_value = request.form['action_input']
+    print(action_input_value)
 
+    if action_input_value == 'delete':
+        course_CRUD(course=current_courseID,method='delete')
+        return redirect("/admin_page/courses/")
+    else:
+        return redirect(url_for('update_page', current_courseID=current_courseID))
+
+
+
+@app.route('/admin_page/courses/about_course/update/<current_courseID>')
+def update_page(current_courseID):
+    current_course = db.collection('Courses').where("courseID","==",current_courseID).get()[0].to_dict()
+    print(current_course)
+    return render_template('edit_course_page.html', selected_course=current_course)
+
+
+
+@app.route('/admin_page/courses/about_course/update/', methods=['POST'])
+def update_course():
+    course_name = ""
+    courseID = request.form['courseID']
+    course_trainer = request.form['course_trainer']
+    course_short_desc = request.form['course_short_desc']
+    course_desc = request.form['course_desc']
+    course_duration = request.form['course_duration']
+    course_price = request.form['course_price']
+    learning_outcome = request.form['learning_outcome']
+    course_level = request.form['course_level']
+    video_link = request.form['video_link']
+    course_image = request.form['course_image']
+    course_rating = ""
+    course_reviews = []
+    students_count = 0
+    course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
+    course_CRUD(course=course,method='update')
+    return redirect("/admin_page/courses/")
 
 
 

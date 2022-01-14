@@ -1,46 +1,45 @@
-.search_courses {
-  padding-left: 220px;
-  height: 70px;
-  width: auto;
-  color: black;
-}
 
-.search_courses p {
-  padding-top: 30px;
-  font-size: 20px;
-  font-weight: 500;
+.current_course_div {
+  margin-left: 230px;
+  margin-right: 30px;
+  height: auto;
+  width: calc(100% - 230px);
+
+
+  top: 55px;
+  bottom:40px;
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: scroll
 }
-.search_bar {
-  border-radius: 20px;
-  padding-bottom: 5px;
-  height:30px;
-  width: 400px;
-  margin-left: 15px;
-  background-color: white;
-  border: 1px solid #919191;
+.current_course_div li {
+  padding-top: 0px;
+  vertical-align: top;
+  text-align: left;
+  margin-top: 10px;
 }
-#magnifying_glass {
-  height: 15px;
-  margin-left: 10px;
-}
-.search_bar input{
-  border:none;
-  width:85%;
-  font-size: 14px;
-  height:35px;
-  background-color: transparent;
-}
-.search_bar input:focus {
-  outline:none;
-}
-.new-course-btn-div{
-  float: right;
+.current_course_div p {
+  margin-top: 0px;
+  font-size: 15px;
+  font-weight: bold;
   display: inline-block;
+  width: 210px;
 }
-.new-course-btn {
+.current_course_div textarea {
+  display: inline-block;
+  width: calc(100% - 230px);
+  font-size: 15px;
+  vertical-align: top;
+  text-align: left;
+  resize: none;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.update-course-btn {
+
   height: 40px;
   width: 140px;
-
+  float: right;
+  padding-bottom: 0px;
   text-decoration: none;
   display: block;
   margin-top: 40px;
@@ -56,22 +55,8 @@
   border: 2px solid #1E5D63;
 
 }
-.new-course-btn:hover{
+.update-course-btn:hover{
   text-decoration: none;
   background-color: white;
   color: #1E5D63;
-}
-.courses-list {
-  top: 20px;
-  bottom:0;
-  position: fixed;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  margin-top: 20px;
-  width:calc(100% - 220px);
-}
-.courses-list-box {
-  width: auto;
-  height: 140px;
-  margin-top: 20px;
 }
