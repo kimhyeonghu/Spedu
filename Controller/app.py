@@ -2,8 +2,8 @@ from flask import Flask, render_template, request
 import pyrebase
 import sys
 sys.path.insert(0, '../Model')
-import random
 from Course import Course
+from Product import Product
 import firebase_admin
 from firebase_admin import credentials, firestore
 firebaseConfig = {
@@ -52,52 +52,46 @@ else:
 
 
 
-def course_CRUD(course,method):
-    if method == 'create':
-        new_course_data = {
-        'courseID':course.courseID,
-        'description':course.description,
-        'short_description':course.short_description,
-        'duration':course.duration,
-        'image':course.image,
-        'learning_outcome':course.learning_outcome,
-        'level':course.level,
-        'name':course.name,
-        'price':course.price,
-        'rating':course.rating,
-        'reviews':course.reviews,
-        'students_count':course.students_count,
-        'trainer':course.trainer,
-        'video_link':course.video_link,
-        }
-        db.collection('Courses').document().set(new_course_data)
-        pass
-    elif method == 'load':
-        courses = []
-        courses_docs = db.collection('Courses').get()
-        for doc in courses_docs:
-            courseID = doc.to_dict()['courseID']
-            description = doc.to_dict()['description']
-            short_description = doc.to_dict()['short_description']
-            duration = doc.to_dict()['duration']
-            image = doc.to_dict()['image']
-            learning_outcome = doc.to_dict()['learning_outcome']
-            level = doc.to_dict()['level']
-            name = doc.to_dict()['name']
-            price = doc.to_dict()['price']
-            rating = doc.to_dict()['rating']
-            reviews = doc.to_dict()['reviews']
-            students_count = doc.to_dict()['students_count']
-            trainer = doc.to_dict()['trainer']
-            video_link = doc.to_dict()['video_link']
-            course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer, video_link)
-            courses.append(course)
-        return courses
-    elif method == 'update':
-        pass
-    elif method == 'delete':
-        pass
 
+
+
+def load_courses():
+    courses = []
+    courses_docs = db.collection('Courses').get()
+    for doc in courses_docs:
+
+        description = doc.to_dict()['description'];
+        duration = doc.to_dict()['duration'];
+        image = doc.to_dict()['image'];
+        learning_outcome = doc.to_dict()['learning_outcome'];
+        level = doc.to_dict()['level'];
+        name = doc.to_dict()['name'];
+        price = doc.to_dict()['price'];
+        rating = doc.to_dict()['rating'];
+        reviews = doc.to_dict()['reviews'];
+        students_count = doc.to_dict()['students_count'];
+        trainer = doc.to_dict()['trainer'];
+        video_link = doc.to_dict()['video_link'];
+        course = Course(description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer, video_link)
+        courses.append(course)
+
+    return courses
+
+
+def load_products():
+    products = []
+    products_docs = db.collection('Products').get()
+    for doc in products_docs:
+        category = doc.to_dict()['category']
+        image = doc.to_dict()['image']
+        name = doc.to_dict()['name']
+        price = doc.to_dict()['price']
+        reviews = doc.to_dict()['reviews']
+        rating = doc.to_dict()['rating']
+        product = Product(category, image, name, price, reviews, rating,)
+        products.append(product)
+
+    return products
 
 
 @app.route('/')
@@ -105,50 +99,37 @@ def homepage():
     return render_template('homepage.html',login_stat_html=login_stat)
 @app.route('/sports_courses/')
 def sports_courses():
-    return render_template('sports_courses.html',login_stat_html=login_stat,courses=course_CRUD(course=None,method='load'))
-
-
-@app.route('/sports_courses/about_course/', methods=['GET'])
-def view_selected_course():
-    selected_courseID = request.args.get("selected_courseID")
-    print(selected_courseID)
-    selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
-    return render_template('selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
-
-
-
-
-
+    return render_template('sports_courses.html',login_stat_html=login_stat,courses=load_courses())
 @app.route('/Shopping Cart/')
 def shopping_cart():
     return render_template('Shopping Cart.html',login_stat_html=login_stat)
 @app.route('/spedu_store/')
 def spedu_store():
-    return render_template('store_searchpage.html', login_stat_html=login_stat)
+    return render_template('store_searchpage.html', login_stat_html=login_stat, products=load_products())
 @app.route('/Checkout/')
 def Checkout():
     return render_template('Checkout.html', login_stat_html=login_stat)
 @app.route('/admin_page/')
 def admin_page():
     return render_template('admin_page.html')
-
+@app.route('/admin_page/products/')
+def admin_page_products():
+    return render_template('admin_page_products.html', products=load_products())
 @app.route('/admin_page/courses/')
 def admin_page_courses():
-    return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
+    return render_template('admin_page_courses.html', courses=load_courses())
 @app.route('/admin_page/courses/new_course')
 def new_course():
     return render_template('new_course.html')
-@app.route('/admin_page/courses/about_course',methods=['GET'])
-def view_admin_selected_course():
-    selected_courseID = request.args.get("selected_courseID")
-    print(selected_courseID)
-    selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
-    return render_template('selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
-@app.route('/admin_page/courses/', methods=['POST'])
+@app.route('/admin_page/products/new_product')
+def new_product():
+    return render_template('new_product.html')
+@app.route('/admin_page/products/update_product')
+def update_product():
+    return render_template('update_product.html')
+@app.route('/create_new_course', methods=['POST'])
 def create_new_course():
-
     course_name = request.form['course_name']
-    courseID = course_name.split(' ')[0][0] + course_name.split(' ')[0][1] + str(random.randrange(0, 1000))
     course_trainer = request.form['course_trainer']
     course_short_desc = request.form['course_short_desc']
     course_desc = request.form['course_desc']
@@ -158,16 +139,46 @@ def create_new_course():
     course_level = request.form['course_level']
     video_link = request.form['video_link']
     course_image = request.form['course_image']
-    course_rating = 0
-    course_reviews = []
-    students_count = 0
-    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
-    course_CRUD(course=new_course,method='create')
-    return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
-@app.route('/admin_page/courses/edit_course', methods=['POST'])
-def selected_course():
-    course_name = request.form['name']
-    return render_template('edit_course_page.html', selected_course=course_name)
+    new_course_data = {
+        'description':course_desc,
+        'duration':course_duration,
+        'image':course_image,
+        'learning_outcome':learning_outcome,
+        'level':course_level,
+        'name':course_name,
+        'price':course_price,
+        'rating':0,
+        'reviews':[{"rating":0,'review':"",'reviewer':""}],
+        'short_description':course_short_desc,
+        'video_link':video_link,
+        'students_count':0,
+        'trainer':course_trainer
+    }
+    db.collection('Courses').document().set(new_course_data)
+    return ""
 
+@app.route('/create_new_product', methods=['POST'])
+def create_new_product():
+    product_name = request.form['product_name']
+    product_price = request.form['product_price']
+    product_image = request.form['product_image']
+    product_category = request.form['product_category']
+    new_product_data = {
+        'category': product_category,
+        'image': product_image,
+        'name': product_name,
+        'price': product_price,
+        'reviews': [{"rating": 0, 'review': "", 'reviewer': ""}],
+        'rating': 0,
+        'stock': 100,
+    }
+    db.collection('Products').document().set(new_product_data)
+    return ""
+
+def update_product():
+    update_name = request.form['update_name']
+    update_price = request.form['update_price']
+    update_image = request.form['update_image']
+    update_category = request.form['update_category']
 if __name__ == "__main__":
      app.run(debug=True)

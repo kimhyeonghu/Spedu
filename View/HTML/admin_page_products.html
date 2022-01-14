@@ -127,7 +127,7 @@
     <input type="text" placeholder="Search for products">
   </div>
   <div class="new-product-btn-div">
-    <a href="/admin_page/courses/new_product"><button class="new-product-btn">New Product</button></a>
+    <a href="/admin_page/products/new_product"><button class="new-product-btn">New Product</button></a>
   </div>
 </div>
 
@@ -139,6 +139,7 @@
             <h5 class="name">{{products[i].name}}</h5>
             <p class="category">{{products[i].category}}</p>
             <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>
+            <a href="/admin_page/products/update_product">Edit Data</a>
         </div>
 
     </div>
