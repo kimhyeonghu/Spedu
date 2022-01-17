@@ -11,7 +11,7 @@ body p {
 .course_overview_div{
   background-color: #EAEAEA;
   height: 300px;
-  width: 100%;
+  width: calc(100% - 400px);
   padding-left: 400px;
   padding-top: 50px;
   padding-right: 50px;

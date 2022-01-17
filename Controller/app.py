@@ -72,7 +72,6 @@ def course_CRUD(course,method):
         'video_link':course.video_link
         }
         db.collection('Courses').document().set(new_course_data)
-        pass
     elif method == 'load':
         courses = []
         courses_docs = db.collection('Courses').get()
@@ -111,10 +110,14 @@ def course_CRUD(course,method):
             })
     elif method == 'delete':
         courseID = course
-        docs = db.collection('Courses').where("courseID","==",courseID).get()
-        for doc in docs:
-            key = doc.id
-            db.collection('Courses').document(key).delete()
+        try:
+            docs = db.collection('Courses').where("courseID","==",courseID).get()
+            for doc in docs:
+                key = doc.id
+                db.collection('Courses').document(key).delete()
+        except:
+            print("Unable to delete course!")
+
         print("HELoo delete")
 
 

@@ -59,7 +59,7 @@
               <img class="course-image" src="../static/images/yoga_image.png" style="width:auto;height:140px;" alt="yoga_image" >
               <ul class="course-description">
                 <li class="name" id="name_{{course.name}}">{{course.name}}</li>
-                <li class="description">{{course.description}}</li>
+                <li class="description">{{course.short_description}}</li>
                 <li class="trainer">{{course.trainer}}</li>
                 <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
                 <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
