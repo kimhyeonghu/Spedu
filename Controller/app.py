@@ -6,7 +6,6 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import random
 import sys
-
 sys.path.insert(0, '../Model')
 from Course import Course
 from Product import Product
