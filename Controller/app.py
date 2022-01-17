@@ -11,40 +11,34 @@ from Forms import *
 from User import *
 import firebase_admin
 from firebase_admin import credentials, firestore
-firebaseConfig = {
-  "apiKey": "AIzaSyAhONsOYfqp3ox_L5bCy0cpX_f-iQxdc9I",
-  "authDomain": "spedu-3fd4f.firebaseapp.com",
-  "projectId": "spedu-3fd4f",
-  "storageBucket": "spedu-3fd4f.appspot.com",
-  "messagingSenderId": "297243626132",
-  "databaseURL":"https://spedu-3fd4f-default-rtdb.asia-southeast1.firebasedatabase.app/",
-  "appId": "1:297243626132:web:129e6edfab962e5ab24281"
-}
-
-cred = credentials.Certificate("../serviceAccountKey.json")
-firebase_admin.initialize_app(cred, firebaseConfig)
-
-
-
-firebase = pyrebase.initialize_app(firebaseConfig)
-db = firestore.client()
-auth = firebase.auth()
-storage = firebase.storage()
-
-
-
-
 
 app = Flask(__name__, template_folder='../View/HTML', static_folder='../View/static')
+app.secret_key = "1ae11153fae277ef2a41b70152692513"
+cred = credentials.Certificate("../serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
+db = firestore.client()
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "signin"
+# login_manager.login_message_category = "info"
 
-
-
-
-
-
+# firebaseConfig = {
+#   "apiKey": "AIzaSyAhONsOYfqp3ox_L5bCy0cpX_f-iQxdc9I",
+#   "authDomain": "spedu-3fd4f.firebaseapp.com",
+#   "projectId": "spedu-3fd4f",
+#   "storageBucket": "spedu-3fd4f.appspot.com",
+#   "messagingSenderId": "297243626132",
+#   "databaseURL":"https://spedu-3fd4f-default-rtdb.asia-southeast1.firebasedatabase.app/",
+#   "appId": "1:297243626132:web:129e6edfab962e5ab24281"
+# }
+# cred = credentials.Certificate("../serviceAccountKey.json")
+# firebase_admin.initialize_app(cred, firebaseConfig)
+# firebase = pyrebase.initialize_app(firebaseConfig)
+# auth = firebase.auth()
+# storage = firebase.storage()
 # user_email = 'test@gmail.com'
 # user_password = '1234test'
-login_stat = False
+# login_stat = False
 # try:
 #     auth.sign_in_with_email_and_password(user_email,user_password)
 #     user = auth.current_user
@@ -55,6 +49,19 @@ login_stat = False
 # else:
 #     login_stat = False
 
+
+@login_manager.user_loader
+def user_loader(id):
+    # given id, return user object
+    user = db.collection("Users").where("id", "==", id).get()
+    if user:
+        user = User.from_dict(user[0].to_dict())
+        return user
+
+
+@app.route('/')
+def homepage():
+    return render_template('homepage.html')
 
 
 def course_CRUD(course,method):
@@ -125,14 +132,9 @@ def course_CRUD(course,method):
         print("HELoo delete")
 
 
-
-
-@app.route('/')
-def homepage():
-    return render_template('homepage.html',login_stat_html=login_stat)
 @app.route('/sports_courses/')
 def sports_courses():
-    return render_template('sports_courses.html',login_stat_html=login_stat,courses=course_CRUD(course=None,method='load'))
+    return render_template('sports_courses.html', courses=course_CRUD(course=None,method='load'))
 
 
 @app.route('/sports_courses/about_course/', methods=['GET'])
@@ -140,42 +142,50 @@ def view_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
     selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
-    return render_template('selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
-
-
-
+    return render_template('selected_course.html', selected_course=selected_course)
 
 
 @app.route('/Shopping Cart/')
 def shopping_cart():
-    return render_template('Shopping Cart.html',login_stat_html=login_stat)
+    return render_template('Shopping Cart.html')
+
+
 @app.route('/spedu_store/')
 def spedu_store():
-    return render_template('store_searchpage.html', login_stat_html=login_stat, products=load_products())
+    return render_template('store_searchpage.html', products=load_products())
+
+
 @app.route('/Checkout/')
 def Checkout():
-    return render_template('Checkout.html', login_stat_html=login_stat)
+    return render_template('Checkout.html')
+
+
 @app.route('/admin_page/')
 def admin_page():
     return render_template('admin_page.html')
 
+
 @app.route('/admin_page/courses/')
 def admin_page_courses():
-    return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
+    return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
+
+
 @app.route('/admin_page/courses/new_course')
 def new_course():
     return render_template('new_course.html')
+
+
 
 @app.route('/admin_page/courses/about_course/',methods=['GET'])
 def view_admin_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
     selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
-    return render_template('admin_selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
+    return render_template('admin_selected_course.html', selected_course=selected_course)
+
 
 @app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
-
     course_name = request.form['course_name']
     courseID = course_name.split(' ')[0][0] + course_name.split(' ')[0][1] + str(random.randrange(0, 1000))
     course_trainer = request.form['course_trainer']
@@ -191,8 +201,8 @@ def create_new_course():
     course_reviews = [{'rating':0,'reviewer':'','review':''}]
     students_count = 0
     new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
-    course_CRUD(course=new_course,method='create')
-    return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
+    course_CRUD(course=new_course, method='create')
+    return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
 
 
 @app.route('/admin_page/courses/about_course/', methods=['POST'])
@@ -200,7 +210,6 @@ def update_delete_course():
     current_courseID = request.form['current_course']
     action_input_value = request.form['action_input']
     print(action_input_value)
-
     if action_input_value == 'delete':
         course_CRUD(course=current_courseID,method='delete')
         return redirect("/admin_page/courses/")
@@ -208,13 +217,11 @@ def update_delete_course():
         return redirect(url_for('update_page', current_courseID=current_courseID))
 
 
-
 @app.route('/admin_page/courses/about_course/update/<current_courseID>')
 def update_page(current_courseID):
-    current_course = db.collection('Courses').where("courseID","==",current_courseID).get()[0].to_dict()
+    current_course = db.collection('Courses').where("courseID", "==", current_courseID).get()[0].to_dict()
     print(current_course)
     return render_template('edit_course_page.html', selected_course=current_course)
-
 
 
 @app.route('/admin_page/courses/about_course/update/', methods=['POST'])
@@ -234,22 +241,24 @@ def update_course():
     course_reviews = []
     students_count = 0
     course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
-    course_CRUD(course=course,method='update')
+    course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
-
 
 
 @app.route('/admin_page/products/')
 def admin_page_products():
     return render_template('admin_page_products.html', products=load_products())
 
+
 @app.route('/admin_page/products/new_product')
 def new_product():
     return render_template('new_product.html')
 
+
 @app.route('/admin_page/products/update_product')
 def update_product():
     return render_template('update_product.html')
+
 
 def load_products():
     products = []
@@ -263,8 +272,9 @@ def load_products():
         rating = doc.to_dict()['rating']
         product = Product(category, image, name, price, reviews, rating,)
         products.append(product)
-
     return products
+
+
 @app.route('/admin_page/products/', methods=['POST'])
 def create_new_product():
     product_name = request.form['product_name']
@@ -281,26 +291,7 @@ def create_new_product():
         'stock': 100,
     }
     db.collection('Products').document().set(new_product_data)
-    return render_template('admin_page_courses.html',products=load_products())
-
-
-
-#ethan's code
-app.secret_key = "1ae11153fae277ef2a41b70152692513"
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = "signin"
-# login_manager.login_message_category = "info"
-
-
-@login_manager.user_loader
-def user_loader(id):
-    # given id, return user object
-    user = db.collection("Users").where("id", "==", id).get()
-    if user:
-        user = User.from_dict(user[0].to_dict())
-        return user
-
+    return render_template('admin_page_courses.html', products=load_products())
 
 
 @app.route('/signup', methods=['GET', 'POST'])
