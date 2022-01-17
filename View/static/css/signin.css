@@ -1,0 +1,36 @@
+.background {
+  position: relative;
+  background-image: url("../assets/Fitness video 2.jpeg");
+  height: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+  display: flex;
+  align-items: center;
+}
+.right {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-right: 5%;
+}
+.login {
+  width: 500px;
+  height: 500px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 48px;
+  backdrop-filter: blur(5px);
+  /* position: absolute;
+  left: 80%;
+  transform: translateX(-50%); */
+}
+h1 {
+  text-align: left;
+  padding-left: 25px;
+  font-family: "AvenirNextLTPro-Regular", sans-serif;
+  font-size: 60px;
+}

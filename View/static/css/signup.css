@@ -1,0 +1,39 @@
+.background {
+  position: relative;
+  background-image: url("../assets/Fitness video 2.jpeg");
+  height: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+.register {
+  max-width: 800px;
+  height: 800px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 48px;
+  backdrop-filter: blur(5px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-0%) translateY(-50%);
+}
+h1 {
+  text-align: left;
+  padding-left: 25px;
+  font-family: "AvenirNextLTPro-Regular", sans-serif;
+  font-size: 60px;
+}
+.formnav{
+  padding-left: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.tab1, .tab2, .tab3 {
+  border-bottom: 2px solid rgba(70, 207, 220, 0.75);
+  width: 237px;
+  margin-right: 20px;
+}
+h3 {
+  font-family: "AvenirNextLTPro-Regular", sans-serif;
+  font-size: 28px;
+}

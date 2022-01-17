@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spedu Sign Up</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/css/basicnavbar.css">
+  <link rel="stylesheet" href="../static/css/signup.css">
+</head>
+<body>
+  {% from "includes/_formHelper.html" import render_field %}
+  <div class="background">
+    {% block navbar %}
+      {% include 'includes/_basicnavbar.html' %}
+    {% endblock %}
+    <div class="register">
+      <div class="registerContent">
+        <h1>Sign up</h1>
+        <div class="row formnav">
+          <div class="tab1">
+            <h3>Account Details</h3>
+          </div>
+          <div class="tab2">
+            <h3>Security Questions</h3>
+          </div>
+          <div class="tab3">
+            <h3>Personal Info</h3>
+          </div>
+        </div>
+        <br>
+        <form method="POST" action="">
+          <div class="form-group">
+            {{ render_field(form.qns, class="form-control") }}
+          </div>
+          <input type="submit" value="Submit" class="btn btn-primary"/>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

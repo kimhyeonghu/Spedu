@@ -25,5 +25,8 @@ class SignUpForm3(Form):
 class SignInForm(Form):
     email = EmailField('Email Address', [validators.DataRequired()])
     password = PasswordField('Password', [validators.DataRequired()])
-    # remember = BooleanField("Remember me")
+    remember = BooleanField("Remember me")
 
+
+class DisplayInfo(Form):
+    username = StringField('Username', [validators.Length(min=3, max=32), validators.DataRequired()])

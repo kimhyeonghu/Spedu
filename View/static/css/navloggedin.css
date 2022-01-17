@@ -1,0 +1,156 @@
+.topnav {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+  background-color: #ffffff;
+  height:60px;
+  position: absolute;
+  width: 100%;
+  box-shadow: 0 0 20px 0px rgba(0,0,0,0.1);
+}
+.logo-search ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.logo-search {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  padding-top: 5px;
+  margin-left: 10px;
+}
+.option-list {
+  display: inline-block;
+  text-align: center;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.mypage li {
+  display: inline-block;
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.login-signup li{
+  display: inline-block;
+  text-align: center;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.mypage{
+  float: right;
+  text-align: center;
+  margin-right: 15px;
+  margin-top: 8px;
+}
+.mypage a:hover {
+  text-decoration: none;
+}
+.search_bar {
+  border-radius: 25px;
+  padding-bottom: 5px;
+  height:40px;
+  width: 400px;
+  margin-right: 10px;
+  background-color: white;
+  border: 1px solid #919191;
+}
+.topnav .option:hover {
+  color: rgb(34, 187, 187);
+  text-decoration: none;
+}
+.topnav .option {
+  color: black;
+  font-weight:normal;
+  font-size: 14px;
+}
+.topnav input{
+  border:none;
+  width:85%;
+  font-size: 14px;
+  height:35px;
+}
+.topnav input:focus {
+  outline:none;
+}
+#logo {
+  height: 50px
+}
+#magnifying_glass {
+  height: 15px;
+}
+#mylearning-button {
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 13px;
+  font-weight: bolder;
+  height: 36px;
+  width: 120px;
+  margin: auto;
+  margin-top: 4px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  border: 2px solid black;
+}
+#login-button{
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 13px;
+  font-weight: bolder;
+  height: 36px;
+  width: 80px;
+  margin: auto;
+  margin-top: 4px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: white;
+  border: 2px solid black;
+}
+#signup-button{
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  font-size: 13px;
+  font-weight: bolder;
+  height: 36px;
+  width: 80px;
+  margin: auto;
+  margin-top: 4px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: rgb(31, 31, 31);
+  border: 2px solid rgb(31, 31, 31);
+  color:white;
+}
+#mylearning-button:hover{
+  text-decoration: none;
+  background-color: #000000;
+  color: white;
+}
+#login-button:hover{
+  text-decoration: none;
+  background-color: #f1f1f1;
+  color: black;
+}
+#signup-button:hover{
+  text-decoration: none;
+  background-color: black;
+  color: white;
+}
+#shopping-cart {
+  height: 17px;
+}
+#notification {
+  height: 17px;
+}
+#user-icon {
+  height: 30px;
+}
+.horizontal{
+  display: inline-block;
+}

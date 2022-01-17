@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spedu Sign In</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/basicnavbar.css">
+    <link rel="stylesheet" href="../static/css/signin.css">
+</head>
+<body>
+    {% from "includes/_formHelper.html" import render_field %}
+    <div class="background">
+      {% block navbar %}
+        {% include 'includes/_basicnavbar.html' %}
+      {% endblock %}
+      <div class="right">
+        <div class="vertical-center">
+          <div class="login">
+            <div class="loginContent">
+              <h1>Sign In</h1>
+              <form class="" method="POST">
+                <div class="form-group">
+                  {{ render_field(form.email, class="form-control") }}
+                </div>
+                <div class="form-group">
+                  {{ render_field(form.password, class="form-control") }}
+                </div>
+                <a class="" href="#">Forgot Password?</a>
+                <!-- <p>Incorrect Email or Password</p> -->
+                <input type="submit" value="SIGN IN">
+              </form>
+              <p>Don't Have An Account? <a class="" href="/signup">Register Here</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+</html>

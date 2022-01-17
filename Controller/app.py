@@ -1,10 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_bcrypt import Bcrypt
 import pyrebase
 import sys
 sys.path.insert(0, '../Model')
 import random
 from Course import Course
 from Product import Product
+from Forms import *
+from User import *
 import firebase_admin
 from firebase_admin import credentials, firestore
 firebaseConfig = {
@@ -38,18 +42,18 @@ app = Flask(__name__, template_folder='../View/HTML', static_folder='../View/sta
 
 
 
-user_email = 'test@gmail.com'
-user_password = '1234test'
+# user_email = 'test@gmail.com'
+# user_password = '1234test'
 login_stat = False
-try:
-    auth.sign_in_with_email_and_password(user_email,user_password)
-    user = auth.current_user
-except:
-    print("Unable to login")
-if auth.current_user != None:
-    login_stat = True
-else:
-    login_stat = False
+# try:
+#     auth.sign_in_with_email_and_password(user_email,user_password)
+#     user = auth.current_user
+# except:
+#     print("Unable to login")
+# if auth.current_user != None:
+#     login_stat = True
+# else:
+#     login_stat = False
 
 
 
@@ -279,6 +283,105 @@ def create_new_product():
     db.collection('Products').document().set(new_product_data)
     return render_template('admin_page_courses.html',products=load_products())
 
+
+
+#ethan's code
+app.secret_key = "1ae11153fae277ef2a41b70152692513"
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "signin"
+# login_manager.login_message_category = "info"
+
+
+@login_manager.user_loader
+def user_loader(id):
+    # given id, return user object
+    user = db.collection("Users").where("id", "==", id).get()
+    if user:
+        user = User.from_dict(user[0].to_dict())
+        return user
+
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup1():
+    if current_user.is_authenticated:
+        return redirect(url_for("homepage"))
+    sign_up_form1 = SignUpForm1(request.form)
+    if request.method == "POST" and sign_up_form1.validate():
+        users_dict = db.collection("Users").get()
+        for user in users_dict:
+            if user.to_dict()["email"] == sign_up_form1.email.data:
+                flash("Email already registered.")
+                return render_template('signup.html', form=sign_up_form1)
+        try:
+            id = db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
+        except:
+            id = 1
+        user = User(sign_up_form1.username.data, sign_up_form1.email.data, sign_up_form1.password.data, id)
+        db.collection("Users").document(str(id)).set(user.to_dict())
+        return redirect(url_for("signin"))
+
+    return render_template('signup.html', form=sign_up_form1)
+
+
+@app.route('/signup2', methods=['GET', 'POST'])
+def signup2():
+    sign_up_form2 = SignUpForm2(request.form)
+    return render_template('signup2.html', form=sign_up_form2)
+
+
+@app.route('/signin', methods=['GET', 'POST'])
+def signin():
+    sign_in_form = SignInForm(request.form)
+    if request.method == "POST":
+        user = db.collection("Users").where("email", "==", sign_in_form.email.data).get()
+        if user:
+            if user[0].to_dict()["password"] == sign_in_form.password.data:
+                user = User.from_dict(user[0].to_dict())
+                login_user(user)
+                # login_user(user, remember=sign_in_form.remember.data)
+                return redirect(url_for("homepage"))
+            else:
+                flash("Incorrect Login Credentials.")
+                render_template('signin.html', form=sign_in_form)
+        else:
+            flash("Incorrect Login Credentials.")
+            render_template('signin.html', form=sign_in_form)
+    return render_template('signin.html', form=sign_in_form)
+
+
+@app.route("/signout")
+@login_required
+def signout():
+    logout_user()
+    return redirect(url_for("homepage"))
+
+
+@app.route('/account', methods=['GET', 'POST'])
+@login_required
+def account():
+    user = db.collection("Users").document(str(current_user.get_id())).get().to_dict()
+    display_info = DisplayInfo(request.form)
+    print(request.method == "GET")
+    if request.method == "GET":
+        display_info.username.data = user["username"]
+    if request.method == "POST" and display_info.validate():
+        if request.form["displayInfo"] == "Discard":
+            display_info.username.data = user["username"]
+            return redirect(url_for("account"))
+        elif request.form["displayInfo"] == "Update":
+            db.collection("Users").document(str(current_user.get_id())).update({"username": display_info.username.data})
+            return redirect(url_for("account"))
+    # else:
+    #     display_info.username.data = user["username"]
+    #     return render_template("account.html", user=user, displayinfo=display_info)
+    print(request.method == "POST", request.form.get("delete") == "Delete Account", "deletetest")
+    # if request.method == "POST" and request.form["delete"] == "Delete Account":
+    #     db.collection("Users").document(str(current_user.get_id())).delete()
+    #     logout_user()
+    #     redirect(url_for("homepage"))
+    return render_template("account.html", user=user, displayinfo=display_info)
 
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 
 
-{% if login_stat_html is sameas true %}
+{% if current_user.is_authenticated %}
     {% extends 'base_signed_in.html' %}
 {% else %}
     {% extends 'base.html' %}
