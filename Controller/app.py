@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 import pyrebase
+import firebase_admin
+from firebase_admin import credentials, firestore
 import random
 import sys
 sys.path.insert(0, '../Model')
@@ -9,8 +11,6 @@ from Course import Course
 from Product import Product
 from Forms import *
 from User import *
-import firebase_admin
-from firebase_admin import credentials, firestore
 
 app = Flask(__name__, template_folder='../View/HTML', static_folder='../View/static')
 app.secret_key = "1ae11153fae277ef2a41b70152692513"
