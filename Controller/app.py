@@ -6,6 +6,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import random
 import sys
+
 sys.path.insert(0, '../Model')
 from Course import Course
 from Product import Product
@@ -20,6 +21,8 @@ db = firestore.client()
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "signin"
+
+
 # login_manager.login_message_category = "info"
 
 # firebaseConfig = {
@@ -64,7 +67,7 @@ def homepage():
     return render_template('homepage.html')
 
 
-def course_CRUD(course,method):
+def course_CRUD(course, method):
     if method == 'create':
         new_course_data = {
             'courseID': course.courseID,
@@ -101,11 +104,12 @@ def course_CRUD(course,method):
             students_count = doc.to_dict()['students_count']
             trainer = doc.to_dict()['trainer']
             video_link = doc.to_dict()['video_link']
-            course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer, video_link)
+            course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
+                            price, rating, reviews, students_count, trainer, video_link)
             courses.append(course)
         return courses
     elif method == 'update':
-        docs = db.collection('Courses').where("courseID","==",course.courseID).get()
+        docs = db.collection('Courses').where("courseID", "==", course.courseID).get()
         for doc in docs:
             key = doc.id
             db.collection('Courses').document(key).update({
@@ -122,7 +126,7 @@ def course_CRUD(course,method):
     elif method == 'delete':
         courseID = course
         try:
-            docs = db.collection('Courses').where("courseID","==",courseID).get()
+            docs = db.collection('Courses').where("courseID", "==", courseID).get()
             for doc in docs:
                 key = doc.id
                 db.collection('Courses').document(key).delete()
@@ -134,14 +138,14 @@ def course_CRUD(course,method):
 
 @app.route('/sports_courses/')
 def sports_courses():
-    return render_template('sports_courses.html', courses=course_CRUD(course=None,method='load'))
+    return render_template('sports_courses.html', courses=course_CRUD(course=None, method='load'))
 
 
 @app.route('/sports_courses/about_course/', methods=['GET'])
 def view_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
-    selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
+    selected_course = db.collection('Courses').where("courseID", "==", selected_courseID).get()[0].to_dict()
     return render_template('selected_course.html', selected_course=selected_course)
 
 
@@ -175,11 +179,11 @@ def new_course():
     return render_template('new_course.html')
 
 
-@app.route('/admin_page/courses/about_course/',methods=['GET'])
+@app.route('/admin_page/courses/about_course/', methods=['GET'])
 def view_admin_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
-    selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
+    selected_course = db.collection('Courses').where("courseID", "==", selected_courseID).get()[0].to_dict()
     return render_template('admin_selected_course.html', selected_course=selected_course)
 
 
@@ -197,9 +201,11 @@ def create_new_course():
     video_link = request.form['video_link']
     course_image = request.form['course_image']
     course_rating = 0
-    course_reviews = [{'rating':0,'reviewer':'','review':''}]
+    course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     students_count = 0
-    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
+    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome,
+                        course_level, course_name, course_price, course_rating, course_reviews, students_count,
+                        course_trainer, video_link)
     course_CRUD(course=new_course, method='create')
     return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
 
@@ -210,7 +216,7 @@ def update_delete_course():
     action_input_value = request.form['action_input']
     print(action_input_value)
     if action_input_value == 'delete':
-        course_CRUD(course=current_courseID,method='delete')
+        course_CRUD(course=current_courseID, method='delete')
         return redirect("/admin_page/courses/")
     else:
         return redirect(url_for('update_page', current_courseID=current_courseID))
@@ -239,7 +245,9 @@ def update_course():
     course_rating = ""
     course_reviews = []
     students_count = 0
-    course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
+    course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome,
+                    course_level, course_name, course_price, course_rating, course_reviews, students_count,
+                    course_trainer, video_link)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
 
@@ -269,7 +277,7 @@ def load_products():
         price = doc.to_dict()['price']
         reviews = doc.to_dict()['reviews']
         rating = doc.to_dict()['rating']
-        product = Product(category, image, name, price, reviews, rating,)
+        product = Product(category, image, name, price, reviews, rating, )
         products.append(product)
     return products
 
@@ -375,4 +383,4 @@ def account():
 
 
 if __name__ == "__main__":
-     app.run(debug=True)
+    app.run(debug=True)
