@@ -2,9 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 import pyrebase
+import random
 import sys
 sys.path.insert(0, '../Model')
-import random
 from Course import Course
 from Product import Product
 from Forms import *
