@@ -67,20 +67,20 @@ def homepage():
 def course_CRUD(course,method):
     if method == 'create':
         new_course_data = {
-        'courseID':course.courseID,
-        'description':course.description,
-        'short_description':course.short_description,
-        'duration':course.duration,
-        'image':course.image,
-        'learning_outcome':course.learning_outcome,
-        'level':course.level,
-        'name':course.name,
-        'price':course.price,
-        'rating':course.rating,
-        'reviews':course.reviews,
-        'students_count':course.students_count,
-        'trainer':course.trainer,
-        'video_link':course.video_link
+            'courseID': course.courseID,
+            'description': course.description,
+            'short_description': course.short_description,
+            'duration': course.duration,
+            'image': course.image,
+            'learning_outcome': course.learning_outcome,
+            'level': course.level,
+            'name': course.name,
+            'price': course.price,
+            'rating': course.rating,
+            'reviews': course.reviews,
+            'students_count': course.students_count,
+            'trainer': course.trainer,
+            'video_link': course.video_link
         }
         db.collection('Courses').document().set(new_course_data)
     elif method == 'load':
@@ -109,15 +109,15 @@ def course_CRUD(course,method):
         for doc in docs:
             key = doc.id
             db.collection('Courses').document(key).update({
-                'description':course.description,
-                'short_description':course.short_description,
-                'duration':course.duration,
-                'image':course.image,
-                'learning_outcome':course.learning_outcome,
-                'level':course.level,
-                'price':course.price,
-                'trainer':course.trainer,
-                'video_link':course.video_link
+                'description': course.description,
+                'short_description': course.short_description,
+                'duration': course.duration,
+                'image': course.image,
+                'learning_outcome': course.learning_outcome,
+                'level': course.level,
+                'price': course.price,
+                'trainer': course.trainer,
+                'video_link': course.video_link
             })
     elif method == 'delete':
         courseID = course
@@ -156,7 +156,7 @@ def spedu_store():
 
 
 @app.route('/Checkout/')
-def Checkout():
+def checkout():
     return render_template('Checkout.html')
 
 
@@ -173,7 +173,6 @@ def admin_page_courses():
 @app.route('/admin_page/courses/new_course')
 def new_course():
     return render_template('new_course.html')
-
 
 
 @app.route('/admin_page/courses/about_course/',methods=['GET'])
