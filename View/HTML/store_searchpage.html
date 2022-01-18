@@ -105,45 +105,24 @@
   top: 82px;
 }
 
-.small-container {
-    max-width: 1300px;
-    margin: auto;
+.products-list {
+  top: 40px;
+  bottom:0;
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  margin-top: 20px;
+  width:calc(100% - 220px);
+  height:calc(100% - 10px);
+  display: flex;
 }
 
-.small-container .row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: -100px;
-}
-
-.small-container .row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: -100px;
-}
-
-.col-3 {
-    flex-basis: 25%;
-    min-width: 50px;
-    height: 376px;
-    margin-bottom: -100px;
-    margin-top: 180px;
-    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
-    background: #F8F8F8;
-    cursor: pointer;
-    transition: transform 0.5s;
-}
-
-.col-3 img {
-    width: 100%
-}
-
-.col-3:hover {
-    transform: translateY(-7px);
+.products-list-box {
+  width: auto;
+  height: 140px;
+  margin-top: 10px;
+  flex: 25%;
+  padding: 5px;
 }
 
 
@@ -166,17 +145,27 @@
     <a href=""><button class ="brands">Reebok</button></a>
 </div>
 
-<div class="small-container">
+<div class="products-list" style="position:absolute;margin-top:100px;margin-left:220px;">
   {% for i in range(products|length) %}
-    <div class="row">
-        <div class="col-3">
-            <a href=""><img id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu"></a>
+    <input id="input" type="text" name="selected_productID" value="" style="display:none;">
+        <div class="products-list-box">
+            <a href="/spedu_store/selected_product"><img id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu"></a>
             <h5 class="name">{{products[i].name}}</h5>
             <p class="category">{{products[i].category}}</p>
             <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>
+
         </div>
-    </div>
+
+
   {% endfor %}
-</div>
+  <script type="text/javascript">
+          function submit(id) {
+              document.getElementById('input').value = id;
+              document.getElementById(deleteproduct').submit();
+          }
+  </script>
+
+
 {% endblock %}
+
 </div>
