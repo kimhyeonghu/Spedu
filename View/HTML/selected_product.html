@@ -14,5 +14,29 @@
   <div class="image">
     <a href=""><img id="jordan-zoombg" src="../../static/images/jordan-zoombg.jpg" alt="Spedu"></a>
   </div>
+  <div class="details">
+    <h4>{{selected_product.name}}</h4>
+    <p class="category">{{selected_product.category}}</p>
+    <p class="price">${{'%0.2f'| format(selected_product.price|float)}}</p>
+    <p class="size">Size:</p>
+    <p class="quantity">Quantity:</p>
+    <select id="DROPoptions">
+      <option>US 5</option>
+      <option>US 6</option>
+      <option>US 7</option>
+      <option>US 8</option>
+      <option>US 9</option>
+      <option>US 10</option>
+    </select>
+    <input id="options" type="number" placeholder="Quantity" min="1" value="1">
+    <a href="" class="btn" onclick="">Add to Cart</a>
+    <p class="">{{selected_product.description}}</p>
+    <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:25px;margin-bottom:25px;">
+    <h4 style="margin-bottom:12px;">Reviews</h4>
+    <div id="review_div">
+    </div>
+    <a href=""><p style="position:relative;top:-191px;margin-left:355px;">Write a Review</a></p>
+  </div>
+
 </div>
 {% endblock %}

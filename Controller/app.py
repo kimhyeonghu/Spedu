@@ -130,25 +130,36 @@ def load_products():
     products = []
     products_docs = db.collection('Products').get()
     for doc in products_docs:
+        productID = doc.to_dict()['productID']
         category = doc.to_dict()['category']
         image = doc.to_dict()['image']
         name = doc.to_dict()['name']
         price = doc.to_dict()['price']
-        product = Product(category, image, name, price)
+        description = doc.to_dict()['description']
+        rating = doc.to_dict()['rating']
+        reviews = doc.to_dict()['reviews']
+        product = Product(productID, category, image, name, price, description, rating, reviews)
         products.append(product)
-
     return products
 @app.route('/create_new_product', methods=['POST'])
 def create_new_product():
     product_name = request.form['product_name']
+    productID = product_name.split(' ')[0][0] + product_name.split(' ')[0][1] + str(random.randrange(0, 1000))
     product_price = request.form['product_price']
     product_image = request.form['product_image']
     product_category = request.form['product_category']
+    product_description = request.form['product_description']
+    product_rating = 0
+    product_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     new_product_data = {
+        'productID': productID,
         'category': product_category,
         'image': product_image,
         'name': product_name,
         'price': product_price,
+        'description': product_description,
+        'rating': product_rating,
+        'reviews': product_reviews,
     }
     db.collection('Products').document().set(new_product_data)
     return render_template('admin_page_courses.html',products=load_products())
@@ -167,7 +178,12 @@ def view_selected_course():
     selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
     return render_template('selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
 
-
+@app.route('/spedu_store/about_product/', methods=['GET'])
+def view_selected_product():
+    selected_productID = request.args.get("selected_productID")
+    print(selected_productID)
+    selected_product = db.collection('Products').where("productID","==",selected_productID).get()[0].to_dict()
+    return render_template('selected_product.html',login_stat_html=login_stat, selected_product=selected_product)
 
 
 
@@ -268,9 +284,7 @@ def update_course():
 @app.route('/admin_page/products/new_product')
 def new_product():
     return render_template('new_product.html')
-@app.route('/spedu_store/selected_product')
-def selected_product():
-    return render_template('selected_product.html')
+
 @app.route('/admin_page/products/update_product')
 def update_product():
     return render_template('update_product.html')

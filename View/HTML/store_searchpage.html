@@ -23,11 +23,10 @@
     font-size: 12px;
     position: relative;
     margin-left: 50px;
-    top: 11px;
+    top: 10px;
     left: 550px;
+    line-height: 12px;
 }
-
-
 
 .brands:hover {
     background: #563434;
@@ -106,25 +105,27 @@
 }
 
 .products-list {
-  top: 40px;
+  top: 73px;
   bottom:0;
   position: fixed;
   overflow-x: hidden;
   overflow-y: scroll;
   margin-top: 20px;
   width:calc(100% - 220px);
-  height:calc(100% - 10px);
   display: flex;
 }
 
 .products-list-box {
   width: auto;
-  height: 140px;
+  height: 380px;
   margin-top: 10px;
   flex: 25%;
-  padding: 5px;
+  padding-left: 5px;
 }
 
+.products-list-box img{
+  width: 60%
+}
 
 </style>
 <div class ="tags">
@@ -146,26 +147,25 @@
 </div>
 
 <div class="products-list" style="position:absolute;margin-top:100px;margin-left:220px;">
-  {% for i in range(products|length) %}
+  <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
     <input id="input" type="text" name="selected_productID" value="" style="display:none;">
+      {% for i in range(products|length) %}
+      {% set product = products[i] %}
+      <a onclick="submit('{{product.productID}}')">
         <div class="products-list-box">
-            <a href="/spedu_store/selected_product"><img id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu"></a>
+            <img class="image" id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu">
             <h5 class="name">{{products[i].name}}</h5>
             <p class="category">{{products[i].category}}</p>
             <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>
-
         </div>
-
-
+      </a>
   {% endfor %}
   <script type="text/javascript">
           function submit(id) {
               document.getElementById('input').value = id;
-              document.getElementById(deleteproduct').submit();
+              document.getElementById('selected_product_form').submit();
           }
   </script>
-
-
 {% endblock %}
-
+  </form>
 </div>
