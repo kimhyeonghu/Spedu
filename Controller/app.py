@@ -48,7 +48,7 @@ login_manager.login_view = "signin"
 #     login_stat = True
 # else:
 #     login_stat = False
-
+#...
 
 @login_manager.user_loader
 def user_loader(id):
