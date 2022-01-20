@@ -31,30 +31,10 @@ db = firestore.client()
 auth = firebase.auth()
 storage = firebase.storage()
 
-
-
-
-
 app = Flask(__name__, template_folder='../View/HTML', static_folder='../View/static')
 
 
-
-
-
-
-# user_email = 'test@gmail.com'
-# user_password = '1234test'
 login_stat = False
-# try:
-#     auth.sign_in_with_email_and_password(user_email,user_password)
-#     user = auth.current_user
-# except:
-#     print("Unable to login")
-# if auth.current_user != None:
-#     login_stat = True
-# else:
-#     login_stat = False
-
 
 
 def course_CRUD(course,method):
@@ -141,6 +121,8 @@ def load_products():
         product = Product(productID, category, image, name, price, description, rating, reviews)
         products.append(product)
     return products
+
+
 @app.route('/admin_page/products/', methods=['POST'])
 def create_new_product():
     product_name = request.form['product_name']
@@ -163,9 +145,13 @@ def create_new_product():
     }
     db.collection('Products').document().set(new_product_data)
     return render_template('admin_page_courses.html',products=load_products())
+
+
 @app.route('/')
 def homepage():
     return render_template('homepage.html',login_stat_html=login_stat)
+
+
 @app.route('/sports_courses/')
 def sports_courses():
     return render_template('sports_courses.html',login_stat_html=login_stat,courses=course_CRUD(course=None,method='load'))
@@ -177,6 +163,7 @@ def view_selected_course():
     print(selected_courseID)
     selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
     return render_template('selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
+
 
 @app.route('/spedu_store/about_product/', methods=['GET'])
 def view_selected_product():
@@ -190,25 +177,37 @@ def view_selected_product():
 @app.route('/Shopping Cart/')
 def shopping_cart():
     return render_template('Shopping Cart.html',login_stat_html=login_stat)
+
+
 @app.route('/spedu_store/')
 def spedu_store():
     return render_template('store_searchpage.html', login_stat_html=login_stat, products=load_products())
+
+
 @app.route('/Checkout/')
 def Checkout():
     return render_template('Checkout.html', login_stat_html=login_stat)
+
+
 @app.route('/admin_page/')
 def admin_page():
     return render_template('admin_page.html')
 
+
 @app.route('/admin_page/courses/')
 def admin_page_courses():
     return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
+
+
 @app.route('/admin_page/products/')
 def admin_page_products():
     return render_template('admin_page_products.html', products=load_products())
+
+
 @app.route('/admin_page/courses/new_course')
 def new_course():
     return render_template('new_course.html')
+
 
 @app.route('/admin_page/courses/about_course/',methods=['GET'])
 def view_admin_selected_course():
@@ -217,15 +216,17 @@ def view_admin_selected_course():
     selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
     return render_template('admin_selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
 
+
 @app.route('/admin_page/products/about_product/',methods=['GET'])
 def view_admin_selected_product():
     selected_productID = request.args.get("selected_productID")
     print(selected_productID)
     selected_product = db.collection('Products').where("productID","==",selected_productID).get()[0].to_dict()
     return render_template('admin_selected_products.html',login_stat_html=login_stat, selected_product=selected_product)
+
+
 @app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
-
     course_name = request.form['course_name']
     courseID = course_name.split(' ')[0][0] + course_name.split(' ')[0][1] + str(random.randrange(0, 1000))
     course_trainer = request.form['course_trainer']
@@ -291,9 +292,11 @@ def update_course():
 def new_product():
     return render_template('new_product.html')
 
+
 @app.route('/admin_page/products/update_product')
 def update_product():
     return render_template('update_product.html')
+
 
 @app.route('/delete_product', methods=['POST'])
 def delete_product():

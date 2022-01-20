@@ -50,7 +50,6 @@ width:calc(100% - 220px);
   font-size: 17px;
   text-align: center;
   font-weight: 600;
-  padding-right: 20px;
   transition-duration: 0.4s;
   cursor: pointer;
   color: white;
