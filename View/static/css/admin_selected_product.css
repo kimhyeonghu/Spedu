@@ -1,0 +1,30 @@
+.container .image img{
+   width: 15%;
+
+}
+
+.container .image {
+   margin-top:20px;
+   margin-left:120px;
+}
+
+.container {
+   position: fixed;
+   margin-left: 200px;
+   margin-top: 50px;
+   width: calc(100% - 200px);
+   height: auto;
+}
+
+.change {
+   color:#1E5D63;
+   text-decoration: underline;
+   font-size:13px;
+   position:relative;
+   top:-30px;
+   left:5px;
+}
+
+.change:hover {
+   color:darkgreen;
+}

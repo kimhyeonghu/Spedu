@@ -23,11 +23,10 @@
     font-size: 12px;
     position: relative;
     margin-left: 50px;
-    top: 11px;
+    top: 10px;
     left: 550px;
+    line-height: 12px;
 }
-
-
 
 .brands:hover {
     background: #563434;
@@ -104,49 +103,46 @@
   position: relative;
   top: 82px;
 }
-
-.small-container {
-    max-width: 1300px;
-    margin: auto;
+.products-list {
+  top: 85px;
+  bottom:0;
+  padding-right: 180px;
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  margin-top: 20px;
+  width:calc(100% - 220px);
+}
+.products-list::after {
+  content: "";
+  clear: both;
+  display: table;
 }
 
-.small-container .row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: -100px;
+.products-list-box {
+  float: left;
+  width: 25%;
+  padding: 10px;
+
 }
 
-.small-container .row {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    margin-top: -100px;
+.products-list-box img{
+  width: 110%
 }
 
-.col-3 {
-    flex-basis: 25%;
-    min-width: 50px;
-    height: 376px;
-    margin-bottom: -100px;
-    margin-top: 180px;
-    box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
-    background: #F8F8F8;
-    cursor: pointer;
-    transition: transform 0.5s;
+.name {
+  font-size:15px;
 }
 
-.col-3 img {
-    width: 100%
+.category {
+  font-size:13px;
+  color:grey;
 }
 
-.col-3:hover {
-    transform: translateY(-7px);
+.price {
+  font-size:13px;
+  font-weight:480;
 }
-
-
 </style>
 <div class ="tags">
     <label for="dropdown" id="labels" style="font-size:14px;font-weight:bold;">Sort by : </label>
@@ -166,17 +162,26 @@
     <a href=""><button class ="brands">Reebok</button></a>
 </div>
 
-<div class="small-container">
-  {% for i in range(products|length) %}
-    <div class="row">
-        <div class="col-3">
-            <a href=""><img id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu"></a>
+<div class="products-list" style="position:absolute;margin-top:100px;margin-left:220px;">
+  <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
+    <input id="input" type="text" name="selected_productID" value="" style="display:none;">
+      {% for i in range(products|length) %}
+      {% set product = products[i] %}
+      <a onclick="submit('{{product.productID}}')">
+        <div class="products-list-box">
+            <img class="image" id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu">
             <h5 class="name">{{products[i].name}}</h5>
             <p class="category">{{products[i].category}}</p>
             <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>
         </div>
-    </div>
+      </a>
   {% endfor %}
-</div>
+  <script type="text/javascript">
+          function submit(id) {
+              document.getElementById('input').value = id;
+              document.getElementById('selected_product_form').submit();
+          }
+  </script>
 {% endblock %}
+  </form>
 </div>

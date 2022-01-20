@@ -1,0 +1,67 @@
+.container .image img {
+   width:45%
+}
+
+.container .image {
+   margin-top:100px;
+   margin-left:40px;
+}
+
+.details {
+   margin-left:640px;
+   margin-top:-465px;
+}
+
+.category {
+   color:grey;
+}
+
+.price {
+
+}
+
+.quantity {
+   margin-left:130px;
+   margin-top:-40px;
+}
+
+#DROPoptions {
+   margin-left:40px;
+   position:absolute;
+   top:281px;
+}
+
+#options {
+   margin-left:203px;
+   position:absolute;
+   top:279px;
+}
+
+.btn {
+    display: inline-block;
+    background: black;
+    color: #fff;
+    padding: 12px 70px;
+    margin: 30px 78px;
+    border-radius: 30px;
+    transition: background 0.5s;
+    font-weight: 600;
+}
+
+.btn:hover {
+    background:#4B4B4B ;
+    color: white;
+}
+
+#review_div {
+  width: calc(80%-400px);
+  height: 150px;
+  margin-top: 15px;
+  background-color: white;
+  border-radius:20px;
+  box-shadow: 0 0 20px 10px rgba(0,0,0,0.1);
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px;
+}
