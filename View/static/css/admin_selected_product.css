@@ -1,0 +1,18 @@
+.container .image img{
+   width: 15%;
+
+}
+
+.container .image {
+   margin-top:30px;
+   margin-left:100px;
+}
+
+.container {
+   position: fixed;
+   margin-left: 200px;
+   margin-top: 50px;
+   width: calc(100% - 200px);
+   height: auto;
+}
+

@@ -141,7 +141,7 @@ def load_products():
         product = Product(productID, category, image, name, price, description, rating, reviews)
         products.append(product)
     return products
-@app.route('/create_new_product', methods=['POST'])
+@app.route('/admin_page/products/', methods=['POST'])
 def create_new_product():
     product_name = request.form['product_name']
     productID = product_name.split(' ')[0][0] + product_name.split(' ')[0][1] + str(random.randrange(0, 1000))
@@ -217,6 +217,12 @@ def view_admin_selected_course():
     selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
     return render_template('admin_selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
 
+@app.route('/admin_page/products/about_product/',methods=['GET'])
+def view_admin_selected_product():
+    selected_productID = request.args.get("selected_productID")
+    print(selected_productID)
+    selected_product = db.collection('Products').where("productID","==",selected_productID).get()[0].to_dict()
+    return render_template('admin_selected_products.html',login_stat_html=login_stat, selected_product=selected_product)
 @app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
 

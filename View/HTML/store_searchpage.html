@@ -103,30 +103,46 @@
   position: relative;
   top: 82px;
 }
-
 .products-list {
-  top: 73px;
+  top: 85px;
   bottom:0;
+  padding-right: 180px;
   position: fixed;
   overflow-x: hidden;
   overflow-y: scroll;
   margin-top: 20px;
   width:calc(100% - 220px);
-  display: flex;
+}
+.products-list::after {
+  content: "";
+  clear: both;
+  display: table;
 }
 
 .products-list-box {
-  width: auto;
-  height: 380px;
-  margin-top: 10px;
-  flex: 25%;
-  padding-left: 5px;
+  float: left;
+  width: 25%;
+  padding: 10px;
+
 }
 
 .products-list-box img{
-  width: 60%
+  width: 110%
 }
 
+.name {
+  font-size:15px;
+}
+
+.category {
+  font-size:13px;
+  color:grey;
+}
+
+.price {
+  font-size:13px;
+  font-weight:480;
+}
 </style>
 <div class ="tags">
     <label for="dropdown" id="labels" style="font-size:14px;font-weight:bold;">Sort by : </label>

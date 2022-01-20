@@ -72,17 +72,36 @@ width:calc(100% - 220px);
   overflow-y: scroll;
   margin-top: 20px;
   width:calc(100% - 220px);
-  display: flex;
+}
+
+.products-list::after {
+  content: "";
+  clear: both;
+  display: table;
 }
 
 .products-list-box {
-  width: auto;
-  height: 380px;
-  margin-top: 10px;
-  flex: 25%;
-  padding-left: 5px;
+  float: left;
+  width: 25%;
+
 }
 
 .products-list-box img{
-  width: 60%
+  width: 70%
 }
+
+.name {
+  font-size:14px;
+  margin-bottom: 10px;
+  margin-top: 4px;
+}
+
+.category {
+  font-size:12px;
+  color:grey;
+  margin-bottom: 18px;
+}
+
+.price {
+  font-size:13px;
+  fon

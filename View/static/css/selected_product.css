@@ -22,13 +22,13 @@
 
 .quantity {
    margin-left:130px;
-   margin-top:-41px;
+   margin-top:-40px;
 }
 
 #DROPoptions {
    margin-left:40px;
    position:absolute;
-   top:282px;
+   top:281px;
 }
 
 #options {
@@ -44,7 +44,6 @@
     padding: 12px 70px;
     margin: 30px 78px;
     border-radius: 30px;
-    text-decoration: none;
     transition: background 0.5s;
     font-weight: 600;
 }
