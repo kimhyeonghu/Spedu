@@ -7,8 +7,22 @@
 {% block body %}
 <div class="container">
     <div class="image">
-        <a href=""><img class="" id="jordan-zoom" src="../../../static/images/jordan-zoom.png" alt="Spedu"></a>
+        <img class="" id="jordan-zoom" src="../../../static/images/jordan-zoom.png" alt="Spedu">
+        <a class="change" href=""><p>Change Product Image</p></a>
     </div>
+
+    <div class="new_update">
+       <form action="{{ url_for('update_product') }}" method="post" enctype="multipart/form-data">
+  <ul>
+
+    <li style="height:50px;margin-top:20px;"><p>Update Name</p><textarea name='update_name' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;margin-top:20px;"><p>Update Category</p><textarea name='update_category' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;margin-top:20px;"><p>Update Price</p><textarea name='update_price' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;"><p>Update Image</p><textarea name='update_image' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;"><input type="submit" value="Update" class="update-btn"></button></li>
+  </ul>
+</form>
+</div>
 </div>
 
 {% endblock %}

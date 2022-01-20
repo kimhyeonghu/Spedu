@@ -4,8 +4,8 @@
 }
 
 .container .image {
-   margin-top:30px;
-   margin-left:100px;
+   margin-top:20px;
+   margin-left:120px;
 }
 
 .container {
@@ -16,3 +16,15 @@
    height: auto;
 }
 
+.change {
+   color:#1E5D63;
+   text-decoration: underline;
+   font-size:13px;
+   position:relative;
+   top:-30px;
+   left:5px;
+}
+
+.change:hover {
+   color:darkgreen;
+}
