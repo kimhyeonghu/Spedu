@@ -76,7 +76,6 @@ def course_CRUD(course,method):
         'video_link':course.video_link
         }
         db.collection('Courses').document().set(new_course_data)
-        pass
     elif method == 'load':
         courses = []
         courses_docs = db.collection('Courses').get()
@@ -126,43 +125,8 @@ def course_CRUD(course,method):
         print("HELoo delete")
 
 
-def load_products():
-    products = []
-    products_docs = db.collection('Products').get()
-    for doc in products_docs:
-        productID = doc.to_dict()['productID']
-        category = doc.to_dict()['category']
-        image = doc.to_dict()['image']
-        name = doc.to_dict()['name']
-        price = doc.to_dict()['price']
-        description = doc.to_dict()['description']
-        rating = doc.to_dict()['rating']
-        reviews = doc.to_dict()['reviews']
-        product = Product(productID, category, image, name, price, description, rating, reviews)
-        products.append(product)
-    return products
-@app.route('/admin_page/products/', methods=['POST'])
-def create_new_product():
-    product_name = request.form['product_name']
-    productID = product_name.split(' ')[0][0] + product_name.split(' ')[0][1] + str(random.randrange(0, 1000))
-    product_price = request.form['product_price']
-    product_image = request.form['product_image']
-    product_category = request.form['product_category']
-    product_description = request.form['product_description']
-    product_rating = 0
-    product_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
-    new_product_data = {
-        'productID': productID,
-        'category': product_category,
-        'image': product_image,
-        'name': product_name,
-        'price': product_price,
-        'description': product_description,
-        'rating': product_rating,
-        'reviews': product_reviews,
-    }
-    db.collection('Products').document().set(new_product_data)
-    return render_template('admin_page_courses.html',products=load_products())
+
+
 @app.route('/')
 def homepage():
     return render_template('homepage.html',login_stat_html=login_stat)
@@ -178,12 +142,7 @@ def view_selected_course():
     selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
     return render_template('selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
 
-@app.route('/spedu_store/about_product/', methods=['GET'])
-def view_selected_product():
-    selected_productID = request.args.get("selected_productID")
-    print(selected_productID)
-    selected_product = db.collection('Products').where("productID","==",selected_productID).get()[0].to_dict()
-    return render_template('selected_product.html',login_stat_html=login_stat, selected_product=selected_product)
+
 
 
 
@@ -203,9 +162,6 @@ def admin_page():
 @app.route('/admin_page/courses/')
 def admin_page_courses():
     return render_template('admin_page_courses.html',courses=course_CRUD(course=None,method='load'))
-@app.route('/admin_page/products/')
-def admin_page_products():
-    return render_template('admin_page_products.html', products=load_products())
 @app.route('/admin_page/courses/new_course')
 def new_course():
     return render_template('new_course.html')
@@ -217,12 +173,6 @@ def view_admin_selected_course():
     selected_course = db.collection('Courses').where("courseID","==",selected_courseID).get()[0].to_dict()
     return render_template('admin_selected_course.html',login_stat_html=login_stat, selected_course=selected_course)
 
-@app.route('/admin_page/products/about_product/',methods=['GET'])
-def view_admin_selected_product():
-    selected_productID = request.args.get("selected_productID")
-    print(selected_productID)
-    selected_product = db.collection('Products').where("productID","==",selected_productID).get()[0].to_dict()
-    return render_template('admin_selected_products.html',login_stat_html=login_stat, selected_product=selected_product)
 @app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
 
@@ -249,6 +199,8 @@ def create_new_course():
 def update_delete_course():
     current_courseID = request.form['current_course']
     action_input_value = request.form['action_input']
+    print(action_input_value)
+
     if action_input_value == 'delete':
         course_CRUD(course=current_courseID,method='delete')
         return redirect("/admin_page/courses/")
@@ -287,6 +239,10 @@ def update_course():
 
 
 
+@app.route('/admin_page/products/')
+def admin_page_products():
+    return render_template('admin_page_products.html', products=load_products())
+
 @app.route('/admin_page/products/new_product')
 def new_product():
     return render_template('new_product.html')
@@ -295,9 +251,37 @@ def new_product():
 def update_product():
     return render_template('update_product.html')
 
-@app.route('/delete_product', methods=['POST'])
-def delete_product():
-    pass
+def load_products():
+    products = []
+    products_docs = db.collection('Products').get()
+    for doc in products_docs:
+        category = doc.to_dict()['category']
+        image = doc.to_dict()['image']
+        name = doc.to_dict()['name']
+        price = doc.to_dict()['price']
+        reviews = doc.to_dict()['reviews']
+        rating = doc.to_dict()['rating']
+        product = Product(category, image, name, price, reviews, rating,)
+        products.append(product)
+
+    return products
+@app.route('/admin_page/products/', methods=['POST'])
+def create_new_product():
+    product_name = request.form['product_name']
+    product_price = request.form['product_price']
+    product_image = request.form['product_image']
+    product_category = request.form['product_category']
+    new_product_data = {
+        'category': product_category,
+        'image': product_image,
+        'name': product_name,
+        'price': product_price,
+        'reviews': [{"rating": 0, 'review': "", 'reviewer': ""}],
+        'rating': 0,
+        'stock': 100,
+    }
+    db.collection('Products').document().set(new_product_data)
+    return render_template('admin_page_courses.html',products=load_products())
 
 
 
@@ -401,4 +385,4 @@ def account():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+     app.run(debug=True)
