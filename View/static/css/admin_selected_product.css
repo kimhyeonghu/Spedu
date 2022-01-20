@@ -28,3 +28,61 @@
 .change:hover {
    color:darkgreen;
 }
+
+.new_update {
+  margin-left: 20px;
+  margin-right: 30px;
+  height: auto;
+  width: calc(100% - 230px);
+  top: 200px;
+  bottom:40px;
+  position: fixed;
+}
+.new_update li {
+  padding-top: 0px;
+  vertical-align: top;
+  text-align: left;
+  margin-top: 10px;
+}
+.new_update p {
+  margin-top: 0px;
+  font-size: 15px;
+  font-weight: 500;
+  display: inline-block;
+  width: 210px;
+}
+.new_update textarea {
+  display: inline-block;
+  width: calc(100% - 230px);
+  font-size: 15px;
+  vertical-align: top;
+  text-align: left;
+  resize: none;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.update-btn {
+  height: 40px;
+  width: 140px;
+  float: right;
+  padding-bottom: 0px;
+  text-decoration: none;
+  display: block;
+  margin-top: 40px;
+  position:relative;
+  left:-300px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+  padding-right: 20px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  color: white;
+  background-color: #1E5D63;
+  border: 2px solid #1E5D63;
+
+}
+.update-btn:hover{
+  text-decoration: none;
+  background-color: white;
+  color: #1E5D63;
+}
