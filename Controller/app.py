@@ -138,6 +138,7 @@ def load_products():
         products.append(product)
     return products
 
+
 def load_delete(productID):
     print("Delete")
     try:
@@ -148,17 +149,7 @@ def load_delete(productID):
     except:
         print("Unable to delete course!")
 
-@app.route('/admin_page/products/about_product/', methods=['POST'])
-def update_delete_product():
 
-    current_productID = request.form['current_product']
-    action_input_value = request.form['action_input_product']
-
-    if action_input_value == 'delete':
-        load_delete(current_productID)
-        return redirect("/admin_page/products/")
-    else:
-        return redirect("/admin_page/products/")
 @login_manager.user_loader
 def user_loader(id):
     # given id, return user object
@@ -297,6 +288,19 @@ def view_selected_product():
     print(selected_productID)
     selected_product = db.collection('Products').where("productID", "==", selected_productID).get()[0].to_dict()
     return render_template('selected_product.html', selected_product=selected_product)
+
+
+@app.route('/admin_page/products/about_product/', methods=['POST'])
+def update_delete_product():
+
+    current_productID = request.form['current_product']
+    action_input_value = request.form['action_input_product']
+
+    if action_input_value == 'delete':
+        load_delete(current_productID)
+        return redirect("/admin_page/products/")
+    else:
+        return redirect("/admin_page/products/")
 
 
 @app.route('/Shopping Cart/')
