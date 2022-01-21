@@ -4,7 +4,7 @@
 .course-panel {
   height: 170px;
   width: 100%;
-  padding-top: 50px;
+  padding-top: 110px;
 
 }
 .course-panel li {
@@ -59,6 +59,7 @@
 .view-courses {
   height: 500px;
   width: 100%;
+  margin-top: 60px;
 
 }
 .course-filter {

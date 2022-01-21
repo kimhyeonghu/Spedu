@@ -26,7 +26,7 @@
       <a onclick="submit('delete')"><button class="buy_now_btn" type="button" name="button">Delete</button></a>
       <script type="text/javascript">
         function submit(action) {
-          action_input_value = document.getElementById('action_input')
+          var action_input_value = document.getElementById('action_input')
           if (action=='delete') {
             action_input_value.value = 'delete'
 
