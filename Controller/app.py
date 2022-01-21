@@ -165,9 +165,7 @@ def signup1():
                 flash("Email already registered.")
                 return render_template('signup.html', form=sign_up_form1)
         try:
-            id = \
-            db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()[
-                "id"] + 1
+            id = db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
         except:
             id = 1
         user = User(sign_up_form1.username.data, sign_up_form1.email.data, sign_up_form1.password.data, id)
@@ -348,9 +346,7 @@ def create_new_course():
     course_rating = 0
     course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     students_count = 0
-    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome,
-                        course_level, course_name, course_price, course_rating, course_reviews, students_count,
-                        course_trainer, video_link)
+    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=new_course, method='create')
     return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
 
@@ -389,9 +385,7 @@ def update_course():
     course_rating = ""
     course_reviews = []
     students_count = 0
-    course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome,
-                    course_level, course_name, course_price, course_rating, course_reviews, students_count,
-                    course_trainer, video_link)
+    course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
 
