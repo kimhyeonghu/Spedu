@@ -1,0 +1,27 @@
+{% extends 'admin_page.html' %}
+{% block head %}
+
+{% endblock %}
+{% block body %}
+<div style="padding-top:30px;padding-left:200px;position:fixed;width:100%;">
+    <h1>Promo codes</h1>
+    <hr>
+    <table id="Promo_code_table" style="padding-bottom:300px">
+        <tbody>
+        <tr>
+            <th>Code name</th><th>Value of Code</th>
+        </tr>
+        {% for i in promo_code_dict %}
+        <tr>
+            <td style="text-align: center">{{ i.to_dict()['Name']}}</td>
+            <td style="text-align: center">{{ i.to_dict()['Value']}}</td>
+        </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+<a href="/promo_code_form" id="Addpc"><strong>Add new</strong></a>
+
+</div>
+{% endblock %}

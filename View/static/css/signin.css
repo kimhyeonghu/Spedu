@@ -1,6 +1,9 @@
+body {
+  font-family: "AvenirNextLTPro", sans-serif;
+}
 .background {
   position: relative;
-  background-image: url("../assets/Fitness video 2.jpeg");
+  background-image: url("../assets/Fitness video 1.jpeg");
   height: 100%;
   background-attachment: fixed;
   background-position: center;
@@ -20,7 +23,6 @@
 }
 .login {
   width: 500px;
-  height: 500px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 48px;
   backdrop-filter: blur(5px);
@@ -28,9 +30,24 @@
   left: 80%;
   transform: translateX(-50%); */
 }
+.loginContent{
+  padding-left: 30px;
+  padding-right: 30px;
+}
 h1 {
   text-align: left;
-  padding-left: 25px;
+  padding-top: 25px;
+  padding-bottom: 25px;
   font-family: "AvenirNextLTPro-Regular", sans-serif;
-  font-size: 60px;
+  font-size: 55px;
+}
+label {
+  color: #8C98A9;
+}
+input {
+
+}
+.forgotLink {
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
