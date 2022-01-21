@@ -10,6 +10,7 @@ body p {
   padding-right: 50px;
   color: white;
   position: absolute;
+  top: 60px;
 
 }
 .course_purchase_div{
@@ -23,6 +24,7 @@ body p {
   padding-top: 10px;
   padding-bottom: 10px;
   padding-right: 10px;
+  top: 60px;
   box-shadow: 0 0 20px 10px rgba(0,0,0,0.1);
 
 }
@@ -82,7 +84,7 @@ body p {
   overflow: hidden;
   width: calc(100%-400px);
   margin-left: 380px;
-  margin-top: 300px;
+  margin-top: 360px;
   padding-left: 20px;
   padding-top: 40px;
   padding-right: 40px;
