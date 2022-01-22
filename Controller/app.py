@@ -139,6 +139,17 @@ def load_products():
     return products
 
 
+def load_delete(productID):
+    print("Delete")
+    try:
+        docs = db.collection('Products').where("productID", "==", productID).get()
+        for doc in docs:
+            key = doc.id
+            db.collection('Products').document(key).delete()
+    except:
+        print("Unable to delete course!")
+
+
 @login_manager.user_loader
 def user_loader(id):
     # given id, return user object
@@ -165,9 +176,7 @@ def signup1():
                 flash("Email already registered.")
                 return render_template('signup.html', form=sign_up_form1)
         try:
-            id = \
-            db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()[
-                "id"] + 1
+            id = db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
         except:
             id = 1
         user = User(sign_up_form1.username.data, sign_up_form1.email.data, sign_up_form1.password.data, id)
@@ -281,6 +290,19 @@ def view_selected_product():
     return render_template('selected_product.html', selected_product=selected_product)
 
 
+@app.route('/admin_page/products/about_product/', methods=['POST'])
+def update_delete_product():
+
+    current_productID = request.form['current_product']
+    action_input_value = request.form['action_input_product']
+
+    if action_input_value == 'delete':
+        load_delete(current_productID)
+        return redirect("/admin_page/products/")
+    else:
+        return redirect("/admin_page/products/")
+
+
 @app.route('/Shopping Cart/')
 def shopping_cart():
     return render_template('Shopping Cart.html')
@@ -348,9 +370,7 @@ def create_new_course():
     course_rating = 0
     course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     students_count = 0
-    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome,
-                        course_level, course_name, course_price, course_rating, course_reviews, students_count,
-                        course_trainer, video_link)
+    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=new_course, method='create')
     return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
 
@@ -389,9 +409,7 @@ def update_course():
     course_rating = ""
     course_reviews = []
     students_count = 0
-    course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome,
-                    course_level, course_name, course_price, course_rating, course_reviews, students_count,
-                    course_trainer, video_link)
+    course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
 
@@ -406,31 +424,7 @@ def update_product():
     return render_template('update_product.html')
 
 
-@app.route('/admin_page/Promo code/')
-def admin_page_promo_codes():
-    promo_code_dict = db.collection('Promo codes').get()
-    return render_template('Promo code.html', promo_code_dict=promo_code_dict)
-@app.route('/promo_code_form/', methods=["POST","GET"])
-def promo_code_form():
-    promo_code_info = promo_code_information(request.form)
-    if request.method == 'POST':
-        pc_data = Promo_code_data(promo_code_info.name_of_code.data, promo_code_info.value.data)
-        pc_data.set_code_name(promo_code_info.name_of_code.data)
-        pc_data.set_code_value(promo_code_info.value.data)
-        #Promo_code_data.set_code_name(promo_code_info.name_of_code.data)
-        #Promo_code_data.set_code_value(promo_code_info.value.data)
-        try:
-            id = db.collection("Promo codes").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
-        except:
-            id = 1
-        db.collection('Promo codes').document(str(id)).set({"Value":(pc_data.get_code_value()), "Name": (pc_data.get_code_name()), "id": id})
-        return redirect(url_for('admin_page_promo_codes'))
-    return render_template('promo_code_form.html', form=promo_code_info)
 
-
-@app.route('/delete_product', methods=['POST'])
-def delete_product():
-    pass
 
 
 if __name__ == "__main__":
