@@ -406,6 +406,28 @@ def update_product():
     return render_template('update_product.html')
 
 
+@app.route('/admin_page/Promo code/')
+def admin_page_promo_codes():
+    promo_code_dict = db.collection('Promo codes').get()
+    return render_template('Promo code.html', promo_code_dict=promo_code_dict)
+@app.route('/promo_code_form/', methods=["POST","GET"])
+def promo_code_form():
+    promo_code_info = promo_code_information(request.form)
+    if request.method == 'POST':
+        pc_data = Promo_code_data(promo_code_info.name_of_code.data, promo_code_info.value.data)
+        pc_data.set_code_name(promo_code_info.name_of_code.data)
+        pc_data.set_code_value(promo_code_info.value.data)
+        #Promo_code_data.set_code_name(promo_code_info.name_of_code.data)
+        #Promo_code_data.set_code_value(promo_code_info.value.data)
+        try:
+            id = db.collection("Promo codes").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
+        except:
+            id = 1
+        db.collection('Promo codes').document(str(id)).set({"Value":(pc_data.get_code_value()), "Name": (pc_data.get_code_name()), "id": id})
+        return redirect(url_for('admin_page_promo_codes'))
+    return render_template('promo_code_form.html', form=promo_code_info)
+
+
 @app.route('/delete_product', methods=['POST'])
 def delete_product():
     pass
