@@ -201,6 +201,8 @@ def signup1():
 @app.route('/signup2', methods=['GET', 'POST'])
 def signup2():
     sign_up_form2 = SignUpForm2(request.form)
+    if request.method == "POST" and sign_up_form2.validate():
+        pass
     return render_template('signup2.html', form=sign_up_form2)
 
 
