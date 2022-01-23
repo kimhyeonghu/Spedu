@@ -122,8 +122,8 @@ def course_CRUD(course, method):
 
 def load_top_courses(courses):
     top_course_list = []
-    courses.sort(key=lambda x: x.rating*x.rating*x.students_count,reverse=True)
-    if len(courses)>=8:
+    courses.sort(key=lambda x: x.rating*x.rating*x.students_count, reverse=True)
+    if len(courses) >= 8:
         for i in range(8):
             top_course_list.append(courses[i])
     else:
@@ -181,11 +181,13 @@ def signup1():
         return redirect(url_for("homepage"))
     sign_up_form1 = SignUpForm1(request.form)
     if request.method == "POST" and sign_up_form1.validate():
-        users_dict = db.collection("Users").get()
-        for user in users_dict:
-            if user.to_dict()["email"] == sign_up_form1.email.data:
+        try:
+            if sign_up_form1.email.data == db.collection("Users").where("email", "==", sign_up_form1.email.data).get()[0].to_dict()["email"]:
                 flash("Email already registered.")
                 return render_template('signup.html', form=sign_up_form1)
+        except:
+            # user is not registered
+            pass
         try:
             id = db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
         except:
@@ -193,7 +195,6 @@ def signup1():
         user = User(sign_up_form1.username.data, sign_up_form1.email.data, sign_up_form1.password.data, id)
         db.collection("Users").document(str(id)).set(user.to_dict())
         return redirect(url_for("signin"))
-
     return render_template('signup.html', form=sign_up_form1)
 
 
@@ -282,7 +283,7 @@ def create_new_product():
     return render_template('admin_page_courses.html', products=load_products())
 
 
-@app.route('/sports_courses/',methods=['GET'])
+@app.route('/sports_courses/', methods=['GET'])
 def sports_courses_sorted():
     sort_attr = ''
     if request.method == 'GET':
@@ -312,7 +313,6 @@ def view_selected_product():
 
 @app.route('/admin_page/products/about_product/', methods=['POST'])
 def update_delete_product():
-
     current_productID = request.form['current_product']
     action_input_value = request.form['action_input_product']
 
