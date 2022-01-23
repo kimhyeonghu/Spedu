@@ -58,15 +58,15 @@ def course_CRUD(course, method):
             'courseID': course.courseID,
             'description': course.description,
             'short_description': course.short_description,
-            'duration': course.duration,
+            'duration': float(course.duration),
             'image': course.image,
             'learning_outcome': course.learning_outcome,
             'level': course.level,
             'name': course.name,
-            'price': course.price,
-            'rating': course.rating,
+            'price': float(course.price),
+            'rating': float(course.rating),
             'reviews': course.reviews,
-            'students_count': course.students_count,
+            'students_count': int(course.students_count),
             'trainer': course.trainer,
             'video_link': course.video_link
         }
@@ -94,6 +94,8 @@ def course_CRUD(course, method):
                             price, rating, reviews, students_count, trainer, video_link)
             courses.append(course)
         return courses
+
+
     elif method == 'update':
         docs = db.collection('Courses').where("courseID", "==", course.courseID).get()
         for doc in docs:
@@ -120,6 +122,20 @@ def course_CRUD(course, method):
             print("Unable to delete course!")
 
         print("HELoo delete")
+
+def load_top_courses(courses):
+    top_course_list = []
+    courses.sort(key=lambda x: x.rating*x.rating*x.students_count,reverse=True)
+    if len(courses)>=8:
+        for i in range(8):
+            top_course_list.append(courses[i])
+    else:
+        for course in courses:
+            top_course_list.append(course)
+
+    return top_course_list
+
+
 
 
 def load_products():
@@ -269,9 +285,17 @@ def create_new_product():
     return render_template('admin_page_courses.html', products=load_products())
 
 
-@app.route('/sports_courses/')
-def sports_courses():
-    return render_template('sports_courses.html', courses=course_CRUD(course=None, method='load'))
+
+@app.route('/sports_courses/',methods=['GET'])
+def sports_courses_sorted():
+    sort_attr = ''
+    if request.method == 'GET':
+        sort_attr = request.args.get("sort_attr")
+        print(333)
+    print(sort_attr)
+    all_courses=course_CRUD(course=None, method='load')
+    print(all_courses[0].name)
+    return render_template('sports_courses.html', courses=all_courses, top_courses=load_top_courses(all_courses), sort_attribute = sort_attr)
 
 
 @app.route('/sports_courses/about_course/', methods=['GET'])
