@@ -7,6 +7,7 @@
 {% block head %}
 {% endblock %}
 {% block body %}
+{% from "includes/_formHelper.html" import render_field %}
 <style>
 h1{
 text-align:center;
@@ -23,6 +24,8 @@ text-align:center;
 text-align:right;
 color: red;
 }
+
+
 </style>
 <h1>Checkout</h1>
 <hr>
@@ -54,6 +57,20 @@ color: red;
 <p>Fill in the address where you want your product to be mailed to(For products only)</p>
 <p style="color: red">*Only fill in this part if you are buying any merchandise*</p>
 <hr>
+<div id="address">
+<form method="POST">
+	<div class="form-group">
+		{{ render_field(form.first_name, class="form-control") }}
+	</div>
+	<div class="form-group">
+		{{ render_field(form.last_name, class="form-control") }}
+	</div>
+	<br>
+	<input type="submit" value="Submit" class="btn btn-primary"/>
+
+</form>
+</div>
+
 <h1>Payment</h1>
 <hr>
 <h2>Fill in Credit/Debit Card details</h2>

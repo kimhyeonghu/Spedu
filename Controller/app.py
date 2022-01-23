@@ -57,15 +57,15 @@ def course_CRUD(course, method):
             'courseID': course.courseID,
             'description': course.description,
             'short_description': course.short_description,
-            'duration': course.duration,
+            'duration': float(course.duration),
             'image': course.image,
             'learning_outcome': course.learning_outcome,
             'level': course.level,
             'name': course.name,
-            'price': course.price,
-            'rating': course.rating,
+            'price': float(course.price),
+            'rating': float(course.rating),
             'reviews': course.reviews,
-            'students_count': course.students_count,
+            'students_count': int(course.students_count),
             'trainer': course.trainer,
             'video_link': course.video_link
         }
@@ -119,6 +119,19 @@ def course_CRUD(course, method):
             print("Unable to delete course!")
 
         print("HELoo delete")
+
+
+def load_top_courses(courses):
+    top_course_list = []
+    courses.sort(key=lambda x: x.rating*x.rating*x.students_count,reverse=True)
+    if len(courses)>=8:
+        for i in range(8):
+            top_course_list.append(courses[i])
+    else:
+        for course in courses:
+            top_course_list.append(course)
+
+    return top_course_list
 
 
 def load_products():
@@ -268,9 +281,16 @@ def create_new_product():
     return render_template('admin_page_courses.html', products=load_products())
 
 
-@app.route('/sports_courses/')
-def sports_courses():
-    return render_template('sports_courses.html', courses=course_CRUD(course=None, method='load'))
+@app.route('/sports_courses/',methods=['GET'])
+def sports_courses_sorted():
+    sort_attr = ''
+    if request.method == 'GET':
+        sort_attr = request.args.get("sort_attr")
+        print(333)
+    print(sort_attr)
+    all_courses=course_CRUD(course=None, method='load')
+    print(all_courses[0].name)
+    return render_template('sports_courses.html', courses=all_courses, top_courses=load_top_courses(all_courses), sort_attribute = sort_attr)
 
 
 @app.route('/sports_courses/about_course/', methods=['GET'])
@@ -304,7 +324,8 @@ def update_delete_product():
 
 @app.route('/Shopping Cart/')
 def shopping_cart():
-    return render_template('Shopping Cart.html')
+    promo_code_dict = db.collection('Promo codes').get()
+    return render_template('Shopping Cart.html', promo_code_dict=promo_code_dict)
 
 
 @app.route('/spedu_store/')
@@ -314,7 +335,8 @@ def spedu_store():
 
 @app.route('/Checkout/')
 def Checkout():
-    return render_template('Checkout.html')
+    personal_details = PersonalInfo(request.form)
+    return render_template('Checkout.html', form=personal_details)
 
 
 @app.route('/admin_page/')
@@ -411,7 +433,7 @@ def update_course():
     course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
- 
+
 
 @app.route('/admin_page/products/new_product')
 def new_product():
@@ -421,6 +443,30 @@ def new_product():
 @app.route('/admin_page/products/update_product')
 def update_product():
     return render_template('update_product.html')
+
+
+@app.route('/admin_page/Promo code/')
+def admin_page_promo_codes():
+    promo_code_dict = db.collection('Promo codes').get()
+    return render_template('Promo code.html', promo_code_dict=promo_code_dict)
+
+
+@app.route('/promo_code_form/', methods=["POST","GET"])
+def promo_code_form():
+    promo_code_info = promo_code_information(request.form)
+    if request.method == 'POST':
+        pc_data = Promo_code_data(promo_code_info.name_of_code.data, promo_code_info.value.data)
+        pc_data.set_code_name(promo_code_info.name_of_code.data)
+        pc_data.set_code_value(promo_code_info.value.data)
+        #Promo_code_data.set_code_name(promo_code_info.name_of_code.data)
+        #Promo_code_data.set_code_value(promo_code_info.value.data)
+        try:
+            id = db.collection("Promo codes").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
+        except:
+            id = 1
+        db.collection('Promo codes').document(str(id)).set({"Value":(pc_data.get_code_value()), "Name": (pc_data.get_code_name()), "id": id})
+        return redirect(url_for('admin_page_promo_codes'))
+    return render_template('promo_code_form.html', form=promo_code_info)
 
 
 if __name__ == "__main__":
