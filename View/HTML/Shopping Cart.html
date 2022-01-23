@@ -49,10 +49,12 @@ h1{
 
 <hr>
 <br>
-<form id="promo">
+<form id="promo" style="float:center">
   <label for="promocodes">Pls choose a Promo code(If any)</label>
   <select name="promocodes">
-    <option value="code1">code1</option>
+	  {% for i in promo_code_dict %}
+    <option value="code1">{{i.to_dict()['Name']}}</option>
+	  {% endfor %}
   </select>
 </form>
 <div id = "fees">

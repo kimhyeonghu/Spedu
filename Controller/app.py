@@ -305,7 +305,8 @@ def update_delete_product():
 
 @app.route('/Shopping Cart/')
 def shopping_cart():
-    return render_template('Shopping Cart.html')
+    promo_code_dict = db.collection('Promo codes').get()
+    return render_template('Shopping Cart.html', promo_code_dict=promo_code_dict)
 
 
 @app.route('/spedu_store/')
