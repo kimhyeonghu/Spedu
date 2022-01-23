@@ -73,6 +73,14 @@ label {
   margin-left: auto;
   margin-right: auto;
 }
+.ans-group {
+  position: relative;
+}
+.svg-container{
+  position: absolute;
+  bottom: 0px;
+  right: 20px;
+}
 input[type=text], input[type=email], input[type=password] {
   height: 50px;
   font-size: 21px;
