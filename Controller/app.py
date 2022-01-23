@@ -6,7 +6,6 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import random
 import sys
-
 sys.path.insert(0, '../Model')
 from Course import Course
 from Product import Product
@@ -412,7 +411,7 @@ def update_course():
     course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
-
+ 
 
 @app.route('/admin_page/products/new_product')
 def new_product():
@@ -422,9 +421,6 @@ def new_product():
 @app.route('/admin_page/products/update_product')
 def update_product():
     return render_template('update_product.html')
-
-
-
 
 
 if __name__ == "__main__":
