@@ -49,6 +49,7 @@ login_manager.login_view = "signin"
 # else:
 #     login_stat = False
 
+
 def course_CRUD(course, method):
     if method == 'create':
         new_course_data = {
