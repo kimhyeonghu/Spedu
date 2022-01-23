@@ -38,7 +38,7 @@
               <div class="form-group ans-group">
                 {{ render_field(form.ans1, class="form-control") }}
                 <div class="svg-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph1" onclick="changeIcon()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph1" onclick="showPass()">
                     <g display="none" id="show1">
                       <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
                     </g>
@@ -54,7 +54,7 @@
               <div class="form-group ans-group">
                 {{ render_field(form.ans2, class="form-control") }}
                 <div class="svg-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph2" onclick="changeIcon2()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph2" onclick="showPass2()">
                     <g display="none" id="show1">
                       <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
                     </g>
@@ -70,7 +70,7 @@
               <div class="form-group ans-group">
                 {{ render_field(form.ans3, class="form-control") }}
                 <div class="svg-container">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph3" onclick="changeIcon3()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph3" onclick="showPass3()">
                     <g display="none" id="show1">
                       <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
                     </g>
@@ -80,7 +80,14 @@
                   </svg>
                 </div>
               </div>
-              <input class="text-center" type="submit" value="NEXT STEP" class="btn btn-primary"/>
+              <div class="d-flex flex-row">
+                <div class="skip">
+                  <a href="/signup3"><input type="button" name="" value="SKIP" class="skip">
+                </div>
+                <div class="next">
+                  <input type="submit" value="NEXT STEP" class="text-center btn btn-primary next">
+                </div>
+              </div>
             </form>
             <p>Already Have An Account? <a href="/signin">Sign In</a></p>
           </div>
@@ -168,18 +175,36 @@
     var icons = ['show1', 'hide1'];
     var svgMorpheus = new SVGMorpheus("#morph1");
     var count = 0;
-    function changeIcon() {
-      svgMorpheus.to(icons[count++ % 2]);
+    function showPass() {
+      svgMorpheus.to(icons[count++ % 2], {duration: 500});
+      var x = document.getElementById("ans1")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
     }
     var svgMorpheus2 = new SVGMorpheus("#morph2");
     var count2 = 0;
-    function changeIcon2() {
-      svgMorpheus2.to(icons[count2++ % 2]);
+    function showPass2() {
+      svgMorpheus2.to(icons[count2++ % 2], {duration: 500});
+      var x = document.getElementById("ans2")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
     }
     var svgMorpheus3 = new SVGMorpheus("#morph3");
     var count3 = 0;
-    function changeIcon3() {
-      svgMorpheus3.to(icons[count3++ % 2]);
+    function showPass3() {
+      svgMorpheus3.to(icons[count3++ % 2], {duration: 500});
+      var x = document.getElementById("ans1")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
     }
   </script>
 </body>
