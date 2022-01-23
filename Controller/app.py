@@ -316,7 +316,8 @@ def spedu_store():
 
 @app.route('/Checkout/')
 def Checkout():
-    return render_template('Checkout.html')
+    personal_details = PersonalInfo(request.form)
+    return render_template('Checkout.html', form=personal_details)
 
 
 @app.route('/admin_page/')
