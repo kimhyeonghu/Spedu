@@ -203,17 +203,7 @@ def load_update(productID):
     except:
         print("Unable to update course!")
 
-@app.route('/admin_page/products/about_product/', methods=['POST'])
-def update_delete_product():
-    current_productID = request.form['current_product']
-    action_input_value = request.form['action_input_product']
-    if action_input_value == 'delete':
-        load_delete(current_productID)
-        return redirect("/admin_page/products/")
 
-    elif action_input_value == 'update':
-        load_update(current_productID)
-        return redirect("/admin_page/products/")
 
 
 @login_manager.user_loader
@@ -320,28 +310,7 @@ def account():
     return render_template("account.html", user=user, displayinfo=display_info)
 
 
-@app.route('/admin_page/products/', methods=['POST'])
-def create_new_product():
-    product_name = request.form['product_name']
-    productID = product_name.split(' ')[0][0] + product_name.split(' ')[0][1] + str(random.randrange(0, 1000))
-    product_price = request.form['product_price']
-    product_image = request.form['product_image']
-    product_category = request.form['product_category']
-    product_description = request.form['product_description']
-    product_rating = 0
-    product_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
-    new_product_data = {
-        'productID': productID,
-        'category': product_category,
-        'image': product_image,
-        'name': product_name,
-        'price': product_price,
-        'description': product_description,
-        'rating': product_rating,
-        'reviews': product_reviews,
-    }
-    db.collection('Products').document().set(new_product_data)
-    return render_template('admin_page_courses.html', products=load_products())
+
 
 
 @app.route('/sports_courses/', methods=['GET'])
