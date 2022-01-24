@@ -244,6 +244,7 @@ def signup1():
 
 
 @app.route('/signup2', methods=['GET', 'POST'])
+@login_required
 def signup2():
     sign_up_form2 = SignUpForm2(request.form)
     print(current_user.get_email())
@@ -252,6 +253,13 @@ def signup2():
         user.set_qns1(sign_up_form2.qns1.data)
         user.set_ans1(sign_up_form2.ans1.data)
     return render_template('signup2.html', form=sign_up_form2)
+
+
+@app.route('/signup3', methods=['GET', 'POST'])
+@login_required
+def signup3():
+    sign_up_form3 = SignUpForm3(request.form)
+    return render_template('signup3.html', form=sign_up_form3)
 
 
 @app.route('/signin', methods=['GET', 'POST'])
