@@ -9,7 +9,6 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/SVG-Morpheus/0.3.2/svg-morpheus.js"></script>
 </head>
 <body>
-  {% from "includes/_formHelper.html" import render_field %}
   <div class="background">
     {% block navbar %}
       {% include 'includes/_basicnavbar.html' %}
@@ -32,6 +31,7 @@
             </div>
             <br>
             <form method="POST">
+              {% from "includes/_formHelper.html" import render_field %}
               <div class="form-group">
                 {{ render_field(form.qns1, class="form-control") }}
               </div>
@@ -80,9 +80,9 @@
                   </svg>
                 </div>
               </div>
-              <div class="d-flex flex-row">
+              <div class="d-flex flex-row buttons">
                 <div class="skip">
-                  <a href="/signup3"><input type="button" name="" value="SKIP" class="skip">
+                  <a href="/signup3"><input type="button" name="" value="SKIP" class="skip"></a>
                 </div>
                 <div class="next">
                   <input type="submit" value="NEXT STEP" class="text-center btn btn-primary next">
@@ -199,7 +199,7 @@
     var count3 = 0;
     function showPass3() {
       svgMorpheus3.to(icons[count3++ % 2], {duration: 500});
-      var x = document.getElementById("ans1")
+      var x = document.getElementById("ans3")
       if (x.type === "password") {
         x.type = "text";
       } else {

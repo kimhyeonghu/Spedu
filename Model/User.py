@@ -5,8 +5,8 @@ class User:
         self.__username = username
         self.__password = password
 
-    def get_user_id(self):
-        return self.__user_id
+    # def get_user_id(self):
+    #     return self.__user_id
 
     def get_email(self):
         return self.__email
@@ -51,7 +51,7 @@ class User:
         return user_dict
 
 
-class Trainee(User):
+class Customer(User):
     def __init__(self, email, username, password, id):
         super().__init__(email, username, password, id)
         self.__account_type = "Trainee"

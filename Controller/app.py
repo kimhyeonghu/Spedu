@@ -194,20 +194,26 @@ def signup1():
             id = 1
         user = User(sign_up_form1.username.data, sign_up_form1.email.data, sign_up_form1.password.data, id)
         db.collection("Users").document(str(id)).set(user.to_dict())
-        return redirect(url_for("signin"))
+        login_user(user)
+        return redirect(url_for("signup2"))
     return render_template('signup.html', form=sign_up_form1)
 
 
 @app.route('/signup2', methods=['GET', 'POST'])
 def signup2():
     sign_up_form2 = SignUpForm2(request.form)
+    print(current_user.get_email())
     if request.method == "POST" and sign_up_form2.validate():
-        pass
+        user = Customer(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
+        user.set_qns1(sign_up_form2.qns1.data)
+        user.set_ans1(sign_up_form2.ans1.data)
     return render_template('signup2.html', form=sign_up_form2)
 
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
+    if current_user.is_authenticated:
+        return redirect(url_for("homepage"))
     sign_in_form = SignInForm(request.form)
     if request.method == "POST":
         user = db.collection("Users").where("email", "==", sign_in_form.email.data).get()

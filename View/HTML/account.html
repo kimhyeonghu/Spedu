@@ -14,18 +14,21 @@
   {% endblock %}
   <div class="row">
     <div class="col-4 accountLeft vertical-center">
-      <div class="userBox ">
-        <svg xmlns="http://www.w3.org/2000/svg" width="144.268" height="144.268" viewBox="0 0 144.268 144.268">
-          <path id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M72.134.562A72.134,72.134,0,1,0,144.268,72.7,72.122,72.122,0,0,0,72.134.562Zm0,27.923a25.6,25.6,0,1,1-25.6,25.6A25.6,25.6,0,0,1,72.134,28.485Zm0,100.057a55.737,55.737,0,0,1-42.611-19.837,32.429,32.429,0,0,1,28.65-17.394,7.117,7.117,0,0,1,2.065.32,38.51,38.51,0,0,0,11.9,2.007,38.364,38.364,0,0,0,11.9-2.007,7.117,7.117,0,0,1,2.065-.32,32.429,32.429,0,0,1,28.65,17.394A55.737,55.737,0,0,1,72.134,128.542Z" transform="translate(0 -0.563)"/>
-        </svg>
-        <p>{{ user["username"] }}</p>
-        <p>User ID: {{ user["id"] }}</p>
-      </div>
-      <p></p>
-      <div class="sideBar">
-        <a href="#">My Account</a><br>
-        <a href="#">Account Security</a><br>
-        <a href="#">Order History</a><br>
+      <div class="row">
+        <div class="userBox col-12 ">
+          <svg xmlns="http://www.w3.org/2000/svg" width="144.268" height="144.268" viewBox="0 0 144.268 144.268">
+            <path id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M72.134.562A72.134,72.134,0,1,0,144.268,72.7,72.122,72.122,0,0,0,72.134.562Zm0,27.923a25.6,25.6,0,1,1-25.6,25.6A25.6,25.6,0,0,1,72.134,28.485Zm0,100.057a55.737,55.737,0,0,1-42.611-19.837,32.429,32.429,0,0,1,28.65-17.394,7.117,7.117,0,0,1,2.065.32,38.51,38.51,0,0,0,11.9,2.007,38.364,38.364,0,0,0,11.9-2.007,7.117,7.117,0,0,1,2.065-.32,32.429,32.429,0,0,1,28.65,17.394A55.737,55.737,0,0,1,72.134,128.542Z" transform="translate(0 -0.563)"/>
+          </svg>
+          <p>{{ user["username"] }}</p>
+          <p>User ID: {{ user["id"] }}</p>
+        </div>
+        <p></p>
+        <div class="sideBar col-12">
+          <a href="#">My Account</a><br>
+          <a href="#">Account Security</a><br>
+          <a href="#">Order History</a><br>
+        </div>
+
       </div>
     </div>
     <div class="col-8 userInfo">
