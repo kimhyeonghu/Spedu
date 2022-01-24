@@ -25,12 +25,24 @@
   border-color: black;
   height: 270px;
   width: 250px;
+  display: inline-block;
 
+
+}
+.top-course-ul {
+  width: 100%;
+  height: 320px;
+  display: block;
+  position:relative;
+  overflow: auto;
+  white-space: nowrap;
 }
 .course-short-detail-box ul {
   text-align:left;
   padding-left: 10px;
   padding-top: 10px;
+  padding-right: 10px;
+
 }
 .course-sort {
   padding-left: 50px;
@@ -80,7 +92,7 @@
   background-color: white;
 }
 .view-courses {
-  height: 800px;
+  height: auto;
   width: 100%;
   margin-top: 60px;
 
@@ -105,7 +117,7 @@
   height: 140px;
   margin-right: 20px;
   margin-top: 30px;
-  
+
 }
 #selected_course_form a{
   color: black;
