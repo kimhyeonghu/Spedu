@@ -213,12 +213,6 @@ def update_delete_product():
         return redirect("/admin_page/products/")
 
 
-
-
-
-
-
-
 @login_manager.user_loader
 def user_loader(id):
     # given id, return user object
@@ -323,9 +317,6 @@ def account():
     return render_template("account.html", user=user, displayinfo=display_info)
 
 
-
-
-
 @app.route('/sports_courses/', methods=['GET'])
 def sports_courses_sorted():
     sort_attr = ''
@@ -376,9 +367,11 @@ def shopping_cart():
 def spedu_store():
     return render_template('main_storepage.html', products=load_products())
 
+
 @app.route('/store_searchpage/')
 def spedu_store_searchpage():
     return render_template('store_searchpage.html', products=load_products())
+
 
 @app.route('/Checkout/')
 def Checkout():
@@ -482,13 +475,9 @@ def update_course():
     return redirect("/admin_page/courses/")
 
 
-
 @app.route('/admin_page/products/new_product')
 def new_product():
     return render_template('new_product.html')
-
-
-
 
 
 @app.route('/admin_page/Promo code/')
