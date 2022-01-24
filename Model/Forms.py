@@ -1,4 +1,4 @@
-from wtforms import Form, StringField, IntegerField, EmailField, PasswordField, SelectField, SelectMultipleField, BooleanField, DateField, validators
+from wtforms import Form, StringField, IntegerField, EmailField, PasswordField, TelField, SelectField, SelectMultipleField, BooleanField, DateField, validators
 from wtforms.validators import EqualTo
 
 
@@ -12,9 +12,9 @@ class SignUpForm1(Form):
 class SignUpForm2(Form):
     qns1 = SelectField('First Question', [validators.DataRequired()], choices=[('', 'Select'), ('cityBorn', 'In what city were you born?'), ('petName', 'What is the name of your favourite pet?'), ('mumName', "What is your mother's maiden name?"), ('highSchool', 'What high school did you attend?'), ('firstSchool', 'What is the name of your first school?'), ('car', 'What was the make of your first car?'), ('food', 'What was your favourite food as a child?'), ('spouse', 'Where did you meet your spouse?')], default='')
     ans1 = PasswordField('Answer The Question', [validators.DataRequired()])
-    qns2 = SelectField('First Question', [validators.DataRequired()], choices=[('', 'Select'), ('cityBorn', 'In what city were you born?'), ('petName', 'What is the name of your favourite pet?'), ('mumName', "What is your mother's maiden name?"), ('highSchool', 'What high school did you attend?'), ('firstSchool', 'What is the name of your first school?'), ('car', 'What was the make of your first car?'), ('food', 'What was your favourite food as a child?'), ('spouse', 'Where did you meet your spouse?')], default='')
+    qns2 = SelectField('Second Question', [validators.DataRequired()], choices=[('', 'Select'), ('cityBorn', 'In what city were you born?'), ('petName', 'What is the name of your favourite pet?'), ('mumName', "What is your mother's maiden name?"), ('highSchool', 'What high school did you attend?'), ('firstSchool', 'What is the name of your first school?'), ('car', 'What was the make of your first car?'), ('food', 'What was your favourite food as a child?'), ('spouse', 'Where did you meet your spouse?')], default='')
     ans2 = PasswordField('Answer The Question', [validators.DataRequired()])
-    qns3 = SelectField('First Question', [validators.DataRequired()], choices=[('', 'Select'), ('cityBorn', 'In what city were you born?'), ('petName', 'What is the name of your favourite pet?'), ('mumName', "What is your mother's maiden name?"), ('highSchool', 'What high school did you attend?'), ('firstSchool', 'What is the name of your first school?'), ('car', 'What was the make of your first car?'), ('food', 'What was your favourite food as a child?'), ('spouse', 'Where did you meet your spouse?')], default='')
+    qns3 = SelectField('Third Question', [validators.DataRequired()], choices=[('', 'Select'), ('cityBorn', 'In what city were you born?'), ('petName', 'What is the name of your favourite pet?'), ('mumName', "What is your mother's maiden name?"), ('highSchool', 'What high school did you attend?'), ('firstSchool', 'What is the name of your first school?'), ('car', 'What was the make of your first car?'), ('food', 'What was your favourite food as a child?'), ('spouse', 'Where did you meet your spouse?')], default='')
     ans3 = PasswordField('Answer The Question', [validators.DataRequired()])
     # qns1 = SelectField('First Question', [validators.DataRequired()], choices=[('', 'Select'), ('cityBorn', 'In what city were you born?'), ('petName', 'What is the name of your favourite pet?'), ('mumName', "What is your mother's maiden name?"), ('highSchool', 'What high school did you attend?'), ('firstSchool', 'What is the name of your first school?'), ('car', 'What was the make of your first car?'), ('food', 'What was your favourite food as a child?'), ('spouse', 'Where did you meet your spouse?')], default='')
 
@@ -22,8 +22,9 @@ class SignUpForm2(Form):
 class SignUpForm3(Form):
     first_name = StringField('First Name', [validators.Length(min=1), validators.optional()])
     last_name = StringField('Last Name', [validators.Length(min=1), validators.optional()])
-    address = StringField('Address', [validators.Length(min=1), validators.optional()])
-    phone = IntegerField('Phone Number', [validators.Length(max=15), validators.optional()])
+    street = StringField('Building, Street', [validators.Length(min=1), validators.optional()])
+
+    phone = TelField('Phone Number', [validators.optional()])
     credit_card = IntegerField('Credit Card', [validators.Length(min=16, max=16), validators.optional()])
 
 
