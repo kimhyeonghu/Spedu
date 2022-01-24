@@ -13,36 +13,41 @@
     {% block navbar %}
       {% include 'includes/_basicnavbar.html' %}
     {% endblock %}
-    <div class="register">
-      <div class="registerContent">
-        <h1>Sign up</h1>
-        <div class="row formnav">
-          <div class="tab1">
-            <h3>Account Details</h3>
-          </div>
-          <div class="tab2">
-            <h3>Security Questions</h3>
-          </div>
-          <div class="tab3">
-            <h3>Personal Info</h3>
+    <div class="right">
+      <div class="vertical-center">
+        <div class="register">
+          <div class="registerContent">
+            <h1>Sign up</h1>
+            <div class="row formnav">
+              <div class="tab1">
+                <h3>Account Details</h3>
+              </div>
+              <div class="tab2">
+                <h3>Security Questions</h3>
+              </div>
+              <div class="tab3">
+                <h3>Personal Info</h3>
+              </div>
+            </div>
+            <br>
+            <form method="POST">
+              <div class="form-group">
+                {{ render_field(form.email, class="form-control") }}
+              </div>
+              <div class="form-group">
+                {{ render_field(form.username, class="form-control") }}
+              </div>
+              <div class="form-group">
+                {{ render_field(form.password, class="form-control") }}
+              </div>
+              <div class="form-group">
+                {{ render_field(form.confirm_password, class="form-control") }}
+              </div>
+              <input class="text-center" type="submit" value="NEXT STEP" class="btn btn-primary"/>
+            </form>
+            <p>Already Have An Account? <a class="" href="/signin">Sign In</a></p>
           </div>
         </div>
-        <br>
-        <form method="POST">
-          <div class="form-group">
-            {{ render_field(form.email, class="form-control") }}
-          </div>
-          <div class="form-group">
-            {{ render_field(form.username, class="form-control") }}
-          </div>
-          <div class="form-group">
-            {{ render_field(form.password, class="form-control") }}
-          </div>
-          <div class="form-group">
-            {{ render_field(form.confirm_password, class="form-control") }}
-          </div>
-          <input type="submit" value="Submit" class="btn btn-primary"/>
-        </form>
       </div>
     </div>
   </div>

@@ -7,7 +7,7 @@ html, body {
     height: 60px;
     position: absolute;
     width: 100%;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 20px 0px;
+    box-shadow: rgba(0, 0, 0, 0.7) 0px 0px 25px 0px;
     overflow: hidden;
     margin-left: auto;
     margin-right: auto;
@@ -18,13 +18,16 @@ html, body {
     margin-bottom: auto;
     padding-left: 10px;
 }
-.topnav span {
+.basicnav span {
   font-family: "Open Sans";
-  font-weight: bold;
+  font-weight: 600;
   font-size: 20px;
+  vertical-align: -2.5px;
+  color: black;
 }
 .basicnav img {
   position: absolute;
+  top: 5px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%)
 }

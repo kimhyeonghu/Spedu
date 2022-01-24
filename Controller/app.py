@@ -6,7 +6,6 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import random
 import sys
-
 sys.path.insert(0, '../Model')
 from Course import Course
 from Product import Product
@@ -21,8 +20,6 @@ db = firestore.client()
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "signin"
-
-
 # login_manager.login_message_category = "info"
 
 # firebaseConfig = {
@@ -51,6 +48,7 @@ login_manager.login_view = "signin"
 #     login_stat = True
 # else:
 #     login_stat = False
+
 
 def course_CRUD(course, method):
     if method == 'create':
@@ -94,8 +92,6 @@ def course_CRUD(course, method):
                             price, rating, reviews, students_count, trainer, video_link)
             courses.append(course)
         return courses
-
-
     elif method == 'update':
         docs = db.collection('Courses').where("courseID", "==", course.courseID).get()
         for doc in docs:
@@ -123,10 +119,11 @@ def course_CRUD(course, method):
 
         print("HELoo delete")
 
+
 def load_top_courses(courses):
     top_course_list = []
-    courses.sort(key=lambda x: x.rating*x.rating*x.students_count,reverse=True)
-    if len(courses)>=8:
+    courses.sort(key=lambda x: x.rating*x.rating*x.students_count, reverse=True)
+    if len(courses) >= 8:
         for i in range(8):
             top_course_list.append(courses[i])
     else:
@@ -134,8 +131,6 @@ def load_top_courses(courses):
             top_course_list.append(course)
 
     return top_course_list
-
-
 
 
 def load_products():
@@ -186,30 +181,39 @@ def signup1():
         return redirect(url_for("homepage"))
     sign_up_form1 = SignUpForm1(request.form)
     if request.method == "POST" and sign_up_form1.validate():
-        users_dict = db.collection("Users").get()
-        for user in users_dict:
-            if user.to_dict()["email"] == sign_up_form1.email.data:
+        try:
+            if sign_up_form1.email.data == db.collection("Users").where("email", "==", sign_up_form1.email.data).get()[0].to_dict()["email"]:
                 flash("Email already registered.")
                 return render_template('signup.html', form=sign_up_form1)
+        except:
+            # user is not registered
+            pass
         try:
             id = db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
         except:
             id = 1
         user = User(sign_up_form1.username.data, sign_up_form1.email.data, sign_up_form1.password.data, id)
         db.collection("Users").document(str(id)).set(user.to_dict())
-        return redirect(url_for("signin"))
-
+        login_user(user)
+        return redirect(url_for("signup2"))
     return render_template('signup.html', form=sign_up_form1)
 
 
 @app.route('/signup2', methods=['GET', 'POST'])
 def signup2():
     sign_up_form2 = SignUpForm2(request.form)
+    print(current_user.get_email())
+    if request.method == "POST" and sign_up_form2.validate():
+        user = Customer(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
+        user.set_qns1(sign_up_form2.qns1.data)
+        user.set_ans1(sign_up_form2.ans1.data)
     return render_template('signup2.html', form=sign_up_form2)
 
 
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
+    if current_user.is_authenticated:
+        return redirect(url_for("homepage"))
     sign_in_form = SignInForm(request.form)
     if request.method == "POST":
         user = db.collection("Users").where("email", "==", sign_in_form.email.data).get()
@@ -285,8 +289,7 @@ def create_new_product():
     return render_template('admin_page_courses.html', products=load_products())
 
 
-
-@app.route('/sports_courses/',methods=['GET'])
+@app.route('/sports_courses/', methods=['GET'])
 def sports_courses_sorted():
     sort_attr = ''
     if request.method == 'GET':
@@ -316,7 +319,6 @@ def view_selected_product():
 
 @app.route('/admin_page/products/about_product/', methods=['POST'])
 def update_delete_product():
-
     current_productID = request.form['current_product']
     action_input_value = request.form['action_input_product']
 
@@ -454,6 +456,8 @@ def update_product():
 def admin_page_promo_codes():
     promo_code_dict = db.collection('Promo codes').get()
     return render_template('Promo code.html', promo_code_dict=promo_code_dict)
+
+
 @app.route('/promo_code_form/', methods=["POST","GET"])
 def promo_code_form():
     promo_code_info = promo_code_information(request.form)
