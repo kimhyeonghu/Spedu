@@ -149,6 +149,7 @@ def load_products():
         products.append(product)
     return products
 
+
 @app.route('/admin_page/products/', methods=['POST'])
 def create_new_product():
     product_name = request.form['product_name']
@@ -202,8 +203,6 @@ def load_update(productID):
             })
     except:
         print("Unable to update course!")
-
-
 
 
 @login_manager.user_loader
