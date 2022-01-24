@@ -5,168 +5,67 @@
 {% endif %}
 
 {% block head %}
+<title>Sports Products</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/store_searchpage.css') }}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock %}
 
 {% block body %}
 
-
-<style>
-.brands {
-    background: #ff523b;
-    color: #fff;
-    padding: 8px 10px;
-    border-radius: 30px;
-    border: none;
-    width: 70px;
-    height: 27px;
-    transition: background 0.5s;
-    font-size: 12px;
-    position: relative;
-    margin-left: 50px;
-    top: 10px;
-    left: 550px;
-    line-height: 12px;
-}
-
-.brands:hover {
-    background: #563434;
-}
-
-#tag {
-    position: relative;
-    top: 50px;
-    margin-left: 550px;
-}
-
-#sort {
-     position: fixed;
-     top: 125px;
-     margin-left: 200px;
-}
-
-#drop {
-     position: relative;
-     top: 82px;
-     margin-left: 135px;
-}
-
-
-
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: white;
-  min-width: 150px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 5px 10px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-content a:hover {
-  background-color: #f1f1f1
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown:hover .dropbtn {
-  background-color: white;
-}
-
-.dropbtn {
-  background-color: white;
-  color: black;
-  padding: 4px;
-  margin-left: 5px;
-  margin-top: 78px;
-  font-size: 14px;
-  cursor: pointer;
-  border-width: thin;
-}
-
-.dropdown {
-  position: absolute;
-  display: inline-block;
-  font-size: 14px;
-}
-
-#labels {
-  margin-left: 250px;
-  position: relative;
-  top: 82px;
-}
-.products-list {
-  top: 85px;
-  bottom:0;
-  padding-right: 180px;
-  position: fixed;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  margin-top: 20px;
-  width:calc(100% - 220px);
-}
-.products-list::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.products-list-box {
-  float: left;
-  width: 25%;
-  padding: 10px;
-
-}
-
-.products-list-box img{
-  width: 110%
-}
-
-.name {
-  font-size:15px;
-}
-
-.category {
-  font-size:13px;
-  color:grey;
-}
-
-.price {
-  font-size:13px;
-  font-weight:480;
-}
-</style>
-<div class ="tags">
-    <label for="dropdown" id="labels" style="font-size:14px;font-weight:bold;">Sort by : </label>
-    <div class="dropdown">
-        <button class="dropbtn" id="dropbtn">Default</button>
-        <div class="dropdown-content">
-            <a onclick="sort(0)">Default</a>
-            <a onclick="sort(1)">Popularity</a>
-            <a onclick="sort(2)">Price low to high</a>
-            <a onclick="sort(3)">Rating high to low</a>
-        </div>
+<div class="product-panel">
+        <ul>
+          <li><h3 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Sports Product</h3></li>
+          <li>
+            <label for="dropdown" style="font-size:14px;font-weight:bold;">Sort by : </label>
+            <div class="dropdown" >
+              <button class="dropbtn" id="dropbtn">Default</button>
+              <div class="dropdown-content">
+                  <a onclick="sort('default')">Default</a>
+                  <a onclick="sort('price high to low')">price high to low</a>
+                  <a onclick="sort('price low to high')">price low to high</a>
+              </div>
+              <form action='/store_searchpage/' id="sort_attr_form" method="get">
+              <input id="sort_attr" type="text" name="sort_attr" value="" style="display:none;">
+              </form>
+              <script type="text/javascript">
+                function sort(sort_attr) {
+                  document.getElementById('sort_attr').value = sort_attr;
+                  document.getElementById('sort_attr_form').submit();
+                  // $( "#products-list" ).load(window.location.href + " #products-list" );
+                }
+              </script>
+            </div>
+          </li>
+        </ul>
     </div>
-    <p id="tag">Tags:</p>
-    <a href=""><button class ="brands">Nike</button></a>
-    <a href=""><button class ="brands">Adidas</button></a>
-    <a href=""><button class ="brands">Puma</button></a>
-    <a href=""><button class ="brands">Reebok</button></a>
-</div>
+    <div class="view-products">
+      <div class="product-filter">
+        <ul>
+          <li style="">
+            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+            <h6>Ratings</h6>
+          </li>
+          <li style="">
+            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+            <h6>Price</h6>
+          </li>
+          <li style="">
+            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+            <h6>Levels</h6>
+          </li>
+          <li style="">
+            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+            <h6>Video Duration</h6>
+          </li>
+        </ul>
+      </div>
 
-<div class="products-list" style="position:absolute;margin-top:100px;margin-left:220px;">
+
+<div class="products-list" id="products-list"style="position:absolute;margin-top:100px;margin-left:220px;">
   <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
     <input id="input" type="text" name="selected_productID" value="" style="display:none;">
-      {% for i in range(products|length) %}
-      {% set product = products[i] %}
+        {% for i in range(products|length) %}
+        {% set product = products[i] %}
       <a onclick="submit('{{product.productID}}')">
         <div class="products-list-box">
             <img class="image" id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu">
@@ -175,13 +74,15 @@
             <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>
         </div>
       </a>
-  {% endfor %}
+        {% endfor %}
   <script type="text/javascript">
           function submit(id) {
               document.getElementById('input').value = id;
               document.getElementById('selected_product_form').submit();
           }
   </script>
-{% endblock %}
+
   </form>
 </div>
+    </div>
+{% endblock %}
