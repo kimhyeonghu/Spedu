@@ -499,7 +499,7 @@ def promo_code_form():
             id = db.collection("Promo codes").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
         except:
             id = 1
-        db.collection('Promo codes').document(str(id)).set({"Value":(pc_data.get_code_value()), "Name": (pc_data.get_code_name()), "id": id})
+        db.collection('Promo codes').document(str(id)).set({"Value": (pc_data.get_code_value()), "Name": (pc_data.get_code_name()), "id": id})
         return redirect(url_for('admin_page_promo_codes'))
     return render_template('promo_code_form.html', form=promo_code_info)
 
