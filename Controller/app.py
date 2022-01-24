@@ -149,31 +149,9 @@ def load_products():
         products.append(product)
     return products
 
-@app.route('/admin_page/products/', methods=['POST'])
-def create_new_product():
-    product_name = request.form['product_name']
-    productID = product_name.split(' ')[0][0] + product_name.split(' ')[0][1] + str(random.randrange(0, 1000))
-    product_price = request.form['product_price']
-    product_image = request.form['product_image']
-    product_category = request.form['product_category']
-    product_description = request.form['product_description']
-    product_rating = 0
-    product_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
-    new_product_data = {
-        'productID': productID,
-        'category': product_category,
-        'image': product_image,
-        'name': product_name,
-        'price': product_price,
-        'description': product_description,
-        'rating': product_rating,
-        'reviews': product_reviews,
-    }
-    db.collection('Products').document().set(new_product_data)
-    return render_template('admin_page_products.html', products=load_products())
-
 
 def load_delete(productID):
+    print("Delete")
     try:
         docs = db.collection('Products').where("productID", "==", productID).get()
         for doc in docs:
@@ -181,42 +159,6 @@ def load_delete(productID):
             db.collection('Products').document(key).delete()
     except:
         print("Unable to delete course!")
-def load_update(productID):
-    print("Hello")
-    try:
-        docs = db.collection('Products').where("productID", "==", productID).get()
-        product_category = request.form['update_category']
-        product_image = request.form['update_image']
-        product_price = request.form['update_price']
-        product_description = request.form['update_description']
-        for doc in docs:
-            key = doc.id
-            db.collection('Products').document(key).update({
-                 'category': product_category,
-                 'image': product_image,
-                 'price': product_price,
-                 'description': product_description,
-            })
-    except:
-        print("Unable to update course!")
-
-@app.route('/admin_page/products/about_product/', methods=['POST'])
-def update_delete_product():
-    current_productID = request.form['current_product']
-    action_input_value = request.form['action_input_product']
-    if action_input_value == 'delete':
-        load_delete(current_productID)
-        return redirect("/admin_page/products/")
-
-    elif action_input_value == 'update':
-        load_update(current_productID)
-        return redirect("/admin_page/products/")
-
-
-
-
-
-
 
 
 @login_manager.user_loader
@@ -323,7 +265,28 @@ def account():
     return render_template("account.html", user=user, displayinfo=display_info)
 
 
-
+@app.route('/admin_page/products/', methods=['POST'])
+def create_new_product():
+    product_name = request.form['product_name']
+    productID = product_name.split(' ')[0][0] + product_name.split(' ')[0][1] + str(random.randrange(0, 1000))
+    product_price = request.form['product_price']
+    product_image = request.form['product_image']
+    product_category = request.form['product_category']
+    product_description = request.form['product_description']
+    product_rating = 0
+    product_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
+    new_product_data = {
+        'productID': productID,
+        'category': product_category,
+        'image': product_image,
+        'name': product_name,
+        'price': product_price,
+        'description': product_description,
+        'rating': product_rating,
+        'reviews': product_reviews,
+    }
+    db.collection('Products').document().set(new_product_data)
+    return render_template('admin_page_courses.html', products=load_products())
 
 
 @app.route('/sports_courses/', methods=['GET'])
@@ -377,9 +340,8 @@ def spedu_store():
     return render_template('main_storepage.html', products=load_products())
 
 @app.route('/store_searchpage/')
-def spedu_store_searchpage():
+def spedu_searchpage():
     return render_template('store_searchpage.html', products=load_products())
-
 @app.route('/Checkout/')
 def Checkout():
     personal_details = PersonalInfo(request.form)
@@ -482,13 +444,14 @@ def update_course():
     return redirect("/admin_page/courses/")
 
 
-
 @app.route('/admin_page/products/new_product')
 def new_product():
     return render_template('new_product.html')
 
 
-
+@app.route('/admin_page/products/update_product')
+def update_product():
+    return render_template('update_product.html')
 
 
 @app.route('/admin_page/Promo code/')
