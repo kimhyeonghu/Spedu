@@ -174,6 +174,7 @@ def create_new_product():
 
 
 def load_delete(productID):
+    print("Delete")
     try:
         docs = db.collection('Products').where("productID", "==", productID).get()
         for doc in docs:
@@ -181,6 +182,8 @@ def load_delete(productID):
             db.collection('Products').document(key).delete()
     except:
         print("Unable to delete course!")
+
+
 def load_update(productID):
     print("Hello")
     try:
@@ -200,17 +203,7 @@ def load_update(productID):
     except:
         print("Unable to update course!")
 
-@app.route('/admin_page/products/about_product/', methods=['POST'])
-def update_delete_product():
-    current_productID = request.form['current_product']
-    action_input_value = request.form['action_input_product']
-    if action_input_value == 'delete':
-        load_delete(current_productID)
-        return redirect("/admin_page/products/")
 
-    elif action_input_value == 'update':
-        load_update(current_productID)
-        return redirect("/admin_page/products/")
 
 
 @login_manager.user_loader
@@ -317,6 +310,9 @@ def account():
     return render_template("account.html", user=user, displayinfo=display_info)
 
 
+
+
+
 @app.route('/sports_courses/', methods=['GET'])
 def sports_courses_sorted():
     sort_attr = ''
@@ -369,7 +365,7 @@ def spedu_store():
 
 
 @app.route('/store_searchpage/')
-def spedu_store_searchpage():
+def spedu_searchpage():
     return render_template('store_searchpage.html', products=load_products())
 
 
@@ -478,6 +474,11 @@ def update_course():
 @app.route('/admin_page/products/new_product')
 def new_product():
     return render_template('new_product.html')
+
+
+@app.route('/admin_page/products/update_product')
+def update_product():
+    return render_template('update_product.html')
 
 
 @app.route('/admin_page/Promo code/')
