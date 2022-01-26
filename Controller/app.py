@@ -247,11 +247,11 @@ def signup1():
 @login_required
 def signup2():
     sign_up_form2 = SignUpForm2(request.form)
-    print(current_user.get_email())
     if request.method == "POST" and sign_up_form2.validate():
-        user = Trainee(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
-        user.set_qns1(sign_up_form2.qns1.data)
-        user.set_ans1(sign_up_form2.ans1.data)
+        user = User(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
+        user.set_security_qns({"qns1": sign_up_form2.qns1.data, "ans1": sign_up_form2.ans1.data, "qns2": sign_up_form2.qns2.data, "ans2": sign_up_form2.ans2.data, "qns3": sign_up_form2.qns3.data, "ans3": sign_up_form2.ans3.data})
+        db.collection("Users").document(str(current_user.get_id())).update({"security_qns": user.get_security_qns()})
+        return redirect(url_for("account"))
     return render_template('signup2.html', form=sign_up_form2)
 
 
@@ -272,9 +272,9 @@ def signin():
         if user:
             if user[0].to_dict()["password"] == sign_in_form.password.data:
                 user = User.from_dict(user[0].to_dict())
-                login_user(user)
-                # login_user(user, remember=sign_in_form.remember.data)
-                return redirect(url_for("homepage"))
+                # login_user(user)
+                login_user(user, remember=sign_in_form.remember.data)
+                return redirect(url_for("account"))
             else:
                 flash("Incorrect Login Credentials.")
                 render_template('signin.html', form=sign_in_form)
@@ -306,18 +306,7 @@ def account():
         elif request.form["displayInfo"] == "Update":
             db.collection("Users").document(str(current_user.get_id())).update({"username": display_info.username.data})
             return redirect(url_for("account"))
-    # else:
-    #     display_info.username.data = user["username"]
-    #     return render_template("account.html", user=user, displayinfo=display_info)
-    print(request.method == "POST", request.form.get("delete") == "Delete Account", "deletetest")
-    # if request.method == "POST" and request.form["delete"] == "Delete Account":
-    #     db.collection("Users").document(str(current_user.get_id())).delete()
-    #     logout_user()
-    #     redirect(url_for("homepage"))
     return render_template("account.html", user=user, displayinfo=display_info)
-
-
-
 
 
 @app.route('/sports_courses/', methods=['GET'])
