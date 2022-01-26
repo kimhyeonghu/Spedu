@@ -23,8 +23,12 @@
 <div class="course_purchase_div">
   <img src="../../static/images/yoga_image.png" style="width:280px;height:auto;" alt="">
   <h4 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h4>
-  <button class="add_to_cart_btn" type="button" name="button">Add to cart</button>
-  <button class="buy_now_btn" type="button" name="button">Buy now</button>
+  <form class="" action="index.html" method="post">
+    <button class="add_to_cart_btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
+    <button class="buy_now_btn" type="button" name="button">Buy now</button>
+
+  </form>
+
   <br>
   <p style="font-weight:bold;">What you will learn</p>
   <p>{{selected_course.learning_outcome}}</p>
@@ -39,6 +43,30 @@
   <script type="text/javascript">
     const review_json = JSON.parse('{{review|tojson}}');
     document.getElementById('review_div').innerHTML = "<p>"+review_json.reviewer+"</p>" + "<p>"+review_json.rating+"</p>" +"<p>"+review_json.review+"</p>"
+    function add_to_cart() {
+      db.collection("Users").where("username", "==", '{{current_username}}')
+      .get()
+      .then((querySnapshot) => {
+        console.log("here");
+          querySnapshot.forEach((doc) => {
+              // doc.data() is never undefined for query doc snapshots
+              console.log(doc);
+              db.collection("Users").doc(doc.id).update(
+                {
+                  shopping_cart:firebase.firestore.FieldValue.arrayUnion("{{selected_course.courseID}}")
+
+                }
+              )
+              .then(() => {
+                alert("Successfully added to cart!");
+              })
+          });
+
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      });
+    }
 
   </script>
   <p id="reviewer"></p>

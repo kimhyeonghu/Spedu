@@ -26,6 +26,7 @@
   height: 270px;
   width: 250px;
   display: inline-block;
+  overflow-wrap: normal;
 
 
 }
@@ -128,6 +129,7 @@
 .course-short-detail-box:hover{
   color: gray;
 }
+
 .course-img {
   margin-top: 10px;
   display: inline-block;

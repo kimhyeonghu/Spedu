@@ -21,6 +21,7 @@ a {
   position: fixed;
   width: 100%;
   box-shadow: 0 0 20px 0px rgba(0,0,0,0.1);
+  z-index: 100;
 }
 .back-to-homepage {
   display: inline-block;
