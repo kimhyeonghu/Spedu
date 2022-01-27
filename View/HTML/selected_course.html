@@ -20,12 +20,13 @@
     <li class="rating">★{{'%0.1f'| format(selected_course.rating|float)}} <p style="color:#AFADAD;display:inline-block;">| {{selected_course.students_count}} students are enrolled</p></li>
   </ul>
 </div>
-<div class="course_purchase_div">
-  <img src="../../static/images/yoga_image.png" style="width:280px;height:auto;" alt="">
+<div class="course_purchase_div" onload="load_image()">
+
+  <img onload="load_image()" id="course_image" src="" style="width:280px;height:auto;" alt="">
   <h4 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h4>
   <form class="" action="index.html" method="post">
     <button class="add_to_cart_btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
-    <button class="buy_now_btn" type="button" name="button">Buy now</button>
+    <button class="buy_now_btn" type="button" name="button" onclick="load_image()">Buy now</button>
 
   </form>
 
@@ -43,7 +44,9 @@
   <script type="text/javascript">
     const review_json = JSON.parse('{{review|tojson}}');
     document.getElementById('review_div').innerHTML = "<p>"+review_json.reviewer+"</p>" + "<p>"+review_json.rating+"</p>" +"<p>"+review_json.review+"</p>"
+
     function add_to_cart() {
+
       db.collection("Users").where("username", "==", '{{current_username}}')
       .get()
       .then((querySnapshot) => {
@@ -75,4 +78,15 @@
 {% endfor %}
 
 </div>
+<script type="text/javascript">
+  function load_image() {
+    var courseID = '{{selected_course.courseID}}';
+    storage.ref().child('courses/image_of_'+courseID).getDownloadURL().then(function(url) {
+            document.getElementById('course_image').src = url;
+         }).catch(function(error) {
+
+         });
+  }
+  window.onload = load_image;
+</script>
 {% endblock %}
