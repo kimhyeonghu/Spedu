@@ -17,7 +17,7 @@
     </ul>
   </div>
   <div class="course_purchase_div">
-    <img src="{{selected_course.image}}" style="width:280px;height:auto;" alt="">
+    <img src="{{selected_course.image}}" style="width:280px;height:140px;" alt="">
     <h2 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h2>
       <form action="{{ url_for('update_delete_course') }}" id="selected_action" method="post" enctype="multipart/form-data">
       <input type="text" name="current_course" value="{{selected_course.courseID}}" style="display:none;">
