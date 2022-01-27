@@ -22,7 +22,7 @@
 </div>
 <div class="course_purchase_div" onload="load_image()">
 
-  <img onload="load_image()" id="course_image" src="" style="width:280px;height:auto;" alt="">
+  <img onload="" id="course_image" src="{{selected_course.image}}" style="width:280px;height:auto;" alt="">
   <h4 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h4>
   <form class="" action="index.html" method="post">
     <button class="add_to_cart_btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
@@ -87,6 +87,6 @@
 
          });
   }
-  window.onload = load_image;
+  //window.onload = load_image;
 </script>
 {% endblock %}

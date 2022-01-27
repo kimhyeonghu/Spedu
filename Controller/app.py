@@ -6,6 +6,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 import random
 import sys
+import json
 sys.path.insert(0, '../Model')
 from Course import Course
 from Product import Product
@@ -331,7 +332,11 @@ def sports_courses_sorted():
     print(sort_attr)
     all_courses=course_CRUD(course=None, method='load')
     print(all_courses[0].name)
-    return render_template('sports_courses.html', courses=all_courses, top_courses=load_top_courses(all_courses), sort_attribute = sort_attr)
+    courseID_array = []
+    for course in all_courses:
+        courseID_array.append(course.courseID)
+    print(courseID_array)
+    return render_template('sports_courses.html', courseID_array= json.dumps(courseID_array), courses=all_courses, top_courses=load_top_courses(all_courses), sort_attribute = sort_attr)
 
 
 @app.route('/sports_courses/about_course/', methods=['GET'])
@@ -481,10 +486,12 @@ def update_course():
             print('No selected file')
     if course_image:
         storage.child('/courses/image_of_{}'.format(courseID)).put(course_image)
+    course_img_link=request.form["course_image_input"]
+    print(course_img_link)
     course_rating = ""
     course_reviews = []
     students_count = 0
-    course = Course(courseID, course_desc, course_short_desc, course_duration,"image_of_{}".format(courseID), learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
+    course = Course(courseID, course_desc, course_short_desc, course_duration,course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
 
