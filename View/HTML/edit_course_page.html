@@ -11,6 +11,7 @@
 <div class="current_course_div">
   <form action="{{ url_for('update_course') }}" method="post" enctype="multipart/form-data">
     <input type="text" name="courseID" value="{{selected_course.courseID}}" style="display:none;">
+    <input type="text" name="course_image_input" value="" id="course_image_input" style="display:none;">
   <ul>
     <li style="height:40px;"><h2>Update Course</h2></li>
     <li style="height:50px;margin-top:20px;"><p>Course Name</p>{{selected_course.name}}</li>
@@ -22,7 +23,28 @@
     <li style="height:50px;"><p>Course Level</p><textarea name='course_level' type="text" placeholder="">{{selected_course.level}}</textarea></li>
     <li style="height:50px;"><p>Video Link</p><textarea name='video_link' type="text" placeholder="">{{selected_course.video_link}}</textarea></li>
     <li style="height:50px;"><p>Course Duration</p><textarea name='course_duration' type="text" placeholder="">{{selected_course.duration}}</textarea></li>
-    <li style="height:50px;"><p>Course Image</p><textarea name='course_image' type="text" placeholder="">{{selected_course.image}}</textarea></li>
+    <li style="height:50px;"><p>Course Image</p><input name='course_image' type="file" placeholder="" value="" onclick="update_img()"></li>
+
+    <br><img id="course_img" src="#">
+    <script type="text/javascript">
+    function update_img() {
+        document.querySelector('input[type="file"]').addEventListener('change', function() {
+          if (this.files && this.files[0]) {
+            document.getElementById("course_img").src = URL.createObjectURL(this.files[0]);
+          }
+          });
+      };
+      function load_image() {
+        var courseID = '{{selected_course.courseID}}';
+        storage.ref().child('courses/image_of_'+courseID).getDownloadURL().then(function(url) {
+            document.getElementById('course_img').src = url;
+            document.getElementById('course_image_input').value = url;
+        })
+      }
+
+      window.onload = load_image;
+    </script>
+
     <li style="height:50px;"><input type="submit" value="Update" class="update-course-btn"></li>
   </ul>
 </form>

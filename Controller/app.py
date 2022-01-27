@@ -4,8 +4,10 @@ from flask_bcrypt import Bcrypt
 import pyrebase
 import firebase_admin
 from firebase_admin import credentials, firestore
+from firebase_admin import storage as storage_firbase_admin
 import random
 import sys
+import json
 sys.path.insert(0, '../Model')
 from Course import Course
 from Product import Product
@@ -16,34 +18,31 @@ app = Flask(__name__, template_folder='../View/HTML', static_folder='../View/sta
 app.secret_key = "1ae11153fae277ef2a41b70152692513"
 cred = credentials.Certificate("../serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
+
 db = firestore.client()
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "signin"
 # login_manager.login_message_category = "info"
 
-# firebaseConfig = {
-#   "apiKey": "AIzaSyAhONsOYfqp3ox_L5bCy0cpX_f-iQxdc9I",
-#   "authDomain": "spedu-3fd4f.firebaseapp.com",
-#   "projectId": "spedu-3fd4f",
-#   "storageBucket": "spedu-3fd4f.appspot.com",
-#   "messagingSenderId": "297243626132",
-#   "databaseURL":"https://spedu-3fd4f-default-rtdb.asia-southeast1.firebasedatabase.app/",
-#   "appId": "1:297243626132:web:129e6edfab962e5ab24281"
-# }
+firebaseConfig = {
+  "apiKey": "AIzaSyAhONsOYfqp3ox_L5bCy0cpX_f-iQxdc9I",
+  "authDomain": "spedu-3fd4f.firebaseapp.com",
+  "projectId": "spedu-3fd4f",
+  "storageBucket": "spedu-3fd4f.appspot.com",
+  "messagingSenderId": "297243626132",
+  "databaseURL":"https://spedu-3fd4f-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  "appId": "1:297243626132:web:129e6edfab962e5ab24281"
+}
 # cred = credentials.Certificate("../serviceAccountKey.json")
 # firebase_admin.initialize_app(cred, firebaseConfig)
-# firebase = pyrebase.initialize_app(firebaseConfig)
-# auth = firebase.auth()
-# storage = firebase.storage()
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+storage = firebase.storage()
 # user_email = 'test@gmail.com'
 # user_password = '1234test'
 # login_stat = False
-# try:
-#     auth.sign_in_with_email_and_password(user_email,user_password)
-#     user = auth.current_user
-# except:
-#     print("Unable to login")
+
 # if auth.current_user != None:
 #     login_stat = True
 # else:
@@ -153,7 +152,7 @@ def load_products():
 @app.route('/admin_page/products/', methods=['POST'])
 def create_new_product():
     product_name = request.form['product_name']
-    productID = product_name.split(' ')[0][0] + product_name.split(' ')[0][1] + str(random.randrange(0, 1000))
+    productID = 'PR'+product_name.split(' ')[0][0] + product_name.split(' ')[0][1] + str(random.randrange(0, 1000))
     product_price = request.form['product_price']
     product_image = request.form['product_image']
     product_category = request.form['product_category']
@@ -173,6 +172,11 @@ def create_new_product():
     db.collection('Products').document().set(new_product_data)
     return render_template('admin_page_products.html', products=load_products())
 
+@app.route('/search/', methods=['GET'])
+def search_result():
+    search_input = request.args.get("search_input")
+    print(search_input)
+    return render_template('search_page.html', search_results=search_input)
 
 def load_delete(productID):
     print("Delete")
@@ -239,6 +243,11 @@ def signup1():
         user = User(sign_up_form1.username.data, sign_up_form1.email.data, sign_up_form1.password.data, id)
         db.collection("Users").document(str(id)).set(user.to_dict())
         login_user(user)
+        try:
+            auth.create_user_with_email_and_password(sign_up_form1.email.data,sign_up_form1.password.data)
+            user = auth.current_user
+        except:
+            print("Unable to login")
         return redirect(url_for("signup2"))
     return render_template('signup.html', form=sign_up_form1)
 
@@ -274,6 +283,12 @@ def signin():
                 user = User.from_dict(user[0].to_dict())
                 # login_user(user)
                 login_user(user, remember=sign_in_form.remember.data)
+                try:
+                    auth.sign_in_with_email_and_password(sign_in_form.email.data,sign_in_form.password.data)
+                    user = auth.current_user
+                except:
+                    print("Unable to login")
+
                 return redirect(url_for("account"))
             else:
                 flash("Incorrect Login Credentials.")
@@ -314,11 +329,15 @@ def sports_courses_sorted():
     sort_attr = ''
     if request.method == 'GET':
         sort_attr = request.args.get("sort_attr")
-        print(333)
+
     print(sort_attr)
     all_courses=course_CRUD(course=None, method='load')
     print(all_courses[0].name)
-    return render_template('sports_courses.html', courses=all_courses, top_courses=load_top_courses(all_courses), sort_attribute = sort_attr)
+    courseID_array = []
+    for course in all_courses:
+        courseID_array.append(course.courseID)
+    print(courseID_array)
+    return render_template('sports_courses.html', courseID_array= json.dumps(courseID_array), courses=all_courses, top_courses=load_top_courses(all_courses), sort_attribute = sort_attr)
 
 
 @app.route('/sports_courses/about_course/', methods=['GET'])
@@ -326,7 +345,8 @@ def view_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
     selected_course = db.collection('Courses').where("courseID", "==", selected_courseID).get()[0].to_dict()
-    return render_template('selected_course.html', selected_course=selected_course)
+    print(current_user.get_username())
+    return render_template('selected_course.html', selected_course=selected_course,current_username = current_user.get_username())
 
 
 @app.route('/spedu_store/about_product/', methods=['GET'])
@@ -334,6 +354,7 @@ def view_selected_product():
     selected_productID = request.args.get("selected_productID")
     print(selected_productID)
     selected_product = db.collection('Products').where("productID", "==", selected_productID).get()[0].to_dict()
+
     return render_template('selected_product.html', selected_product=selected_product)
 
 
@@ -410,7 +431,7 @@ def view_admin_selected_product():
 @app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
     course_name = request.form['course_name']
-    courseID = course_name.split(' ')[0][0] + course_name.split(' ')[0][1] + str(random.randrange(0, 1000))
+    courseID = 'CR'+course_name.split(' ')[0][0] + course_name.split(' ')[0][1] + str(random.randrange(0, 1000))
     course_trainer = request.form['course_trainer']
     course_short_desc = request.form['course_short_desc']
     course_desc = request.form['course_desc']
@@ -419,11 +440,19 @@ def create_new_course():
     learning_outcome = request.form['learning_outcome']
     course_level = request.form['course_level']
     video_link = request.form['video_link']
-    course_image = request.form['course_image']
+    course_image = request.files['course_image']
+
+
+
+    storage.child('/courses/image_of_{}'.format(courseID)).put(course_image)
+
+    course_img_link = storage.child('/courses/image_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
+
+    print(course_img_link)
     course_rating = 0
     course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     students_count = 0
-    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
+    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=new_course, method='create')
     return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
 
@@ -458,11 +487,19 @@ def update_course():
     learning_outcome = request.form['learning_outcome']
     course_level = request.form['course_level']
     video_link = request.form['video_link']
-    course_image = request.form['course_image']
+
+    course_image = request.files['course_image']
+    print(course_image.filename)
+    if course_image.filename == '':
+            print('No selected file')
+    if course_image:
+        storage.child('/courses/image_of_{}'.format(courseID)).put(course_image)
+    course_img_link=request.form["course_image_input"]
+    print(course_img_link)
     course_rating = ""
     course_reviews = []
     students_count = 0
-    course = Course(courseID, course_desc, course_short_desc, course_duration, course_image, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
+    course = Course(courseID, course_desc, course_short_desc, course_duration,course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
 

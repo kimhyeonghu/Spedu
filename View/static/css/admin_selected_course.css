@@ -2,11 +2,12 @@ body p {
   font-size: 17px;
 }
 .about_course_div {
-  position: fixed;
+  position: absolute;
   margin-left: 200px;
   margin-top: 50px;
   width: calc(100% - 200px);
   height: auto;
+   overflow-y: scroll;
 }
 .course_overview_div{
   background-color: #EAEAEA;

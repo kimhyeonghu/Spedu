@@ -17,10 +17,31 @@
                 <a href="/"><img id="logo" src="../../static/images/spedu_logo.png" alt="Spedu"></a>
             </li>
             <li class="horizontal">
-                <div class="search_bar">
-                  <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
-                  <input type="text" placeholder="Search for anything">
-                </div>
+              <form class="search_bar" action='/search/' id="search" method="get">
+                <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
+
+                  <input type="text" id="search_input" name="search_input" placeholder="Search for anything">
+                  <button id="search_btn" onclick="submit()" style="display:none;"></button>
+
+
+
+                <script>
+                var search_input = document.getElementById("search_input");
+                search_input.addEventListener("keyup", function(event) {
+                  if (event.keyCode == 13) {
+                    event.preventDefault();
+                    if (search_input.value.length > 0) {
+                      document.getElementById("search_btn").click();
+                    }
+                  }
+                });
+                function submit() {
+                  alert(search_input.value);
+                  var search_form = document.getElementById("search");
+                  search_form.submit();
+                };
+                </script>
+              </form>
             </li>
             <li class="horizontal option-list"><a class="option" href="/spedu_store/">Spedu Store</a></li>
             <li class="horizontal option-list"><a class="option" href="/sports_courses/">Sports Courses</a></li>
@@ -43,4 +64,10 @@
 
 </footer>
 </body>
+<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
+<script src="{{ url_for('static', filename='Javascript/firestore.js') }}" charset="utf-8"></script>
 </html>
