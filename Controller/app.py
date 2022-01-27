@@ -378,21 +378,35 @@ def shopping_cart():
         shopping_cart = doc.to_dict()['shopping_cart']
     print(shopping_cart)
     index = 0
-    lst_of_pic = []
-    lst_of_names = []
-    lst_of_price = []
+    courses = []
     while index < len(shopping_cart):
-        item = db.collection("Courses").where("courseID", "==" , shopping_cart[index]).get()
-        for add in item:
-            image = lst_of_pic.append((add.to_dict()["image"]))
-            name = lst_of_names.append((add.to_dict()["name"]))
-            price = lst_of_price.append((add.to_dict()["price"]))
+        if shopping_cart[index][0:2]=="CR":
+            courses_docs = db.collection("Courses").where("courseID", "==" , shopping_cart[index]).get()
+            for doc in courses_docs:
+                courseID = doc.to_dict()['courseID']
+                description = doc.to_dict()['description']
+                short_description = doc.to_dict()['short_description']
+                duration = doc.to_dict()['duration']
+                image = doc.to_dict()['image']
+                learning_outcome = doc.to_dict()['learning_outcome']
+                level = doc.to_dict()['level']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                students_count = doc.to_dict()['students_count']
+                trainer = doc.to_dict()['trainer']
+                video_link = doc.to_dict()['video_link']
+                course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
+                            price, rating, reviews, students_count, trainer, video_link)
+                courses.append(course)
+        elif shopping_cart[index][0:2]=="PR":
+            pass
+        else:
+            pass
         index+=1
-    print(lst_of_price)
-    print(lst_of_names)
-    print(lst_of_pic)
 
-    return render_template('Shopping Cart.html', promo_code_dict=promo_code_dict, shopping_cart=shopping_cart, lst_of_pic=lst_of_pic, lst_of_price=lst_of_price, lst_of_names=lst_of_names)
+    return render_template('Shopping Cart.html', courses_cart = courses,products_cart=[],current_username=current_user.get_username())
 
 
 @app.route('/spedu_store/')
