@@ -7,6 +7,7 @@ class User:
         self.__account_type = "Trainee"
         self.__security_qns = None
         self.__user_info = None
+        self.__cart = None
 
     def get_email(self):
         return self.__email
@@ -25,6 +26,9 @@ class User:
 
     def get_user_info(self):
         return self.__user_info
+
+    def get_cart(self):
+        return self.__cart
 
     def set_user_id(self, user_id):
         self.__user_id = user_id
@@ -46,6 +50,9 @@ class User:
 
     def set_user_info(self, user_info):
         self.__user_info = user_info
+
+    def set_cart(self, cart):
+        self.__cart = cart
 
     def is_active(self):
         return True
@@ -69,18 +76,6 @@ class User:
         return user_dict
 
 
-class Trainee(User):
+class Trainer(User):
     def __init__(self, email, username, password, id):
         super().__init__(email, username, password, id)
-        self.__cart = None
-
-    def get_cart(self):
-        return self.__cart
-
-    def set_cart(self, cart):
-        self.__cart = cart
-
-
-
-
-
