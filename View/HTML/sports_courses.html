@@ -19,22 +19,7 @@
       <div class="top-course-div">
         <h5 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Top Courses</h5>
         <ul class="top-course-ul">
-          <script type="text/javascript">
 
-          // window.addEventListener('load', function () {
-          //   var courseID_array = {{courseID_array|safe}}
-          //   for (var i = 0; i < courseID_array.length; i++) {
-          //
-          //     var courseID = courseID_array[i]
-          //     storage.ref().child('courses/image_of_'+courseID).getDownloadURL().then(function(url) {
-          //     document.getElementById('img_'+courseID).src = url;
-          //     document.getElementById('course_img_'+courseID).src = url;
-          //
-          //    })
-          //   }
-          // })
-
-          </script>
           {% for i in range(top_courses|length) %}
           {% set top_course = top_courses[i] %}
 
