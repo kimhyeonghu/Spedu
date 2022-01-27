@@ -27,7 +27,7 @@
             <a onclick="submit('{{top_course.courseID}}')" class="course-a">
             <div class="course-short-detail-box">
 
-              <img id="img_{{top_course.courseID}}" class="course-image" src="{{top_course.image}}" style="width:auto;height:130px;margin-top:10px;" alt="yoga_image" >
+              <img id="img_{{top_course.courseID}}" class="course-image" src="{{top_course.image}}" style="width:230px;height:130px;margin-top:10px;" alt="yoga_image" >
               <ul>
                 <li class="name" id="name_{{top_course.name}}" style="font-size: 15px;padding-right:10px;">{{top_course.name}}</li>
                 <li class="trainer" style="font-size: 11px;">{{top_course.trainer}}</li>
@@ -108,7 +108,7 @@
         <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
 
-            <img class="course-image" src="{{course.image}}" style="width:auto;height:140px;" alt="yoga_image" >
+            <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
 
             <ul class="course-description">
               <li class="name" id="name_{{course.name}}">{{course.name}}</li>
@@ -126,7 +126,7 @@
           {% for course in courses|sort(attribute='rating', reverse = True) %}
             <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
-            <img class="course-image" src="{{course.image}}" style="width:auto;height:140px;" alt="yoga_image" >
+            <img class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
             <ul class="course-description">
               <li class="name" id="name_{{course.name}}">{{course.name}}</li>
               <li class="description">{{course.short_description}}</li>
@@ -143,7 +143,7 @@
           {% for course in courses|sort(attribute='rating', reverse = False) %}
             <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
-            <img class="course-image" src="{{course.image}}" style="width:auto;height:140px;" alt="yoga_image" >
+            <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
             <ul class="course-description">
               <li class="name" id="name_{{course.name}}">{{course.name}}</li>
               <li class="description">{{course.short_description}}</li>
@@ -160,7 +160,7 @@
           {% for course in courses|sort(attribute='price', reverse = True) %}
             <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
-            <img class="course-image" src="{{course.image}}" style="width:auto;height:140px;" alt="yoga_image" >
+            <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
             <ul class="course-description">
               <li class="name" id="name_{{course.name}}">{{course.name}}</li>
               <li class="description">{{course.short_description}}</li>
@@ -177,7 +177,7 @@
           {% for course in courses|sort(attribute='price', reverse = False) %}
             <a onclick="submit('{{course.courseID}}')">
           <div class="courses-list-box">
-              <img class="course-image" src="{{course.image}}" style="width:auto;height:140px;" alt="yoga_image" >
+              <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
               <ul class="course-description">
                 <li class="name" id="name_{{course.name}}">{{course.name}}</li>
                 <li class="description">{{course.short_description}}</li>
@@ -195,7 +195,7 @@
             {% set course = courses[i] %}
             <a onclick="submit('{{course.courseID}}')">
           <div class="courses-list-box">
-              <img class="course-image" src="{{course.image}}" style="width:auto;height:140px;" alt="yoga_image" >
+              <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
               <ul class="course-description">
                 <li class="name" id="name_{{course.name}}">{{course.name}}</li>
                 <li class="description">{{course.short_description}}</li>

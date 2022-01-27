@@ -4,6 +4,7 @@ from flask_bcrypt import Bcrypt
 import pyrebase
 import firebase_admin
 from firebase_admin import credentials, firestore
+from firebase_admin import storage as storage_firbase_admin
 import random
 import sys
 import json
@@ -459,8 +460,14 @@ def create_new_course():
     course_level = request.form['course_level']
     video_link = request.form['video_link']
     course_image = request.files['course_image']
-    course_img_link=request.form["course_image_input"]
+
+
+
     storage.child('/courses/image_of_{}'.format(courseID)).put(course_image)
+
+    course_img_link = storage.child('/courses/image_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
+
+    print(course_img_link)
     course_rating = 0
     course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     students_count = 0
