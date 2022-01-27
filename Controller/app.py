@@ -440,11 +440,12 @@ def create_new_course():
     course_level = request.form['course_level']
     video_link = request.form['video_link']
     course_image = request.files['course_image']
+    course_img_link=request.form["course_image_input"]
     storage.child('/courses/image_of_{}'.format(courseID)).put(course_image)
     course_rating = 0
     course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     students_count = 0
-    new_course = Course(courseID, course_desc, course_short_desc, course_duration, "image_of_{}".format(courseID), learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
+    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
     course_CRUD(course=new_course, method='create')
     return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
 

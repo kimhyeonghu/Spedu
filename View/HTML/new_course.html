@@ -7,6 +7,7 @@
 {% block body %}
 <div class="new_course">
   <form action="{{ url_for('create_new_course') }}" method="post" enctype="multipart/form-data">
+    <input type="text" name="course_image_input" value="" id="course_image_input" style="display:none;">
   <ul>
     <li style="height:40px;"><h2>New Course</h2></li>
     <li style="height:50px;margin-top:20px;"><p>Course Name</p><textarea name='course_name' type="text" placeholder=""></textarea></li>
@@ -27,6 +28,7 @@
             var img = document.getElementById("course_img");
 
               img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+              document.getElementById('course_image_input').value = url;
             }
           });
         });
