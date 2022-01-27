@@ -32,6 +32,10 @@ h1{
   margin-left: 1100px;
 }
 </style>
+<!--lst_of_pic = []
+    lst_of_names = []
+    lst_of_price = []
+    -->
 <h1>My Shopping Cart</h1>
 <hr>
 <table class="tbl-cart" cellpadding="10" cellspacing="1">
@@ -43,6 +47,12 @@ h1{
 					<th style="text-align:right;" width="30%">Total Price</th>
 					<th style="text-align:center;" width="15%">Actions</th>
 				</tr>
+				{% for code in shopping_cart %}
+				<tr>
+					<td>{{ code }}</td>
+				</tr>
+				{% endfor %}
+
       </tbody>
 </table>
 

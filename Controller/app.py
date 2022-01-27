@@ -372,7 +372,26 @@ def update_delete_product():
 @app.route('/Shopping Cart/')
 def shopping_cart():
     promo_code_dict = db.collection('Promo codes').get()
-    return render_template('Shopping Cart.html', promo_code_dict=promo_code_dict)
+    docs = db.collection('Users').where("username", "==", current_user.get_username()).get()
+    for doc in docs:
+        shopping_cart = doc.to_dict()['shopping_cart']
+    print(shopping_cart)
+    index = 0
+    lst_of_pic = []
+    lst_of_names = []
+    lst_of_price = []
+    while index < len(shopping_cart):
+        item = db.collection("Courses").where("courseID", "==" , shopping_cart[index]).get()
+        for add in item:
+            image = lst_of_pic.append((add.to_dict()["image"]))
+            name = lst_of_names.append((add.to_dict()["name"]))
+            price = lst_of_price.append((add.to_dict()["price"]))
+        index+=1
+    print(lst_of_price)
+    print(lst_of_names)
+    print(lst_of_pic)
+
+    return render_template('Shopping Cart.html', promo_code_dict=promo_code_dict, shopping_cart=shopping_cart, lst_of_pic=lst_of_pic, lst_of_price=lst_of_price, lst_of_names=lst_of_names)
 
 
 @app.route('/spedu_store/')
