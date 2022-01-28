@@ -238,25 +238,32 @@ body {
 .products-list-box {
   float: left;
   width: 25%;
-  padding: 5px;
 }
 
 .products-list-box img{
-  width: 110%
+  width: 170%
 }
 
 .name {
-  font-size:15px;
+  font-size:17px;
+  position:relative;
+  left:-4px;
 }
 
 .category {
   font-size:13px;
   color:grey;
+  position:relative;
+  left:-1px;
+  top:5px;
 }
 
 .price {
   font-size:13px;
   font-weight:480;
+  position:relative;
+  top:18px;
+  left:-27px;
 }
 
 .featured-products {
@@ -310,3 +317,44 @@ body {
   background-color: white;
   color: #1E5D63;
 }
+
+.view-course-btn {
+  height: 40px;
+  width: 140px;
+
+  text-decoration: none;
+  display: block;
+  margin-top: 40px;
+  margin-right: 20px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  color: white;
+  background-color: #1E5D63;
+  border: 2px solid #1E5D63;
+
+}
+.view-course-btn:hover{
+  text-decoration: none;
+  background-color: transparent;
+  color: #1E5D63;
+}
+
+.view-course-btn a{
+  text-decoration: none;
+}
+.horizontal {
+  display: inline-block;
+}
+.top-course-ul {
+  width: 110%;
+  height: 390px;
+  display: block;
+  margin-left:-20px;
+  position:relative;
+  overflow: auto;
+  white-space: nowrap;
+}
+

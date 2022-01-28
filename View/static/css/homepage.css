@@ -194,3 +194,29 @@ body {
 
     }
 }
+.view-product-btn {
+  height: 40px;
+  width: 140px;
+
+  text-decoration: none;
+  display: block;
+  margin-top: 40px;
+  margin-right: 20px;
+  margin-left:-100px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  color: white;
+  background-color: black;
+  border: 2px solid black;
+
+}
+.view-product-btn:hover{
+  background-color: transparent;
+  color: black;
+}
+.view-product-btn a{
+  text-decoration: none;
+}

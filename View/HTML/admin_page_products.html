@@ -25,7 +25,7 @@
       {% set product = products[i] %}
       <a onclick="submit('{{product.productID}}')">
         <div class="products-list-box">
-            <img id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu"></a>
+            <img class="image" src="{{product.image}}" style="width:230px;height:130px;" alt="Spedu"></a>
             <h5 class="name">{{products[i].name}}</h5>
             <p class="category">{{products[i].category}}</p>
             <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>

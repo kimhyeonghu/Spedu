@@ -154,7 +154,12 @@ def create_new_product():
     product_name = request.form['product_name']
     productID = 'PR'+product_name.split(' ')[0][0] + product_name.split(' ')[0][1] + str(random.randrange(0, 1000))
     product_price = request.form['product_price']
-    product_image = request.form['product_image']
+    product_image = request.files['product_image']
+    storage.child('/products/image_of_{}'.format(productID)).put(product_image)
+
+  #  product_img_link = storage.child(f"/products/image_of_"+productID).get_url(auth.current_user["idToken"])
+
+    product_img_link=""
     product_category = request.form['product_category']
     product_description = request.form['product_description']
     product_rating = 0
@@ -162,7 +167,7 @@ def create_new_product():
     new_product_data = {
         'productID': productID,
         'category': product_category,
-        'image': product_image,
+        'image': product_img_link,
         'name': product_name,
         'price': product_price,
         'description': product_description,
@@ -354,8 +359,8 @@ def view_selected_product():
     selected_productID = request.args.get("selected_productID")
     print(selected_productID)
     selected_product = db.collection('Products').where("productID", "==", selected_productID).get()[0].to_dict()
-
-    return render_template('selected_product.html', selected_product=selected_product)
+    print(current_user.get_username())
+    return render_template('selected_product.html', selected_product=selected_product,current_username = current_user.get_username())
 
 
 @app.route('/admin_page/products/about_product/', methods=['POST'])
