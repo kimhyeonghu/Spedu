@@ -25,13 +25,9 @@
             </div>
             <br>
             <form method="POST">
-              <!-- <label for="qns1">Question 1</label>
-              <input type="text" name="" value="" disabled> -->\
               <div class="form-group">
-                {{ render_field(form.qns1, class="form-control") }}
-              </div>
-              <div class="form-group">
-                {{ render_field(form.ans1, class="form-control") }}
+                <label for="qns1">{{ qns[0] }}</label>
+                <input type="text" class="form-control" name="ans1" value="" required>
               </div>
               <input class="text-center" type="submit" value="NEXT STEP">
             </form>

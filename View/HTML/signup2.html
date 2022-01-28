@@ -117,7 +117,7 @@
       var qns1 = qns1_select.value;
       var qns2 = qns2_select.value;
       var qns3 = qns3_select.value;
-      var newoptions = {'cityBorn': 'In what city were you born?', 'petName': 'What is the name of your favourite pet?', 'mumName': "What is your mother's maiden name?", 'highSchool': 'What high school did you attend?', 'firstSchool': 'What is the name of your first school?', 'car': 'What was the make of your first car?', 'food': 'What was your favourite food as a child?', 'spouse': 'Where did you meet your spouse?'};
+      var newoptions = {'In what city were you born?': 'In what city were you born?', 'What is the name of your favourite pet?': 'What is the name of your favourite pet?', "What is your mother's maiden name?": "What is your mother's maiden name?", 'What high school did you attend?': 'What high school did you attend?', 'What is the name of your first school?': 'What is the name of your first school?', 'What was the make of your first car?': 'What was the make of your first car?', 'What was your favourite food as a child?': 'What was your favourite food as a child?', 'Where did you meet your spouse?': 'Where did you meet your spouse?'};
       delete newoptions[qns1];
       delete newoptions[qns2];
       delete newoptions[qns3];
@@ -126,15 +126,15 @@
       for (var i in newoptions) {
         optionHTML += '<option value="' + i + '">' + newoptions[i] + '</option>';
       }
-      qns1_select.innerHTML = ('<option value="' + qns1_select.value + '">' + options[qns1_select.value] + '</option>' + optionHTML);
-      qns2_select.innerHTML = ('<option value="' + qns2_select.value + '">' + options[qns2_select.value] + '</option>' + optionHTML);
-      qns3_select.innerHTML = ('<option value="' + qns3_select.value + '">' + options[qns3_select.value] + '</option>' + optionHTML);
+      qns1_select.innerHTML = ('<option value="' + qns1_select.value + '">' + qns1_select.value + '</option>' + optionHTML);
+      qns2_select.innerHTML = ('<option value="' + qns2_select.value + '">' + qns2_select.value + '</option>' + optionHTML);
+      qns3_select.innerHTML = ('<option value="' + qns3_select.value + '">' + qns3_select.value + '</option>' + optionHTML);
     }
     qns2_select.onchange = function() {
       var qns1 = qns1_select.value;
       var qns2 = qns2_select.value;
       var qns3 = qns3_select.value;
-      var newoptions = {'cityBorn': 'In what city were you born?', 'petName': 'What is the name of your favourite pet?', 'mumName': "What is your mother's maiden name?", 'highSchool': 'What high school did you attend?', 'firstSchool': 'What is the name of your first school?', 'car': 'What was the make of your first car?', 'food': 'What was your favourite food as a child?', 'spouse': 'Where did you meet your spouse?'};
+      var newoptions = {'In what city were you born?': 'In what city were you born?', 'What is the name of your favourite pet?': 'What is the name of your favourite pet?', "What is your mother's maiden name?": "What is your mother's maiden name?", 'What high school did you attend?': 'What high school did you attend?', 'What is the name of your first school?': 'What is the name of your first school?', 'What was the make of your first car?': 'What was the make of your first car?', 'What was your favourite food as a child?': 'What was your favourite food as a child?', 'Where did you meet your spouse?': 'Where did you meet your spouse?'};
       delete newoptions[qns1];
       delete newoptions[qns2];
       delete newoptions[qns3];
@@ -143,15 +143,15 @@
       for (var i in newoptions) {
         optionHTML += '<option value="' + i + '">' + newoptions[i] + '</option>';
       }
-      qns1_select.innerHTML = ('<option value="' + qns1_select.value + '">' + options[qns1_select.value] + '</option>' + optionHTML);
-      qns2_select.innerHTML = ('<option value="' + qns2_select.value + '">' + options[qns2_select.value] + '</option>' + optionHTML);
-      qns3_select.innerHTML = ('<option value="' + qns3_select.value + '">' + options[qns3_select.value] + '</option>' + optionHTML);
+      qns1_select.innerHTML = ('<option value="' + qns1_select.value + '">' + qns1_select.value + '</option>' + optionHTML);
+      qns2_select.innerHTML = ('<option value="' + qns2_select.value + '">' + qns2_select.value + '</option>' + optionHTML);
+      qns3_select.innerHTML = ('<option value="' + qns3_select.value + '">' + qns3_select.value + '</option>' + optionHTML);
     }
     qns3_select.onchange = function() {
       var qns1 = qns1_select.value;
       var qns2 = qns2_select.value;
       var qns3 = qns3_select.value;
-      var newoptions = {'cityBorn': 'In what city were you born?', 'petName': 'What is the name of your favourite pet?', 'mumName': "What is your mother's maiden name?", 'highSchool': 'What high school did you attend?', 'firstSchool': 'What is the name of your first school?', 'car': 'What was the make of your first car?', 'food': 'What was your favourite food as a child?', 'spouse': 'Where did you meet your spouse?'};
+      var newoptions = {'In what city were you born?': 'In what city were you born?', 'What is the name of your favourite pet?': 'What is the name of your favourite pet?', "What is your mother's maiden name?": "What is your mother's maiden name?", 'What high school did you attend?': 'What high school did you attend?', 'What is the name of your first school?': 'What is the name of your first school?', 'What was the make of your first car?': 'What was the make of your first car?', 'What was your favourite food as a child?': 'What was your favourite food as a child?', 'Where did you meet your spouse?': 'Where did you meet your spouse?'};
       delete newoptions[qns1];
       delete newoptions[qns2];
       delete newoptions[qns3];
@@ -160,9 +160,9 @@
       for (var i in newoptions) {
         optionHTML += '<option value="' + i + '">' + newoptions[i] + '</option>';
       }
-      qns1_select.innerHTML = ('<option value="' + qns1_select.value + '">' + options[qns1_select.value] + '</option>' + optionHTML);
-      qns2_select.innerHTML = ('<option value="' + qns2_select.value + '">' + options[qns2_select.value] + '</option>' + optionHTML);
-      qns3_select.innerHTML = ('<option value="' + qns3_select.value + '">' + options[qns3_select.value] + '</option>' + optionHTML);
+      qns1_select.innerHTML = ('<option value="' + qns1_select.value + '">' + qns1_select.value + '</option>' + optionHTML);
+      qns2_select.innerHTML = ('<option value="' + qns2_select.value + '">' + qns2_select.value + '</option>' + optionHTML);
+      qns3_select.innerHTML = ('<option value="' + qns3_select.value + '">' + qns3_select.value + '</option>' + optionHTML);
     }
 
     var icons = ['show1', 'hide1'];
