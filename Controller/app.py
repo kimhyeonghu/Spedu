@@ -294,7 +294,7 @@ def signin():
                 # login_user(user)
                 login_user(user, remember=sign_in_form.remember.data)
                 try:
-                    auth.sign_in_with_email_and_password(sign_in_form.email.data,sign_in_form.password.data)
+                    auth.sign_in_with_email_and_password(sign_in_form.email.data, sign_in_form.password.data)
                     user = auth.current_user
                 except:
                     print("Unable to login")
