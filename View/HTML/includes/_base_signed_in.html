@@ -2,24 +2,42 @@
     <div class="logo-search">
         <ul>
             <li class="horizontal">
-                <a href="/"><img id="logo" src="../static/images/spedu_logo.png" alt="Spedu"></a>
+                <a href="/"><img id="logo" src="../../static/images/spedu_logo.png" alt="Spedu"></a>
             </li>
             <li class="horizontal">
-                <div class="search_bar">
-                  <img id="magnifying_glass" src="../static/images/magnifying-glass.png" alt="search">
-                  <input type="text" placeholder="Search for anything">
-                </div>
+              <form class="search_bar" action='/search/' id="search" method="get">
+                <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
+                  <input type="text" id="search_input" name="search_input" placeholder="Search for anything">
+                  <button id="search_btn" onclick="submit()" style="display:none;"></button>
+                <script>
+                var search_input = document.getElementById("search_input");
+                search_input.addEventListener("keyup", function(event) {
+                  if (event.keyCode == 13) {
+                    event.preventDefault();
+                    if (search_input.value.length > 0) {
+                      document.getElementById("search_btn").click();
+                    }
+                  }
+                });
+                function submit() {
+                  alert(search_input.value);
+                  var search_form = document.getElementById("search");
+                  search_form.submit();
+                };
+                </script>
+              </form>
             </li>
-            <li class="horizontal option-list"><a class="option" href="">Spedu Store</a></li>
-            <li class="horizontal option-list"><a class="option" href="">Sports Courses</a></li>
+            <li class="horizontal option-list"><a class="option" href="/spedu_store/">Spedu Store</a></li>
+            <li class="horizontal option-list"><a class="option" href="/sports_courses/">Sports Courses</a></li>
         </ul>
     </div>
     <div class="mypage">
         <ul>
             <li class="horizontal"><a href=""><button id="mylearning-button">My Learning</button></a></li>
-            <li class="horizontal"><a href=""><img id="shopping-cart" src="../static/images/shopping-cart.png" alt="cart"></a></li>
-            <li class="horizontal"><a href=""><img id="notification" src="../static/images/notification.png" alt="notification"></a></li>
-            <li class="horizontal"><a href=""><img id="user-icon" src="../static/images/user-icon.png" alt="user"></a></li>
+            <li class="horizontal"><a href="/Shopping Cart/"><img id="shopping-cart" src="../../static/images/shopping-cart.png" alt="search"></a></li>
+            <li class="horizontal"><a href=""><img id="notification" src="../../static/images/notification.png" alt="search"></a></li>
+            <li class="horizontal"><a href="/account"><img id="user-icon" src="../../static/images/user-icon.png" alt="search"></a></li>
+            <li class="horizontal"><a href="/admin_page/">Admin Page</a></li>
         </ul>
     </div>
 </div>

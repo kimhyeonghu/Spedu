@@ -19,12 +19,8 @@
             <li class="horizontal">
               <form class="search_bar" action='/search/' id="search" method="get">
                 <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
-
                   <input type="text" id="search_input" name="search_input" placeholder="Search for anything">
                   <button id="search_btn" onclick="submit()" style="display:none;"></button>
-
-
-
                 <script>
                 var search_input = document.getElementById("search_input");
                 search_input.addEventListener("keyup", function(event) {
@@ -56,7 +52,6 @@
             <li class="horizontal"><a href="/admin_page/">Admin Page</a></li>
         </ul>
     </div>
-
 </div>
 
 {% block body %}{% endblock %}
