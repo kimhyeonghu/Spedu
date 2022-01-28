@@ -625,6 +625,10 @@ def promo_code_form():
         return redirect(url_for('admin_page_promo_codes'))
     return render_template('promo_code_form.html', form=promo_code_info)
 
+@app.route('/teach_on_spedu/')
+def teach_on_spedu():
+    return render_template('teach_on_spedu.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
