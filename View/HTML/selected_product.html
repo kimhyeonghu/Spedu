@@ -29,14 +29,39 @@
       <option>US 10</option>
     </select>
     <input id="options" type="number" placeholder="Quantity" min="1" value="1">
-    <a href="" class="btn" onclick="">Add to Cart</a>
+    <button class="btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
     <p class="">{{selected_product.description}}</p>
     <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:25px;margin-bottom:25px;">
     <h4 style="margin-bottom:12px;">Reviews</h4>
     <div id="review_div">
     </div>
-    <a href=""><p style="position:relative;top:-191px;margin-left:355px;">Write a Review</a></p>
+    <a href=""><p style="position:relative;top:-191px;margin-left:355px;">Write a Review</p></a>
   </div>
-
 </div>
+<script type="text/javascript">
+  function add_to_cart() {
+    db.collection("Users").where("username", "==", '{{current_username}}')
+    .get()
+    .then((querySnapshot) => {
+      console.log("here");
+        querySnapshot.forEach((doc) => {
+            // doc.data() is never undefined for query doc snapshots
+            console.log(doc);
+            db.collection("Users").doc(doc.id).update(
+              {
+                shopping_cart:firebase.firestore.FieldValue.arrayUnion("{{selected_product.productID}}")
+
+              }
+            )
+            .then(() => {
+              alert("Successfully added to cart!");
+            })
+        });
+
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+  }
+</script>
 {% endblock %}

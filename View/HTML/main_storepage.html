@@ -8,7 +8,7 @@
 
 {% block head %}
 
-<title>Homepage</title>
+<title>Main Store Page</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main_storepage.css') }}">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -92,17 +92,23 @@
   <div class="products-list" style="position:absolute;margin-top:100px;margin-left:220px;">
   <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
     <input id="input" type="text" name="selected_productID" value="" style="display:none;">
+    <ul class="top-course-ul">
       {% for i in range(products|length) %}
       {% set product = products[i] %}
+      <li class="horizontal" style="margin-right: -250px;margin-top:10px;">
       <a onclick="submit('{{product.productID}}')">
         <div class="products-list-box">
-            <img class="image" id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu">
-            <h5 class="name">{{products[i].name}}</h5>
-            <p class="category">{{products[i].category}}</p>
-            <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>
+            <ul>
+              <img class="image" id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu">
+              <li class="name">{{products[i].name}}</li>
+              <li class="category">{{products[i].category}}</li>
+              <li class="price">${{'%0.2f'| format(products[i].price|float)}}</li>
+            </ul>
         </div>
       </a>
+      </li>
       {% endfor %}
+    </ul>
   <script type="text/javascript">
           function submit(id) {
               document.getElementById('input').value = id;
@@ -113,7 +119,7 @@
   </form>
 </div>
     </div>
-<hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:320px;margin-bottom:800px;width:80%;margin-right:auto;margin-left:auto;">
+<hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:320px;margin-bottom:600px;width:80%;margin-right:auto;margin-left:auto;">
 
 <div class="featured-products" style="position:absolute;margin-top:100px;margin-left:220px;">
     <ul>
@@ -121,7 +127,20 @@
     </ul>
     <img class="image" id="nike cover page" src="../../static/images/nike cover page.png" alt="Spedu" style="width:130%;margin-top:120px;position:relative;left:-100px;">
     <h4 style="position:relative;left:-60px;top:20px;">Nike Running Shoes</h4>
-    <button class="view-course-btn" >Shop Now</button>
+    <button style="position:relative; left:-27px;" class="view-course-btn" onclick="open_searchpage()" >Shop Now</button>
+    <script type="text/javascript">
+        function open_searchpage() {
+          window.location.href = "/store_searchpage/";
+        }
+    </script>
+    <img class="image" id="nike cover page1" src="../../static/images/nike cover page.png" alt="Spedu" style="width:130%;margin-top:-536px;position:relative;left:350px;">
+    <h4 style="position:relative;left:400px;top:-107px;">Nike Running Shoes</h4>
+    <button style="position:relative; left:430px;top:-128px;" class="view-course-btn" onclick="open_searchpage()" >Shop Now</button>
+    <script type="text/javascript">
+        function open_searchpage() {
+          window.location.href = "/store_searchpage/";
+        }
+    </script>
 </div>
 
 
