@@ -32,17 +32,31 @@
 
   window.addEventListener('load', function() {
     var courses_cart = JSON.parse({{courseID_array|tojson}});
-    var course_price = 0
-    for (var i = 0; i < courses_cart.length; i++) {
-      var courseID = courses_cart[i];
-      //alert(courseID);
-      db.collection("Courses").where("courseID", "==", courseID).get()
-      .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            course_price += parseFloat(doc.data()['price']);
-            document.getElementById('total_cost').innerHTML = "S$"+String(course_price.toFixed(2));
-          });
-      })
+    var products_cart = JSON.parse({{productID_array|tojson}});
+    var shopping_cart = courses_cart.concat(products_cart);
+    var total_price = 0
+    for (var i = 0; i < shopping_cart.length; i++) {
+      if (true) {
+      }
+      var id = shopping_cart[i];
+      if (id.substring(0,2)=="CR") {
+        db.collection("Courses").where("courseID", "==", id).get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              total_price += parseFloat(doc.data()['price']);
+              document.getElementById('total_cost').innerHTML = "S$"+String(total_price.toFixed(2));
+            });
+        })
+      } else {
+        db.collection("Products").where("productID", "==", id).get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              total_price += parseFloat(doc.data()['price']);
+              document.getElementById('total_cost').innerHTML = "S$"+String(total_price.toFixed(2));
+            });
+        })
+      }
+
     }
 
   })
@@ -52,6 +66,15 @@
     <h1 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Shopping Cart</h1>
     <br>
   </div>
+  {% if (courses_cart|length+products_cart|length) == 0 %}
+  <div class="courses_cart_div" id="courses_cart_div">
+    <p style="font-size:19px;">{{courses_cart|length}} Course(s) in Cart</p>
+  </div>
+  <div class="products_cart_div">
+    <p style="font-size:19px;">{{products_cart|length}} Item(s) in Cart</p>
+
+  </div>
+  {% else %}
   <div class="courses_cart_div" id="courses_cart_div">
     <p style="font-size:19px;">{{courses_cart|length}} Course(s) in Cart</p>
 
@@ -75,6 +98,23 @@
   </div>
   <div class="products_cart_div">
     <p style="font-size:19px;">{{products_cart|length}} Item(s) in Cart</p>
+    {% for i in range(products_cart|length) %}
+    {% set product = products_cart[i] %}
+    <div class="course_overview_div">
+        <img class="course-image" src="{{product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <ul>
+          <li class="name" id="name_{{product.name}}" style="font-size: 15px;padding-right:10px;">{{product.name}}</li>
+
+          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(product.rating|float)}}</li>
+          <li style="font-size: 13px;color: #767676;"></li>
+        </ul>
+        <div class="price_div">
+          <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(product.price|float)}}</p>
+          <button id="remove_btn" onclick="remove_course('{{product.productID}}')"><img src="../static/images/trashcan.png" style="width:10px;display:inline-block"> Remove</button>
+        </div>
+
+    </div>
+    {% endfor %}
   </div>
   <div class="checkout_div">
     <p style="font-size:19px;font-weight:300;margin-bottom:0px;">Total:</p>
@@ -85,6 +125,9 @@
     <input type="text" id="search_input" name="search_input" placeholder="Enter promo code">
     <button id="apply_btn" onclick="check_promocode()">Apply</button>
   </div>
+  {% endif %}
+
+
 </div>
 
 {% endblock %}

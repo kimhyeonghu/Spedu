@@ -385,6 +385,8 @@ def shopping_cart():
     index = 0
     courses = []
     courseID_array = []
+    products = []
+    productID_array = []
     while index < len(shopping_cart):
         if shopping_cart[index][0:2]=="CR":
             courses_docs = db.collection("Courses").where("courseID", "==" , shopping_cart[index]).get()
@@ -408,12 +410,24 @@ def shopping_cart():
                 courses.append(course)
                 courseID_array.append(course.courseID)
         elif shopping_cart[index][0:2]=="PR":
-            pass
+            products_docs = db.collection('Products').where("productID", "==" , shopping_cart[index]).get()
+            for doc in products_docs:
+                productID = doc.to_dict()['productID']
+                category = doc.to_dict()['category']
+                image = doc.to_dict()['image']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                description = doc.to_dict()['description']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                product = Product(productID, category, image, name, price, description, rating, reviews)
+                products.append(product)
+                productID_array.append(product.productID)
         else:
             pass
         index+=1
 
-    return render_template('Shopping Cart.html',courseID_array = json.dumps(courseID_array), courses_cart = courses, products_cart=[],current_username=current_user.get_username())
+    return render_template('Shopping Cart.html',courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products,current_username=current_user.get_username())
 
 
 @app.route('/spedu_store/')
@@ -560,7 +574,7 @@ def admin_page_promo_codes():
     return render_template('Promo code.html', promo_code_dict=promo_code_dict)
 
 
-@app.route('/promo_code_form/', methods=["POST","GET"])
+@app.route('/admin_page/promo_code_form/', methods=["POST","GET"])
 def promo_code_form():
     promo_code_info = promo_code_information(request.form)
     if request.method == 'POST':
