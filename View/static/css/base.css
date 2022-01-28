@@ -177,9 +177,66 @@ ul {
   display: inline-block;
 }
 .footer-bar {
-  height: 250px;
+  height: auto;
   width: 100%;
   background-color: #081E21;
   position:relative;
   bottom: -60px;
+  padding-top:10px;
+}
+
+
+
+#part1{
+width: calc(100% - 20px);
+color:white;
+padding-left: 10px;
+margin-top:20px;
+}
+
+
+
+#button{
+background-color: #081E21;
+color: white;
+border-color: white;
+padding: 10px 24px;
+text-decoration: none;
+float:right;
+}
+
+#header{
+font-size: 24px;
+font-weight: bold;
+}
+
+#desc{
+font-size: 14px;
+}
+
+#word{
+padding-left: 50px;
+padding-right:20px;
+}
+
+#line{
+border: 1px solid white;
+}
+
+#part2{
+width: 20%;
+color: grey;
+}
+
+#links{
+padding-left: 50px;
+padding-right:20px;
+}
+
+
+
+#part3{
+color: grey;
+padding-left: 50px;
+padding-right:20px;
 }
