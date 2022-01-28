@@ -1,5 +1,4 @@
 
-
 {% if current_user.is_authenticated %}
     {% extends 'base_signed_in.html' %}
 {% else %}
@@ -18,84 +17,18 @@
 
 {% block body %}
 
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" style="top:70px;">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-  </ol>
-  <div class="carousel-inner">
-
-    <div class="carousel-item active">
-      <div class="d-block" >
-      <div class="carousel-caption d-none d-md-block">
-          <h1 style="color:black;font-family: Impact, sans-serif; text-align:left;margin-left:-100px;">Nike ZoomX Vaporfly <br> Next% 2</h1>
-          <p style="color:black;font-family: Helvetica, sans-serif; text-align:left;margin-left:-100px;">Our Latest Product!</p>
-          <button class="view-product-btn" onclick="open_page()" >View Product</button>
-          <script type="text/javascript">
-            function open_page() {
-              window.location.href = "/store_searchpage/";
-            }
-          </script>
-      </div>
-      <img src="../../static/images/vaporfly1.png" alt="vaporfly 1" id="therock" style="margin-bottom:-100px;margin-left:700px;margin-top:-50px;calc(65% - 100px);width:330px;height:auto;">
-      <img src="../../static/images/vaporfly2.png" alt="vaporfly 2" id="" style="margin-bottom:-100px;margin-left:425px;margin-top:-280px;calc(65% - 100px);width:330px;height:auto;">
-      </div>
-    </div>
-    <div class="carousel-item">
-      <div class="d-block" style="background-color:#F6D167;">
-      <div class="carousel-caption d-none d-md-block">
-          <h1 style="color:black;font-family: Impact, sans-serif; text-align:left;margin-left:-100px;">Get 20% Off Your First Product Purchase</h1>
-          <p id="second-p" style="color:black;font-family: Helvetica, sans-serif; text-align:left;margin-left:-100px; ">Hurry, promotion ends very soon!</p>
-          <button class="view-product-btn" id="view-product-btn2" onclick="open_page()" >All Products</button>
-          <script type="text/javascript">
-            function open_page() {
-              window.location.href = "/store_searchpage/";
-            }
-          </script>
-      </div>
-      <img src="../../static/images/lebron.png" alt="the rock" style="margin-top:80px;margin-left:calc(65% - 100px);width:400px;height:auto;">
-      </div>
-    </div>
-
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-
-
-
-
-<div id="package-ad-banner">
-  <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:40px;width:82.5%;margin-right:auto;margin-left:auto;">
-  <div class="btn-group">
-    <button>Sports Wear</button>
-    <button>Game Equipment</button>
-    <button>Shoes</button>
-    <button>Supplements</button>
-    <button>Gym Equipment</button>
-    <button>Accessories</button>
-  </div>
-</div>
-
-
-<hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;width:80%;margin-right:auto;margin-left:auto;">
+#x
 <div id="coding-ad-banner">
-  <ul>
-  <li><h3 style="font-family:Garamond;font-weight:bold;">Products You Might Be Interested In</h3></li>
-  </ul>
-  <div class="products-list" style="position:absolute;margin-top:100px;margin-left:220px;">
+  <div class="products-list" style="position:absolute;margin-top:-500px;margin-left:220px;">
+
   <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
     <input id="input" type="text" name="selected_productID" value="" style="display:none;">
+      <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;margin-left:-800px;margin-top:-20px;">Sports Product</h2>
+      <h5 style="font-family: 'STIXGeneral', serif;font-weight: bold;margin-left:-890px;margin-top:40px;">Top Products</h5>
     <ul class="top-course-ul">
       {% for i in range(products|length) %}
       {% set product = products[i] %}
-      <li class="horizontal" style="margin-right: -250px;margin-top:10px;">
+      <li class="horizontal" style="margin-right:-280px;margin-top:5px;">
       <a onclick="submit('{{product.productID}}')">
         <div class="products-list-box">
             <ul>
@@ -119,9 +52,25 @@
   </form>
 </div>
     </div>
-<hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:320px;margin-bottom:600px;width:80%;margin-right:auto;margin-left:auto;">
 
-<div class="featured-products" style="position:absolute;margin-top:100px;margin-left:220px;">
+
+<div id="package-ad-banner">
+  <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:400px;margin-bottom:40px;width:82.5%;margin-right:auto;margin-left:auto;">
+  <div class="btn-group">
+    <button>Sports Wear</button>
+    <button>Game Equipment</button>
+    <button>Shoes</button>
+    <button>Supplements</button>
+    <button>Gym Equipment</button>
+    <button>Accessories</button>
+  </div>
+</div>
+
+
+<hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:600px;width:80%;margin-right:auto;margin-left:auto;">
+
+
+<div class="featured-products" style="position:absolute;margin-top:-270px;margin-left:220px;">
     <ul>
     <li><h3 style="font-family:Garamond;font-weight:bold;position:relative;top:80px;left:-100px;">Featured</h3></li>
     </ul>
@@ -133,9 +82,9 @@
           window.location.href = "/store_searchpage/";
         }
     </script>
-    <img class="image" id="nike cover page1" src="../../static/images/nike cover page.png" alt="Spedu" style="width:130%;margin-top:-536px;position:relative;left:350px;">
-    <h4 style="position:relative;left:400px;top:-107px;">Nike Running Shoes</h4>
-    <button style="position:relative; left:430px;top:-128px;" class="view-course-btn" onclick="open_searchpage()" >Shop Now</button>
+    <img class="image" id="nike cover page1" src="../../static/images/nike cover page.png" alt="Spedu" style="width:130%;margin-top:-536px;position:relative;left:420px;">
+    <h4 style="position:relative;left:460px;top:-107px;">Nike Running Shoes</h4>
+    <button style="position:relative; left:500px;top:-128px;" class="view-course-btn" onclick="open_searchpage()" >Shop Now</button>
     <script type="text/javascript">
         function open_searchpage() {
           window.location.href = "/store_searchpage/";

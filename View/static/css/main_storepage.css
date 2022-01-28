@@ -345,9 +345,7 @@ body {
 .view-course-btn a{
   text-decoration: none;
 }
-.horizontal {
-  display: inline-block;
-}
+
 .top-course-ul {
   width: 110%;
   height: 390px;
@@ -357,4 +355,4 @@ body {
   overflow: auto;
   white-space: nowrap;
 }
-
+#dv

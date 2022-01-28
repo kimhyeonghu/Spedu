@@ -155,7 +155,8 @@ def load_products():
         description = doc.to_dict()['description']
         rating = doc.to_dict()['rating']
         reviews = doc.to_dict()['reviews']
-        product = Product(productID, category, image, name, price, description, rating, reviews)
+        tag = doc.to_dict()['tag']
+        product = Product(productID, category, image, name, price, description, rating, reviews, tag)
         products.append(product)
     return products
 
@@ -175,6 +176,7 @@ def create_new_product():
     product_description = request.form['product_description']
     product_rating = 0
     product_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
+    product_tag = ""
     new_product_data = {
         'productID': productID,
         'category': product_category,
@@ -184,6 +186,7 @@ def create_new_product():
         'description': product_description,
         'rating': product_rating,
         'reviews': product_reviews,
+        'tag': product_tag
     }
     db.collection('Products').document().set(new_product_data)
     return render_template('admin_page_products.html', products=load_products())
@@ -215,6 +218,7 @@ def load_update(productID):
         product_image = request.form['update_image']
         product_price = request.form['update_price']
         product_description = request.form['update_description']
+        product_tag = ""
         for doc in docs:
             key = doc.id
             db.collection('Products').document(key).update({
@@ -222,6 +226,7 @@ def load_update(productID):
                  'image': product_image,
                  'price': product_price,
                  'description': product_description,
+                 'tag': product_tag
             })
     except:
         print("Unable to update course!")
@@ -299,7 +304,7 @@ def signin():
                 except:
                     print("Unable to login")
                 next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for("account  "))
+                return redirect(next_page) if next_page else redirect(url_for("account"))
         else:
             flash("Incorrect Login Credentials.")
             return render_template('signin.html', form=sign_in_form)
@@ -469,7 +474,8 @@ def shopping_cart():
                 description = doc.to_dict()['description']
                 rating = doc.to_dict()['rating']
                 reviews = doc.to_dict()['reviews']
-                product = Product(productID, category, image, name, price, description, rating, reviews)
+                tag = doc.to_dict()['tag']
+                product = Product(productID, category, image, name, price, description, rating, reviews, tag)
                 products.append(product)
                 productID_array.append(product.productID)
         else:
