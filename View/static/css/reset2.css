@@ -3,7 +3,7 @@ body {
 }
 .background {
   position: relative;
-  background-image: url("../assets/Fitness video 2.jpeg");
+  background-image: url("../assets/Fitness video 1.jpeg");
   height: 100%;
   background-attachment: fixed;
   background-position: center;
@@ -21,38 +21,30 @@ body {
   display: flex;
   align-items: center;
 }
-.register {
-  margin-top: 55px;
-  max-width: 800px;
+.reset {
+  margin-top: 50px;
+  width: 500px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 48px;
   backdrop-filter: blur(5px);
 }
-.registerContent {
+.resetContent {
   padding-left: 30px;
   padding-right: 30px;
 }
 h1 {
   text-align: left;
   font-size: 50px;
-  padding-top: 20px;
-  padding-bottom: 5px;
+  padding-top: 25px;
+  padding-bottom: 25px;
 }
 .formnav{
   margin-left: auto;
   margin-right: auto;
 }
-.tab2 {
+.tab1 {
   border-bottom: 2px solid #297F87;
-}
-.tab1, .tab2 {
-  margin-right: 20px;
-}
-.tab1, .tab3 {
-  border-bottom: 2px solid rgba(70, 207, 220, 0.75);
-}
-.tab1, .tab2, .tab3 {
-  width: 210px;
+  width: 100%;
 }
 h3 {
   font-family: "AvenirNextLTPro-Regular", sans-serif;
@@ -66,37 +58,26 @@ label, input {
 label {
   color: #6A7481;
 }
-#qns1, #qns2, #qns3 {
-  height: 50px;
-  font-size: 21px;
-  max-width: 650px;
-  margin-left: auto;
-  margin-right: auto;
+form {
+  margin-top: 15px;
 }
-.ans-group {
+input[type=text], input[type=email], input[type=password]{
+  height: 50px;
+  font-size: 20px;
+  font-family: "Open Sans", sans-serif;
+}
+::placeholder {
+  color: #8C98A9;
+  font-size: 20px;
+  font-family: "Open Sans Light", sans-serif;
+}
+.pass-group {
   position: relative;
 }
 .svg-container{
   position: absolute;
   bottom: 0px;
   right: 20px;
-}
-input[type=text], input[type=email], input[type=password] {
-  height: 50px;
-  font-size: 21px;
-}
-.skip, .next{
-  width: 50%
-}
-input[type=button] {
-  background-color: #2E384D;
-  color: white;
-  border: none;
-  width: 100%;
-  margin-left: 0;
-  margin-right: 0;
-  border-radius: 5px;
-  padding: 15px 0;
 }
 input[type=submit] {
   background-color: #2E384D;
@@ -105,7 +86,7 @@ input[type=submit] {
   border: none;
   padding: 15px 0;
   border-radius: 5px;
-  /* margin-top: 30px; */
+  margin-top: 50px;
 }
 .registerContent p {
   margin-top: 5px;

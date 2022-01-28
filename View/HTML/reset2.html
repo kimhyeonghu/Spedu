@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Spedu Sign Up</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/css/basicnavbar.css">
+  <link rel="stylesheet" href="../static/css/reset2.css">
+</head>
+<body>
+  {% from "includes/_formHelper.html" import render_field %}
+  <div class="background">
+    {% block navbar %}
+      {% include 'includes/_basicnavbar.html' %}
+    {% endblock %}
+    <div class="right">
+      <div class="vertical-center">
+        <div class="reset">
+          <div class="resetContent">
+            <h1>Reset Password</h1>
+            <div class="row formnav">
+              <div class="tab1">
+                <h3>Email</h3>
+              </div>
+            </div>
+            <br>
+            <form method="POST">
+              <!-- <label for="qns1">Question 1</label>
+              <input type="text" name="" value="" disabled> -->\
+              <div class="form-group">
+                {{ render_field(form.qns1, class="form-control") }}
+              </div>
+              <div class="form-group">
+                {{ render_field(form.ans1, class="form-control") }}
+              </div>
+              <input class="text-center" type="submit" value="NEXT STEP">
+            </form>
+            <p id="signin">Already Have An Account? <a class="" href="/signin">Sign In</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
