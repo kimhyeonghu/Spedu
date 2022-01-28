@@ -337,10 +337,11 @@ def reset1():
 @app.route("/reset/<id>", methods=['GET', 'POST'])
 def reset2(id):
     reset_form2 = ForgetPassword2(request.form)
-    user = db.collection("Users").where("id", "==", id).get()
-    if request.method == "GET":
-        reset_form2.qns1.data = user[""]
-    return render_template("reset2.html", form=reset_form2)
+    user = db.collection("Users").document(str(id)).get().to_dict()
+    qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
+    if request.method == "POST":
+        pass
+    return render_template("reset2.html", form=reset_form2, qns=qns)
 
 
 @app.route('/account', methods=['GET', 'POST'])
@@ -358,7 +359,7 @@ def account():
         elif request.form["displayInfo"] == "Update":
             db.collection("Users").document(str(current_user.get_id())).update({"username": display_info.username.data})
             return redirect(url_for("account"))
-    return render_template("account.html", qns=qns, displayinfo=display_info)
+    return render_template("account.html", user=user, displayinfo=display_info)
 
 
 @app.route('/sports_courses/', methods=['GET'])
@@ -368,7 +369,7 @@ def sports_courses_sorted():
         sort_attr = request.args.get("sort_attr")
 
     print(sort_attr)
-    all_courses=course_CRUD(course=None, method='load')
+    all_courses = course_CRUD(course=None, method='load')
     print(all_courses[0].name)
     courseID_array = []
     for course in all_courses:
