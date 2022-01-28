@@ -65,7 +65,8 @@ def course_CRUD(course, method):
             'reviews': course.reviews,
             'students_count': int(course.students_count),
             'trainer': course.trainer,
-            'video_link': course.video_link
+            'video_link': course.video_link,
+            'tag':course.tag
         }
         db.collection('Courses').document().set(new_course_data)
         pass
@@ -87,8 +88,9 @@ def course_CRUD(course, method):
             students_count = doc.to_dict()['students_count']
             trainer = doc.to_dict()['trainer']
             video_link = doc.to_dict()['video_link']
+            tag = doc.to_dict()['tag']
             course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
-                            price, rating, reviews, students_count, trainer, video_link)
+                            price, rating, reviews, students_count, trainer, video_link,tag)
             courses.append(course)
         return courses
     elif method == 'update':
@@ -104,7 +106,8 @@ def course_CRUD(course, method):
                 'level': course.level,
                 'price': course.price,
                 'trainer': course.trainer,
-                'video_link': course.video_link
+                'video_link': course.video_link,
+                'tag':course.tag
             })
     elif method == 'delete':
         courseID = course
@@ -405,8 +408,9 @@ def shopping_cart():
                 students_count = doc.to_dict()['students_count']
                 trainer = doc.to_dict()['trainer']
                 video_link = doc.to_dict()['video_link']
+                tag = doc.to_dict()['tag']
                 course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
-                            price, rating, reviews, students_count, trainer, video_link)
+                            price, rating, reviews, students_count, trainer, video_link,tag)
                 courses.append(course)
                 courseID_array.append(course.courseID)
         elif shopping_cart[index][0:2]=="PR":
@@ -495,6 +499,7 @@ def create_new_course():
     course_level = request.form['course_level']
     video_link = request.form['video_link']
     course_image = request.files['course_image']
+    tag = request.files['tag']
 
 
 
@@ -541,7 +546,7 @@ def update_course():
     learning_outcome = request.form['learning_outcome']
     course_level = request.form['course_level']
     video_link = request.form['video_link']
-
+    tag = request.form['tag']
     course_image = request.files['course_image']
     print(course_image.filename)
     if course_image.filename == '':
@@ -553,7 +558,7 @@ def update_course():
     course_rating = ""
     course_reviews = []
     students_count = 0
-    course = Course(courseID, course_desc, course_short_desc, course_duration,course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
+    course = Course(courseID, course_desc, course_short_desc, course_duration,course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link,tag)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
 
