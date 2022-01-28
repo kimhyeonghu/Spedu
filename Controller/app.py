@@ -163,7 +163,12 @@ def create_new_product():
     product_name = request.form['product_name']
     productID = 'PR'+product_name.split(' ')[0][0] + product_name.split(' ')[0][1] + str(random.randrange(0, 1000))
     product_price = request.form['product_price']
-    product_image = request.form['product_image']
+    product_image = request.files['product_image']
+    storage.child('/products/image_of_{}'.format(productID)).put(product_image)
+
+  #  product_img_link = storage.child(f"/products/image_of_"+productID).get_url(auth.current_user["idToken"])
+
+    product_img_link=""
     product_category = request.form['product_category']
     product_description = request.form['product_description']
     product_rating = 0
@@ -171,7 +176,7 @@ def create_new_product():
     new_product_data = {
         'productID': productID,
         'category': product_category,
-        'image': product_image,
+        'image': product_img_link,
         'name': product_name,
         'price': product_price,
         'description': product_description,
@@ -378,8 +383,8 @@ def view_selected_product():
     selected_productID = request.args.get("selected_productID")
     print(selected_productID)
     selected_product = db.collection('Products').where("productID", "==", selected_productID).get()[0].to_dict()
-
-    return render_template('selected_product.html', selected_product=selected_product)
+    print(current_user.get_username())
+    return render_template('selected_product.html', selected_product=selected_product,current_username = current_user.get_username())
 
 
 @app.route('/admin_page/products/about_product/', methods=['POST'])
@@ -403,6 +408,9 @@ def shopping_cart():
     print(shopping_cart)
     index = 0
     courses = []
+    courseID_array = []
+    products = []
+    productID_array = []
     while index < len(shopping_cart):
         if shopping_cart[index][0:2]=="CR":
             courses_docs = db.collection("Courses").where("courseID", "==" , shopping_cart[index]).get()
@@ -424,13 +432,26 @@ def shopping_cart():
                 course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
                             price, rating, reviews, students_count, trainer, video_link)
                 courses.append(course)
+                courseID_array.append(course.courseID)
         elif shopping_cart[index][0:2]=="PR":
-            pass
+            products_docs = db.collection('Products').where("productID", "==" , shopping_cart[index]).get()
+            for doc in products_docs:
+                productID = doc.to_dict()['productID']
+                category = doc.to_dict()['category']
+                image = doc.to_dict()['image']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                description = doc.to_dict()['description']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                product = Product(productID, category, image, name, price, description, rating, reviews)
+                products.append(product)
+                productID_array.append(product.productID)
         else:
             pass
         index+=1
 
-    return render_template('Shopping Cart.html', courses_cart = courses,products_cart=[],current_username=current_user.get_username())
+    return render_template('Shopping Cart.html',courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products,current_username=current_user.get_username())
 
 
 @app.route('/spedu_store/')
@@ -577,7 +598,7 @@ def admin_page_promo_codes():
     return render_template('Promo code.html', promo_code_dict=promo_code_dict)
 
 
-@app.route('/promo_code_form/', methods=["POST","GET"])
+@app.route('/admin_page/promo_code_form/', methods=["POST","GET"])
 def promo_code_form():
     promo_code_info = promo_code_information(request.form)
     if request.method == 'POST':

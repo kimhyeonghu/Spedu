@@ -73,7 +73,21 @@
     <li style="height:50px;margin-top:20px;"><p>Product Category</p><textarea name='product_category' type="text" placeholder=""></textarea></li>
     <li style="height:50px;margin-top:20px;"><p>Product Price</p><textarea name='product_price' type="text" placeholder=""></textarea></li>
     <li style="height:180px;"><p>Product Description</p><textarea name='product_description' style="height:160px;" type="text" placeholder=""></textarea></li>
-    <li style="height:50px;"><p>Product Image</p><textarea name='product_image' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;"><p>Product Image</p><input name='product_image' type="file" placeholder=""></li>
+    <br><img id="product_img" src="#">
+    <script type="text/javascript">
+      window.addEventListener('load', function() {
+        document.querySelector('input[type="file"]').addEventListener('change', function() {
+          if (this.files && this.files[0]) {
+            var img = document.getElementById("product_img");
+
+              img.src = URL.createObjectURL(this.files[0]); // set src to blob url
+
+            }
+          });
+        });
+
+    </script>
     <li style="height:50px;"><input type="submit" value="Create" class="new-product-btn"></button></li>
   </ul>
 </form>

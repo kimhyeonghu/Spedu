@@ -27,7 +27,7 @@
   width: 250px;
   display: inline-block;
   overflow-wrap: normal;
-
+  position: relative;
 
 }
 .top-course-ul {
