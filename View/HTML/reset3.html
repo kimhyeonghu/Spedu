@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <title>Spedu Sign Up</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="../static/css/basicnavbar.css">
-  <link rel="stylesheet" href="../static/css/reset.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/basicnavbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/reset3.css') }}">
 </head>
 <body>
   {% from "includes/_formHelper.html" import render_field %}

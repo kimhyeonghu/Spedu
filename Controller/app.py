@@ -336,19 +336,23 @@ def reset1():
 
 @app.route("/forget_password/<id>", methods=['GET', 'POST'])
 def reset2(id):
-    reset_form2 = ForgetPassword2(request.form)
+    # reset_form2 = ForgetPassword2(request.form)
     user = db.collection("Users").document(str(id)).get().to_dict()
     qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
     if request.method == "POST":
-        if request.form["ans1"] == qns[0] and request.form["ans2"] == qns[1] and request.form["ans3"] == qns[2]:
-            return redirect(url_for("reset3"))
-    return render_template("reset2.html", form=reset_form2, qns=qns)
+        if request.form["ans1"] == user["security_qns"]["ans1"] and request.form["ans2"] == user["security_qns"]["ans2"] and request.form["ans3"] == user["security_qns"]["ans3"]:
+            return redirect(url_for("reset3", id=user["id"]))
+    return render_template("reset2.html", qns=qns)
 
 
 @app.route("/forget_password/<id>/reset", methods=['GET', 'POST'])
 def reset3(id):
     reset_form3 = ForgetPassword3(request.form)
-
+    if request.method == "POST" and reset_form3.validate():
+        db.collection("Users").document(str(id)).update({"username": reset_form3.password.data})
+        # user = User.from_dict(db.collection("Users").where("email", "==", sign_in_form.email.data).get()[0].to_dict())
+        # login_user(user)
+        return redirect(url_for("signin"))
     return render_template("reset3.html", form=reset_form3)
 
 
