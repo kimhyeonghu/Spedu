@@ -1,0 +1,58 @@
+{% if current_user.is_authenticated %}
+    {% extends 'base_signed_in.html' %}
+{% else %}
+    {% extends 'base.html' %}
+{% endif %}
+
+{% block head %}
+{% endblock %}
+{% block body %}
+<style>
+#words{
+text-align:center;
+margin-top:120px;
+}
+
+#pic1{
+display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom:70px;
+  width: 650px;
+}
+
+#pic2{
+display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom:70px;
+  width:800px;
+}
+
+#details{
+text-align: center;
+}
+
+#apply{
+background-color: #1E5D63;
+color: white;
+border-color: #1E5D63;
+padding: 10px 24px;
+text-decoration: none;
+margin-top: 30px;
+}
+</style>
+<div id="details">
+
+<div id="words">
+<h1 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Connecting the sports community</h1>
+<p style="padding:50px;">Spedu gives an opportunity for sports educators to teach students all over the world.<br> Be part of our thousands of Spedu trainers and expand your sports community to the world</p>
+</div>
+<img id="pic1" src="../../static/images/teach on spedu pic2.png">
+<img id="pic2" src="../../static/images/teach on spedu pic1.png">
+<h3 style="text-align:center;">So what are you waiting for?</h3>
+<a href=#><button id="apply"><strong>Apply now</strong></button></a>
+</div>
+
+
+{% endblock %}
