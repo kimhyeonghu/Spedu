@@ -18,13 +18,12 @@ app = Flask(__name__, template_folder='../View/HTML', static_folder='../View/sta
 app.secret_key = "1ae11153fae277ef2a41b70152692513"
 cred = credentials.Certificate("../serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
-
 db = firestore.client()
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "signin"
 # login_manager.login_message_category = "info"
-
+bcrypt = Bcrypt(app)
 firebaseConfig = {
   "apiKey": "AIzaSyAhONsOYfqp3ox_L5bCy0cpX_f-iQxdc9I",
   "authDomain": "spedu-3fd4f.firebaseapp.com",
@@ -250,7 +249,8 @@ def signup1():
             id = db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
         except:
             id = 1
-        user = User(sign_up_form1.username.data, sign_up_form1.email.data, sign_up_form1.password.data, id)
+        hashed_password = bcrypt.generate_password_hash(sign_up_form1.password.data).decode('utf-8')
+        user = User(sign_up_form1.username.data, sign_up_form1.email.data, hashed_password, id)
         db.collection("Users").document(str(id)).set(user.to_dict())
         login_user(user)
         try:
@@ -289,7 +289,7 @@ def signin():
     if request.method == "POST" and sign_in_form.validate():
         user = db.collection("Users").where("email", "==", sign_in_form.email.data).get()
         if user:
-            if user[0].to_dict()["password"] == sign_in_form.password.data:
+            if bcrypt.check_password_hash(user[0].to_dict()["password"], sign_in_form.password.data):
                 user = User.from_dict(user[0].to_dict())
                 # login_user(user)
                 login_user(user, remember=sign_in_form.remember.data)
@@ -344,7 +344,7 @@ def reset2(id):
 def reset3(id):
     reset_form3 = ForgetPassword3(request.form)
     if request.method == "POST" and reset_form3.validate():
-        db.collection("Users").document(str(id)).update({"username": reset_form3.password.data})
+        db.collection("Users").document(str(id)).update({"password": reset_form3.password.data})
         # user = User.from_dict(db.collection("Users").where("email", "==", sign_in_form.email.data).get()[0].to_dict())
         # login_user(user)
         return redirect(url_for("signin"))
