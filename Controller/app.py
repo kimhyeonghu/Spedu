@@ -49,6 +49,15 @@ storage = firebase.storage()
 #     login_stat = False
 
 
+@login_manager.user_loader
+def user_loader(id):
+    # given id, return user object
+    user = db.collection("Users").where("id", "==", id).get()
+    if user:
+        user = User.from_dict(user[0].to_dict())
+        return user
+
+
 def course_CRUD(course, method):
     if method == 'create':
         new_course_data = {
@@ -180,11 +189,13 @@ def create_new_product():
     db.collection('Products').document().set(new_product_data)
     return render_template('admin_page_products.html', products=load_products())
 
+
 @app.route('/search/', methods=['GET'])
 def search_result():
     search_input = request.args.get("search_input")
     print(search_input)
     return render_template('search_page.html', search_results=search_input)
+
 
 def load_delete(productID):
     print("Delete")
@@ -215,15 +226,6 @@ def load_update(productID):
             })
     except:
         print("Unable to update course!")
-
-
-@login_manager.user_loader
-def user_loader(id):
-    # given id, return user object
-    user = db.collection("Users").where("id", "==", id).get()
-    if user:
-        user = User.from_dict(user[0].to_dict())
-        return user
 
 
 @app.route('/')
@@ -284,7 +286,7 @@ def signin():
     if current_user.is_authenticated:
         return redirect(url_for("homepage"))
     sign_in_form = SignInForm(request.form)
-    if request.method == "POST":
+    if request.method == "POST" and sign_in_form.validate():
         user = db.collection("Users").where("email", "==", sign_in_form.email.data).get()
         if user:
             if user[0].to_dict()["password"] == sign_in_form.password.data:
@@ -296,14 +298,11 @@ def signin():
                     user = auth.current_user
                 except:
                     print("Unable to login")
-
-                return redirect(url_for("account"))
-            else:
-                flash("Incorrect Login Credentials.")
-                render_template('signin.html', form=sign_in_form)
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for("account  "))
         else:
             flash("Incorrect Login Credentials.")
-            render_template('signin.html', form=sign_in_form)
+            return render_template('signin.html', form=sign_in_form)
     return render_template('signin.html', form=sign_in_form)
 
 
@@ -312,6 +311,31 @@ def signin():
 def signout():
     logout_user()
     return redirect(url_for("homepage"))
+
+
+@app.route("/reset", methods=['GET', 'POST'])
+def reset1():
+    reset_form1 = ForgetPassword1(request.form)
+    if request.method == "POST":
+        if reset_form1.validate():
+            print(reset_form1.email.data)
+            user = db.collection("Users").where("email", "==", reset_form1.email.data).get()
+            print(user)
+            if user:
+                return redirect(url_for("reset2", id=user[0].to_dict()["id"]))
+        else:
+            flash("Account does not exist!")
+            return redirect(url_for("reset1"))
+    return render_template("reset.html", form=reset_form1)
+
+
+@app.route("/reset/<id>", methods=['GET', 'POST'])
+def reset2(id):
+    reset_form2 = ForgetPassword2(request.form)
+    user = db.collection("Users").where("id", "==", id).get()
+    if request.method == "GET":
+        reset_form2.qns1.data = user[""]
+    return render_template("reset2.html", form=reset_form2)
 
 
 @app.route('/account', methods=['GET', 'POST'])
@@ -329,7 +353,7 @@ def account():
         elif request.form["displayInfo"] == "Update":
             db.collection("Users").document(str(current_user.get_id())).update({"username": display_info.username.data})
             return redirect(url_for("account"))
-    return render_template("account.html", user=user, displayinfo=display_info)
+    return render_template("account.html", qns=qns, displayinfo=display_info)
 
 
 @app.route('/sports_courses/', methods=['GET'])

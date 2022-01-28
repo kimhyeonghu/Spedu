@@ -99,3 +99,7 @@ input[type=submit] {
 /* .registerContent a {
   color: #2AA0B3;
 } */
+#signin {
+  text-align: center;
+  color: #8C98A9;
+}

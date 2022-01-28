@@ -26,9 +26,6 @@ body {
   background: rgba(255, 255, 255, 0.8);
   border-radius: 48px;
   backdrop-filter: blur(5px);
-  /* position: absolute;
-  left: 80%;
-  transform: translateX(-50%); */
 }
 .loginContent{
   padding-left: 30px;
@@ -44,10 +41,28 @@ h1 {
 label {
   color: #8C98A9;
 }
-input {
-
+.remember {
+  margin-left: 0;
+  margin-right: auto;
+}
+input #remember {
+  margin-left: 0;
+  margin-right: auto;
 }
 .forgotLink {
   padding-top: 25px;
   padding-bottom: 25px;
+  color: #8C98A9;
+}
+form input[type=submit] {
+  background-color: #2E384D;
+  color: white;
+  width: 100%;
+  border: none;
+  padding: 15px 0;
+  border-radius: 5px;
+}
+#register {
+  text-align: center;
+  color: #8C98A9;
 }

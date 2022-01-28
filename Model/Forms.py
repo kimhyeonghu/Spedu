@@ -35,6 +35,22 @@ class SignInForm(Form):
     remember = BooleanField("Remember me")
 
 
+class ForgetPassword1(Form):
+    email = EmailField('Email Address', [validators.DataRequired()], render_kw={"placeholder": "Enter your email"})
+
+
+class ForgetPassword2(Form):
+    qns1 = StringField('First Question', render_kw={"disabled": ""})
+    ans1 = PasswordField('Answer The Question *', [validators.DataRequired()])
+    ans2 = PasswordField('Answer The Question *', [validators.DataRequired()])
+    ans3 = PasswordField('Answer The Question *', [validators.DataRequired()])
+
+
+class ForgetPassword3(Form):
+    password = PasswordField('New Password *', [validators.Length(min=8, max=64), validators.DataRequired()])
+    confirm_password = PasswordField('Confirm Password *', [validators.DataRequired(), EqualTo("password")])
+
+
 class DisplayInfo(Form):
     username = StringField('Username', [validators.Length(min=3, max=32), validators.DataRequired()])
 
