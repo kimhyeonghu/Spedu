@@ -349,7 +349,8 @@ def reset2(id):
 def reset3(id):
     reset_form3 = ForgetPassword3(request.form)
     if request.method == "POST" and reset_form3.validate():
-        db.collection("Users").document(str(id)).update({"password": reset_form3.password.data})
+        hashed_password = bcrypt.generate_password_hash(reset_form3.password.data).decode('utf-8')
+        db.collection("Users").document(str(id)).update({"password": hashed_password})
         # user = User.from_dict(db.collection("Users").where("email", "==", sign_in_form.email.data).get()[0].to_dict())
         # login_user(user)
         return redirect(url_for("signin"))
