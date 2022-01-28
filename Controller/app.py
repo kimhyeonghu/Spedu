@@ -343,7 +343,11 @@ def reset2(id):
 @app.route("/forget_password/<id>/reset", methods=['GET', 'POST'])
 def reset3(id):
     reset_form3 = ForgetPassword3(request.form)
-
+    if request.method == "POST" and reset_form3.validate():
+        db.collection("Users").document(str(id)).update({"username": reset_form3.password.data})
+        # user = User.from_dict(db.collection("Users").where("email", "==", sign_in_form.email.data).get()[0].to_dict())
+        # login_user(user)
+        return redirect(url_for("signin"))
     return render_template("reset3.html", form=reset_form3)
 
 
