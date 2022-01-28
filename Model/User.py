@@ -72,7 +72,7 @@ class User:
         return user
 
     def to_dict(self):
-        user_dict = {"username": self.__username, "email": self.__email, "password": self.__password, "id": self.__user_id}
+        user_dict = {"username": self.__username, "email": self.__email, "password": self.__password, "id": self.__user_id, "account_type": self.__account_type, "shopping_cart": self.__cart}
         return user_dict
 
 

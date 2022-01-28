@@ -254,7 +254,7 @@ def signup1():
         db.collection("Users").document(str(id)).set(user.to_dict())
         login_user(user)
         try:
-            auth.create_user_with_email_and_password(sign_up_form1.email.data,sign_up_form1.password.data)
+            auth.create_user_with_email_and_password(sign_up_form1.email.data, sign_up_form1.password.data)
             user = auth.current_user
         except:
             print("Unable to login")
