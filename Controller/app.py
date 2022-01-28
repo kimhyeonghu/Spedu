@@ -377,8 +377,12 @@ def view_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
     selected_course = db.collection('Courses').where("courseID", "==", selected_courseID).get()[0].to_dict()
-    print(current_user.get_username())
-    return render_template('selected_course.html', selected_course=selected_course,current_username = current_user.get_username())
+
+    try:
+        username = current_user.get_username()
+    except:
+        username = ""
+    return render_template('selected_course.html', selected_course=selected_course,current_username = username)
 
 
 @app.route('/spedu_store/about_product/', methods=['GET'])
