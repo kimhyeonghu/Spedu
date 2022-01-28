@@ -379,6 +379,7 @@ def shopping_cart():
     print(shopping_cart)
     index = 0
     courses = []
+    courseID_array = []
     while index < len(shopping_cart):
         if shopping_cart[index][0:2]=="CR":
             courses_docs = db.collection("Courses").where("courseID", "==" , shopping_cart[index]).get()
@@ -400,13 +401,14 @@ def shopping_cart():
                 course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
                             price, rating, reviews, students_count, trainer, video_link)
                 courses.append(course)
+                courseID_array.append(course.courseID)
         elif shopping_cart[index][0:2]=="PR":
             pass
         else:
             pass
         index+=1
 
-    return render_template('Shopping Cart.html', courses_cart = courses,products_cart=[],current_username=current_user.get_username())
+    return render_template('Shopping Cart.html',courseID_array = json.dumps(courseID_array), courses_cart = courses, products_cart=[],current_username=current_user.get_username())
 
 
 @app.route('/spedu_store/')

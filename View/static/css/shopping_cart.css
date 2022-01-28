@@ -1,3 +1,9 @@
+.shopping_cart_page{
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
 .shopping_cart_title {
   width: 100%;
   padding-top: 90px;
@@ -5,9 +11,10 @@
 }
 .courses_cart_div{
   min-height: 200px;
+  max-width: 1000px;
   height: auto;
-  padding-left: 90px;
-  width: calc(100% - 350px);
+  margin-left: 90px;
+  width: calc(100% - 440px);
 }
 .products_cart_div{
   min-height: 200px;
@@ -16,25 +23,23 @@
   width: calc(100% - 350px);
 }
 .checkout_div{
-  background-color: yellow;
   height: 400px;
   max-width:300px;
   width:40%;
   padding-left: 10px;
-  padding-left: 10px;
-  position: absolute;
   z-index: 5;
+  float: right;
+  position: absolute;
   top: 180px;
-  right: 30px;
+  right: 80px;
 }
 .course_overview_div {
   border-style: solid;
   border-width: 1px;
   height: 110px;
-  width:100%;
-  border-color: #707070;
+  width:calc(100% - 50px);
+  border-color: #E5E5E5;
   margin-bottom: 10px;
-  /* padding-left: 10px;  */
 }
 .course_overview_div ul{
   text-align:left;
@@ -43,6 +48,7 @@
   padding-right: 10px;
   display:inline-block;
   width: calc(100% - 260px);
+
   height: 80px;
   position: relative;
 }
@@ -57,9 +63,62 @@
   display: inline-block;
   margin-top: 30px;
   padding-right: 20px;
-  width: 90px;
+  width: 100px;
   float: right;
 }
 .remove_btn {
   font-size: 15px;
+}
+.name {
+  font-weight: bold;
+}
+.trainer {
+  color: #767676;
+}
+
+.rating{
+  color:#EBC805;
+}
+#remove_btn {
+  border: 0;
+  width:100px;
+  background-color: transparent;
+  font-size: 13px;
+}
+.checkout_btn{
+  height: 50px;
+  width: 280px;
+
+  text-decoration: none;
+  display: block;
+  margin-top: 20px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+  padding-right: 20px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  color: white;
+  background-color: #297F87;
+  border: 2px solid #297F87;
+
+}
+.checkout_btn:hover{
+  text-decoration: none;
+  background-color: #1C5B60;
+  color: white;
+}
+#apply_btn{
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  background-color: #F4C02C;
+  border: 2px solid #F4C02C;
+}
+#apply_btn:hover{
+  text-decoration: none;
+  background-color: transparent;
+  color: #F4C02C;
 }
