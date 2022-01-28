@@ -313,7 +313,7 @@ def signout():
     return redirect(url_for("homepage"))
 
 
-@app.route("/reset", methods=['GET', 'POST'])
+@app.route("/forget_password", methods=['GET', 'POST'])
 def reset1():
     reset_form1 = ForgetPassword1(request.form)
     if request.method == "POST":
@@ -329,14 +329,22 @@ def reset1():
     return render_template("reset.html", form=reset_form1)
 
 
-@app.route("/reset/<id>", methods=['GET', 'POST'])
+@app.route("/forget_password/<id>", methods=['GET', 'POST'])
 def reset2(id):
     reset_form2 = ForgetPassword2(request.form)
     user = db.collection("Users").document(str(id)).get().to_dict()
     qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
     if request.method == "POST":
-        pass
+        if request.form["ans1"] == qns[0] and request.form["ans2"] == qns[1] and request.form["ans3"] == qns[2]:
+            return redirect(url_for("reset3"))
     return render_template("reset2.html", form=reset_form2, qns=qns)
+
+
+@app.route("/forget_password/<id>/reset", methods=['GET', 'POST'])
+def reset3(id):
+    reset_form3 = ForgetPassword3(request.form)
+
+    return render_template("reset3.html", form=reset_form3)
 
 
 @app.route('/account', methods=['GET', 'POST'])
@@ -354,6 +362,10 @@ def account():
         elif request.form["displayInfo"] == "Update":
             db.collection("Users").document(str(current_user.get_id())).update({"username": display_info.username.data})
             return redirect(url_for("account"))
+    if request.method == "POST" and request.form["delete"] == "Delete Account":
+        db.collection("Users").document(str(current_user.get_id())).delete()
+        logout_user()
+        redirect(url_for("homepage"))
     return render_template("account.html", user=user, displayinfo=display_info)
 
 
