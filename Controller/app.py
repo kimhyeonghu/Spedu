@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 import pyrebase
+import shelve
 import firebase_admin
 from firebase_admin import credentials, firestore
 from firebase_admin import storage as storage_firbase_admin
@@ -9,7 +10,7 @@ import random
 import sys
 import json
 sys.path.insert(0, '../Model')
-from Course import Course
+from Course import *
 from Product import Product
 from Forms import *
 from User import *
@@ -97,9 +98,13 @@ def course_CRUD(course, method):
             trainer = doc.to_dict()['trainer']
             video_link = doc.to_dict()['video_link']
             tag = doc.to_dict()['tag']
-            course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
+            if course=="search":
+                course_loaded = Course_For_Search(courseID, description, short_description, duration, image, learning_outcome, level, name,
+                            price, rating, reviews, students_count, trainer, video_link,tag, 0)
+            else:
+                course_loaded = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
                             price, rating, reviews, students_count, trainer, video_link,tag)
-            courses.append(course)
+            courses.append(course_loaded)
         return courses
     elif method == 'update':
         docs = db.collection('Courses').where("courseID", "==", course.courseID).get()
@@ -141,6 +146,37 @@ def load_top_courses(courses):
             top_course_list.append(course)
 
     return top_course_list
+
+def get_courses_from_search(search_value):
+    search_value = search_value.lower()
+    courses = course_CRUD(course="search", method='load')
+    filtered_courses=[]
+    related_tags=[]
+    for course in courses:
+        if search_value in course.name.lower():
+            course.search_points += 2
+            #related_tags = [tag for tag in related_tags if tag in course.tag]
+            related_tags += list(set(course.tag) - set(related_tags))
+        if search_value in course.tag:
+            course.search_points += 2
+            related_tags += list(set(course.tag) - set(related_tags))
+
+        for related_tag in related_tags:
+            if related_tag in course.tag:
+                course.search_points += 1
+        print(course.search_points)
+    print(related_tags)
+    courses.sort(key=lambda x: x.search_points, reverse=True)
+    print(5890238092842)
+    print(courses)
+    filtered_courses = [course for course in courses if course.search_points >= 2]
+    print(filtered_courses)
+    return filtered_courses
+
+def get_products_from_search(search_value):
+    products=load_products()
+    filtered_products=[]
+    return ""
 
 
 def load_products():
@@ -196,7 +232,7 @@ def create_new_product():
 def search_result():
     search_input = request.args.get("search_input")
     print(search_input)
-    return render_template('search_page.html', search_results=search_input)
+    return render_template('search_page.html', search_results=get_courses_from_search(search_input))
 
 
 def load_delete(productID):
@@ -258,11 +294,10 @@ def signup1():
         user = User(sign_up_form1.username.data, sign_up_form1.email.data, hashed_password, id)
         db.collection("Users").document(str(id)).set(user.to_dict())
         login_user(user)
-        try:
-            auth.create_user_with_email_and_password(sign_up_form1.email.data, sign_up_form1.password.data)
-            user = auth.current_user
-        except:
-            print("Unable to login")
+
+        auth.create_user_with_email_and_password(sign_up_form1.email.data, sign_up_form1.password.data)
+        user = auth.current_user
+
         return redirect(url_for("signup2"))
     return render_template('signup.html', form=sign_up_form1)
 
@@ -298,11 +333,10 @@ def signin():
                 user = User.from_dict(user[0].to_dict())
                 # login_user(user)
                 login_user(user, remember=sign_in_form.remember.data)
-                try:
-                    auth.sign_in_with_email_and_password(sign_in_form.email.data, sign_in_form.password.data)
-                    user = auth.current_user
-                except:
-                    print("Unable to login")
+
+                auth.sign_in_with_email_and_password(sign_in_form.email.data, sign_in_form.password.data)
+                user = auth.current_user
+
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for("account"))
         else:
@@ -551,19 +585,21 @@ def create_new_course():
     course_level = request.form['course_level']
     video_link = request.form['video_link']
     course_image = request.files['course_image']
-    tag = request.files['tag']
+    tag = request.form['tag'].split(",")
 
 
 
     storage.child('/courses/image_of_{}'.format(courseID)).put(course_image)
-
+    course_img_link=""
+    user1 = auth.current_user
+    print(user1)
     course_img_link = storage.child('/courses/image_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
 
     print(course_img_link)
     course_rating = 0
     course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     students_count = 0
-    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link)
+    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link,tag)
     course_CRUD(course=new_course, method='create')
     return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
 
@@ -583,7 +619,7 @@ def update_delete_course():
 def update_page(current_courseID):
     current_course = db.collection('Courses').where("courseID", "==", current_courseID).get()[0].to_dict()
     print(current_course)
-    return render_template('edit_course_page.html', selected_course=current_course)
+    return render_template('edit_course_page.html', selected_course=current_course, selected_course_tag = json.dumps(current_course['tag']))
 
 
 @app.route('/admin_page/courses/about_course/update/', methods=['POST'])
@@ -598,7 +634,7 @@ def update_course():
     learning_outcome = request.form['learning_outcome']
     course_level = request.form['course_level']
     video_link = request.form['video_link']
-    tag = request.form['tag']
+    tag = request.form['tag'].split(",")
     course_image = request.files['course_image']
     print(course_image.filename)
     if course_image.filename == '':
