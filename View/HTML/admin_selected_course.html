@@ -5,6 +5,12 @@
 {% endblock %}
 
 {% block body %}
+<div id="navigation_panel_div">
+  <a href="{{url_for('admin_page_courses')}}" style="color:black;">
+    <img class="horizontal" style="width:14px;" src="../../../../static/images/arrow-left.png" alt="arrow-left">
+     Back
+  </a>
+</div>
 <div class="about_course_div">
   <div class="course_overview_div">
     <h1>{{selected_course.name}}</h1>

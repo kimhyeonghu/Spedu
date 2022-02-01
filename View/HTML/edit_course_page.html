@@ -134,8 +134,22 @@
 
       window.onload = load_image;
     </script>
+    <li>
+      <ul>
+        <li>
+          <button type="button" onclick="update()" class="update-course-btn">Update</button>
+        </li>
+        <li>
+          <a onclick="cancel()">
+            <div class="cancel-btn">
+            Cancel
+            </div>
+          </a>
+        </li>
+      </ul>
+    </li>
 
-    <li style="height:50px;"><button onclick="update()" class="update-course-btn">Update</button></li>
+
     <script type="text/javascript">
       function update() {
         var tag_lists = document.getElementsByClassName('tag_li');
@@ -146,16 +160,15 @@
           } else {
             tags = tags + "," +tag_lists[i].innerText;
           }
-
         }
         document.getElementById("tag_list").value = tags;
         document.getElementById("update_course_form").submit();
       }
       function cancel() {
-        window.location.href = "admin_page.html";
+        window.history.back();
       }
     </script>
-    <li><button type="button" onclick="cancel()" name="button"></button></li>
+
   </ul>
 </form>
 </div>

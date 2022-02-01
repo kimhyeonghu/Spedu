@@ -580,7 +580,7 @@ def create_new_course():
     course_short_desc = request.form['course_short_desc']
     course_desc = request.form['course_desc']
     course_duration = request.form['course_duration']
-    course_price = request.form['course_price']
+    course_price = float(request.form['course_price'])
     learning_outcome = request.form['learning_outcome']
     course_level = request.form['course_level']
     video_link = request.form['video_link']
@@ -630,7 +630,7 @@ def update_course():
     course_short_desc = request.form['course_short_desc']
     course_desc = request.form['course_desc']
     course_duration = request.form['course_duration']
-    course_price = request.form['course_price']
+    course_price = float(request.form['course_price'])
     learning_outcome = request.form['learning_outcome']
     course_level = request.form['course_level']
     video_link = request.form['video_link']

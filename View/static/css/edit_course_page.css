@@ -35,18 +35,18 @@
 }
 .update-course-btn {
 
-  height: 40px;
+  height: auto;
   width: 140px;
   float: right;
-  padding-bottom: 0px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-decoration: none;
-  display: block;
+  display: inline-block;
   margin-top: 40px;
   margin-right: 20px;
   font-size: 17px;
   text-align: center;
   font-weight: 600;
-  padding-right: 20px;
   transition-duration: 0.4s;
   cursor: pointer;
   color: white;
@@ -58,6 +58,32 @@
   text-decoration: none;
   background-color: white;
   color: #1E5D63;
+}
+.cancel-btn {
+
+  height: auto;
+  width: 140px;
+  float: right;
+  text-decoration: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: inline-block;
+  margin-top: 40px;
+  margin-right: 20px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  color: black;
+  background-color: white;
+  border: 2px solid black;
+
+}
+.cancel-btn:hover{
+  text-decoration: none;
+  background-color: black;
+  color: white;
 }
 .tag_li {
   display: inline;
