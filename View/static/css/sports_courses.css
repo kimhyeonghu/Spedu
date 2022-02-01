@@ -178,3 +178,7 @@
   height:400px;
   background-color: red;
 }
+.filter_btn {
+  background-color: transparent;
+  border-style: none;
+}

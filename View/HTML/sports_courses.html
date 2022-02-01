@@ -12,12 +12,26 @@
 {% endblock %}
 
 {% block body %}
+{% set courses_filtered = [] %}
+{% for course in courses %}
 
+{% if filter_type == 'rating' %}
+
+{% if course.rating >= filter_value|float %}
+{{ courses_filtered.append(course) }}
+{% endif %}
+
+{% endif %}
+
+{% endfor %}
+{% if courses_filtered|length == 0 %}
+{% set courses_filtered = courses %}
+{% endif %}
 <div class="course-panel">
       <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Sports Course</h2>
       <br>
       <div class="top-course-div">
-        <h5 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Top Courses</h5>
+        <h4 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Top Courses</h4>
         <ul class="top-course-ul">
 
           {% for i in range(top_courses|length) %}
@@ -47,38 +61,81 @@
 <div class="view-courses">
   <div class="course-sort">
     <ul>
-      <li><h5 style="font-family: 'STIXGeneral', serif;font-weight: bold;">All Courses</h5></li>
+      <li><h4 style="font-family: 'STIXGeneral', serif;font-weight: bold;">All Courses</h4></li>
       <br>
       <li>
         <label for="dropdown" style="font-size:14px;font-weight:bold;">Sort by : </label>
         <div class="dropdown" >
           <button class="dropbtn" id="dropbtn">Popularity</button>
           <div class="dropdown-content">
-              <a onclick="sort('popularity')">Popularity</a>
-              <a onclick="sort('price high to low')">price high to low</a>
-              <a onclick="sort('price low to high')">price low to high</a>
-              <a onclick="sort('rating high to low')">Rating high to low</a>
-              <a onclick="sort('rating low to high')">rating low to high</a>
+              <a onclick="sort_filter_courses('popularity','{{filter_type}}','{{filter_value}}')">Popularity</a>
+              <a onclick="sort_filter_courses('price high to low','{{filter_type}}','{{filter_value}}')">price high to low</a>
+              <a onclick="sort_filter_courses('price low to high','{{filter_type}}','{{filter_value}}')">price low to high</a>
+              <a onclick="sort_filter_courses('rating high to low','{{filter_type}}','{{filter_value}}')">Rating high to low</a>
+              <a onclick="sort_filter_courses('rating low to high','{{filter_type}}','{{filter_value}}')">rating low to high</a>
           </div>
-          <form action='/sports_courses/' id="sort_attr_form" method="get">
-          <input id="sort_attr" type="text" name="sort_attr" value="" style="display:none;">
-          </form>
-          <script type="text/javascript">
-            function sort(sort_attr) {
-              document.getElementById('sort_attr').value = sort_attr;
-              document.getElementById('sort_attr_form').submit();
-              // $( "#courses-list" ).load(window.location.href + " #courses-list" );
-            }
-          </script>
         </div>
       </li>
     </ul>
+    <form action='/sports_courses/' id="sort_filter_courses_form" method="get">
+    <input id="sort_attr" type="text" name="sort_attr" value="" style="display:none;">
+    <input id="filter_type" type="text" name="filter_type" value="" style="display:none;">
+    <input id="filter_value" type="text" name="filter_value" value="" style="display:none;">
+    </form>
   </div>
       <div class="course-filter">
         <ul>
           <li style="">
             <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
             <h6>Ratings</h6>
+            <input onclick="sort_filter_courses('{{sort_attribute}}','rating',4.5)" type="radio" id="rating_filter_4.5" name="rating_filter" value="4.5">
+            <label for="rating_filter">
+              <img src="../../static/images/4.5.png" style="padding-bottom:5px;" alt="">4.5 & up
+            </label><br>
+            <input onclick="sort_filter_courses('{{sort_attribute}}','rating',4.0)" type="radio" id="rating_filter_4.0" name="rating_filter" value="4.5">
+            <label for="rating_filter">
+              <img src="../../static/images/4.0.png" style="padding-bottom:5px;" alt="">4.0 & up
+            </label><br>
+            <input onclick="sort_filter_courses('{{sort_attribute}}','rating',3.5)" type="radio" id="rating_filter_3.5" name="rating_filter" value="4.5">
+            <label for="rating_filter">
+              <img src="../../static/images/3.5.png" style="padding-bottom:5px;" alt="">3.5 & up
+            </label><br>
+            <input onclick="sort_filter_courses('{{sort_attribute}}','rating',3.0)" type="radio" id="rating_filter_3.0" name="rating_filter" value="4.5">
+            <label for="rating_filter">
+              <img src="../../static/images/3.0.png" style="padding-bottom:5px;" alt="">3.0 & up
+            </label><br>
+            <button type="button" name="button" onclick="sort_filter_courses('{{sort_attribute}}',null,null)">Clear Filters</button>
+            <script type="text/javascript">
+              function sort_filter_courses(sort_attr,type,value) {
+                document.getElementById('filter_value').value = value;
+                document.getElementById('sort_attr').value = sort_attr;
+                document.getElementById('sort_attr').value = sort_attr;
+                if (type=="rating") {
+                  document.getElementById('filter_type').value = 'rating';
+
+                }
+                document.getElementById('sort_filter_courses_form').submit();
+
+              }
+
+              const filter_type = '{{filter_type}}';
+              const filter_value = '{{filter_value}}';
+              var filter_value_id = '';
+              if (filter_type=="rating") {
+                if (filter_value == "4.5") {
+                  filter_value_id = 'rating_filter_4.5';
+                } else if (filter_value == "4") {
+                  filter_value_id = 'rating_filter_4.0';
+                } else if (filter_value == "3.5") {
+                  filter_value_id = 'rating_filter_3.5';
+                } else if (filter_value == "3") {
+                  filter_value_id = 'rating_filter_3.0';
+                }
+                const radioBtn = document.getElementById(filter_value_id);
+                radioBtn.checked = true;
+              }
+
+            </script>
           </li>
           <li style="">
             <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
@@ -88,10 +145,6 @@
             <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
             <h6>Levels</h6>
           </li>
-          <li style="">
-            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
-            <h6>Video Duration</h6>
-          </li>
         </ul>
       </div>
       <div class="courses-list" id="courses-list">
@@ -100,47 +153,44 @@
         <input id="input" type="text" name="selected_courseID" value="" style="display:none;">
 
 
-
-
-
         {% if sort_attribute == 'popularity' %}
-          {% for course in courses|sort(attribute='students_count', reverse=True) %}
+        {% for course in courses_filtered|sort(attribute='students_count', reverse = True) %}
         <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
-
-            <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
-
-            <ul class="course-description">
-              <li class="name" id="name_{{course.name}}">{{course.name}}</li>
-              <li class="description">{{course.short_description}}</li>
-              <li class="trainer">{{course.trainer}}</li>
-              <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
-              <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
-            </ul>
-            <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
-          <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:10px;margin-bottom:8;">
+        <img class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
+        <ul class="course-description">
+          <li class="name" id="name_{{course.name}}">{{course.name}}</li>
+          <li class="description">{{course.short_description}}</li>
+          <li class="trainer">{{course.trainer}}</li>
+          <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+          <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
+        </ul>
+        <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
+        <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:10px;margin-bottom:8;">
         </div>
-            </a>
-          {% endfor %}
+        </a>
+
+        {% endfor %}
         {% elif sort_attribute == 'rating high to low' %}
-          {% for course in courses|sort(attribute='rating', reverse = True) %}
-            <a onclick="submit('{{course.courseID}}')">
-        <div class="courses-list-box">
-            <img class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
-            <ul class="course-description">
-              <li class="name" id="name_{{course.name}}">{{course.name}}</li>
-              <li class="description">{{course.short_description}}</li>
-              <li class="trainer">{{course.trainer}}</li>
-              <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
-              <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
-            </ul>
-            <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
+          {% for course in courses_filtered|sort(attribute='rating', reverse = True) %}
+          <a onclick="submit('{{course.courseID}}')">
+          <div class="courses-list-box">
+          <img class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
+          <ul class="course-description">
+            <li class="name" id="name_{{course.name}}">{{course.name}}</li>
+            <li class="description">{{course.short_description}}</li>
+            <li class="trainer">{{course.trainer}}</li>
+            <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+            <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
+          </ul>
+          <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
           <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:10px;margin-bottom:8;">
-        </div>
-            </a>
+          </div>
+          </a>
+
           {% endfor %}
         {% elif sort_attribute == 'rating low to high' %}
-          {% for course in courses|sort(attribute='rating', reverse = False) %}
+          {% for course in courses_filtered|sort(attribute='rating', reverse = False) %}
             <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
             <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
@@ -157,7 +207,7 @@
             </a>
           {% endfor %}
         {% elif sort_attribute == 'price high to low' %}
-          {% for course in courses|sort(attribute='price', reverse = True) %}
+          {% for course in courses_filtered|sort(attribute='price', reverse = True) %}
             <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
             <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
@@ -174,7 +224,7 @@
             </a>
           {% endfor %}
         {% elif sort_attribute == 'price low to high' %}
-          {% for course in courses|sort(attribute='price', reverse = False) %}
+          {% for course in courses_filtered|sort(attribute='price', reverse = False) %}
             <a onclick="submit('{{course.courseID}}')">
           <div class="courses-list-box">
               <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
@@ -191,8 +241,7 @@
             </a>
           {% endfor %}
         {% else %}
-          {% for i in range(courses|length) %}
-            {% set course = courses[i] %}
+          {% for course in courses_filtered|sort(attribute='students_count', reverse = True) %}
             <a onclick="submit('{{course.courseID}}')">
           <div class="courses-list-box">
               <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >

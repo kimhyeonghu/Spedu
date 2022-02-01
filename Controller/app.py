@@ -418,6 +418,8 @@ def sports_courses_sorted():
     sort_attr = ''
     if request.method == 'GET':
         sort_attr = request.args.get("sort_attr")
+        filter_type = request.args.get("filter_type")
+        filter_value = request.args.get("filter_value")
 
     print(sort_attr)
     all_courses = course_CRUD(course=None, method='load')
@@ -426,7 +428,7 @@ def sports_courses_sorted():
     for course in all_courses:
         courseID_array.append(course.courseID)
     print(courseID_array)
-    return render_template('sports_courses.html', courseID_array= json.dumps(courseID_array), courses=all_courses, top_courses=load_top_courses(all_courses), sort_attribute = sort_attr)
+    return render_template('sports_courses.html', courseID_array= json.dumps(courseID_array), courses=all_courses, top_courses=load_top_courses(all_courses), sort_attribute = sort_attr, filter_type=filter_type,filter_value=filter_value)
 
 
 @app.route('/sports_courses/about_course/', methods=['GET'])

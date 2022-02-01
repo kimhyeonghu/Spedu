@@ -1,0 +1,14 @@
+<a onclick="submit('{{course.courseID}}')">
+<div class="courses-list-box">
+<img class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
+<ul class="course-description">
+  <li class="name" id="name_{{course.name}}">{{course.name}}</li>
+  <li class="description">{{course.short_description}}</li>
+  <li class="trainer">{{course.trainer}}</li>
+  <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+  <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
+</ul>
+<div class="price">${{'%0.2f'| format(course.price|float)}}</div>
+<hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:10px;margin-bottom:8;">
+</div>
+</a>
