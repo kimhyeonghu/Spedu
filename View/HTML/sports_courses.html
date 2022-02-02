@@ -15,7 +15,6 @@
 {% set courses_filtered = [] %}
 {% set courses_filtered_byprice = [] %}
 {% set courses_filtered_byrating = [] %}
-{% set courses_filtered = courses %}
 {% set courses_filtered = filter_courses(courses, rating_value, price_value, level_value) %}
 
 
@@ -207,9 +206,13 @@
         </script>
       <form action='/sports_courses/about_course/' id="selected_course_form" method="get">
         <input id="input" type="text" name="selected_courseID" value="" style="display:none;">
+        {% if courses_filtered|length == 0 %}
+        <div id="no_course_div">
+          <img src="../../static/images/no-results-found.jpeg" alt="">
+          <p>No results found</p>
 
-
-        {% if sort_attribute == 'popularity' %}
+        </div>
+        {% elif sort_attribute == 'popularity' %}
         {% for course in courses_filtered|sort(attribute='students_count', reverse = True) %}
         <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
