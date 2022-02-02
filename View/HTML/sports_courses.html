@@ -49,7 +49,7 @@
       </div>
 </div>
 
-<div class="view-courses">
+<div class="view-courses" id="view-courses">
   <div class="course-sort">
     <ul>
       <li><h4 style="font-family: 'STIXGeneral', serif;font-weight: bold;">All Courses</h4></li>
@@ -146,64 +146,7 @@
         </ul>
       </div>
       <div class="courses-list" id="courses-list">
-        <script type="text/javascript">
-          function sort_filter_courses(sort_attr,rating_value,price_value,level_value) {
-            document.getElementById('rating_value').value = rating_value;
-            document.getElementById('price_value').value = price_value;
-            document.getElementById('level_value').value = level_value;
-            document.getElementById('sort_attr').value = sort_attr;
-            document.getElementById('sort_filter_courses_form').submit();
 
-          }
-
-          const rating_value = '{{rating_value}}';
-          var rating_value_id = '';
-
-          const price_value = '{{price_value}}';
-          var price_value_id = '';
-
-          const level_value = '{{level_value}}';
-          var level_value_id = '';
-
-            if (rating_value == "4.5") {
-              rating_value_id = 'rating_filter_4.5';
-            } else if (rating_value == "4") {
-              rating_value_id = 'rating_filter_4.0';
-            } else if (rating_value == "3.5") {
-              rating_value_id = 'rating_filter_3.5';
-            } else if (rating_value == "3") {
-              rating_value_id = 'rating_filter_3.0';
-            }
-
-            if (price_value == "0") {
-              price_value_id = 'free';
-            } else if (price_value == "20") {
-              price_value_id = '20';
-            } else if (price_value == "50") {
-              price_value_id = '50';
-            } else if (price_value == "100") {
-              price_value_id = '100';
-            }
-
-            if (level_value == "All Levels") {
-              level_value_id = 'All_Levels';
-            } else if (level_value == "Beginner") {
-              level_value_id = 'Beginner';
-            } else if (level_value == "Intermediate") {
-              level_value_id = 'Intermediate';
-            } else if (level_value == "Professionals") {
-              level_value_id = 'Professionals';
-            }
-
-
-          const ratingRadioBtn = document.getElementById(rating_value_id);
-          ratingRadioBtn.checked = true;
-          const priceRadioBtn = document.getElementById(price_value_id);
-          priceRadioBtn.checked = true;
-          const levelRadioBtn = document.getElementById(level_value_id);
-          levelRadioBtn.checked = true;
-
-        </script>
       <form action='/sports_courses/about_course/' id="selected_course_form" method="get">
         <input id="input" type="text" name="selected_courseID" value="" style="display:none;">
         {% if courses_filtered|length == 0 %}
@@ -322,12 +265,68 @@
 
         </form>
       </div>
-      <script type="text/javascript">
-        function submit(id) {
-            document.getElementById('input').value = id;
-            document.getElementById('selected_course_form').submit();
-        }
-      </script>
-</div>
 
+
+</div>
+<script type="text/javascript">
+  function submit(id) {
+      document.getElementById('input').value = id;
+      document.getElementById('selected_course_form').submit();
+  }
+</script>
+<script type="text/javascript">
+  function sort_filter_courses(sort_attr,rating_value,price_value,level_value) {
+    document.getElementById('rating_value').value = rating_value;
+    document.getElementById('price_value').value = price_value;
+    document.getElementById('level_value').value = level_value;
+    document.getElementById('sort_attr').value = sort_attr;
+    document.getElementById('sort_filter_courses_form').submit();
+
+  }
+
+  var rating_value = '{{rating_value}}';
+  var rating_value_id = '';
+  if (rating_value == "4.5") {
+    rating_value_id = 'rating_filter_4.5';
+  } else if (rating_value == "4") {
+    rating_value_id = 'rating_filter_4.0';
+  } else if (rating_value == "3.5") {
+    rating_value_id = 'rating_filter_3.5';
+  } else if (rating_value == "3") {
+    rating_value_id = 'rating_filter_3.0';
+  }
+  var ratingRadioBtn = document.getElementById(rating_value_id);
+  ratingRadioBtn.checked = true;
+
+
+  var price_value = '{{price_value}}';
+  var price_value_id = '';
+  if (price_value == "0") {
+    price_value_id = 'free';
+  } else if (price_value == "20") {
+    price_value_id = '20';
+  } else if (price_value == "50") {
+    price_value_id = '50';
+  } else if (price_value == "100") {
+    price_value_id = '100';
+  }
+  var priceRadioBtn = document.getElementById(price_value_id);
+  priceRadioBtn.checked = true;
+
+
+  var level_value = '{{level_value}}';
+  var level_value_id = '';
+  if (level_value == "All Levels") {
+    level_value_id = 'All_Levels';
+  } else if (level_value == "Beginner") {
+    level_value_id = 'Beginner';
+  } else if (level_value == "Intermediate") {
+    level_value_id = 'Intermediate';
+  } else if (level_value == "Professionals") {
+    level_value_id = 'Professionals';
+  }
+  var levelRadioBtn = document.getElementById(level_value_id);
+  levelRadioBtn.checked = true;
+
+</script>
 {% endblock %}
