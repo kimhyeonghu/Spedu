@@ -94,6 +94,7 @@
 }
 .view-courses {
   height: auto;
+  min-height: 700px;
   width: 100%;
   margin-top: 60px;
 

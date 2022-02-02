@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
+from django_jinja import library
 import pyrebase
 import shelve
 import firebase_admin
@@ -418,17 +419,15 @@ def sports_courses_sorted():
     sort_attr = ''
     if request.method == 'GET':
         sort_attr = request.args.get("sort_attr")
-        filter_type = request.args.get("filter_type")
-        filter_value = request.args.get("filter_value")
+        rating_value = request.args.get("rating_value")
+        price_value = request.args.get("price_value")
+        level_value = request.args.get("level_value")
 
-    print(sort_attr)
     all_courses = course_CRUD(course=None, method='load')
-    print(all_courses[0].name)
     courseID_array = []
     for course in all_courses:
         courseID_array.append(course.courseID)
-    print(courseID_array)
-    return render_template('sports_courses.html', courseID_array= json.dumps(courseID_array), courses=all_courses, top_courses=load_top_courses(all_courses), sort_attribute = sort_attr, filter_type=filter_type,filter_value=filter_value)
+    return render_template('sports_courses.html', courseID_array= json.dumps(courseID_array), courses=all_courses, top_courses=load_top_courses(all_courses), sort_attribute = sort_attr,rating_value=rating_value,price_value=price_value,level_value=level_value)
 
 
 @app.route('/sports_courses/about_course/', methods=['GET'])
@@ -690,6 +689,26 @@ def promo_code_form():
 def teach_on_spedu():
     return render_template('teach_on_spedu.html')
 
+def filter_courses(courses,rating_value,price_value,level_value):
+    filtered_list=[]
+    print(1)
+    if rating_value == None or rating_value == 'None':
+        rating_value = 0
+        print(2)
+    if price_value == None or price_value == 'None':
+        price_value = 1000000
+        print(3)
+    if level_value == None or level_value == 'None':
+        level_value = ["All Levels", "Beginner","Intermediate","Professionals"]
+        print(4)
+    for course in courses:
+        print(5)
+        if (course.rating >= float(rating_value) and course.price <= float(price_value) and course.level in level_value):
+            filtered_list.append(course)
+            print(6)
+    return filtered_list
+
+app.jinja_env.globals.update(filter_courses=filter_courses)
 
 if __name__ == "__main__":
     app.run(debug=True)
