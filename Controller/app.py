@@ -32,7 +32,7 @@ firebaseConfig = {
   "projectId": "spedu-3fd4f",
   "storageBucket": "spedu-3fd4f.appspot.com",
   "messagingSenderId": "297243626132",
-  "databaseURL":"https://spedu-3fd4f-default-rtdb.asia-southeast1.firebasedatabase.app/",
+  "databaseURL": "https://spedu-3fd4f-default-rtdb.asia-southeast1.firebasedatabase.app/",
   "appId": "1:297243626132:web:129e6edfab962e5ab24281"
 }
 # cred = credentials.Certificate("../serviceAccountKey.json")
@@ -101,10 +101,10 @@ def course_CRUD(course, method):
             tag = doc.to_dict()['tag']
             if course=="search":
                 course_loaded = Course_For_Search(courseID, description, short_description, duration, image, learning_outcome, level, name,
-                            price, rating, reviews, students_count, trainer, video_link,tag, 0)
+                            price, rating, reviews, students_count, trainer, video_link, tag, 0)
             else:
                 course_loaded = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
-                            price, rating, reviews, students_count, trainer, video_link,tag)
+                            price, rating, reviews, students_count, trainer, video_link, tag)
             courses.append(course_loaded)
         return courses
     elif method == 'update':
@@ -174,6 +174,7 @@ def get_courses_from_search(search_value):
     print(filtered_courses)
     return filtered_courses
 
+
 def get_products_from_search(search_value):
     products=load_products()
     filtered_products=[]
@@ -208,7 +209,7 @@ def create_new_product():
 
   #  product_img_link = storage.child(f"/products/image_of_"+productID).get_url(auth.current_user["idToken"])
 
-    product_img_link=""
+    product_img_link = ""
     product_category = request.form['product_category']
     product_description = request.form['product_description']
     product_rating = 0
@@ -508,7 +509,7 @@ def shopping_cart():
                 courses.append(course)
                 courseID_array.append(course.courseID)
         elif shopping_cart[index][0:2]=="PR":
-            products_docs = db.collection('Products').where("productID", "==" , shopping_cart[index]).get()
+            products_docs = db.collection('Products').where("productID", "==", shopping_cart[index]).get()
             for doc in products_docs:
                 productID = doc.to_dict()['productID']
                 category = doc.to_dict()['category']
@@ -526,7 +527,7 @@ def shopping_cart():
             pass
         index+=1
 
-    return render_template('Shopping Cart.html',courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products,current_username=current_user.get_username())
+    return render_template('Shopping Cart.html', courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products,current_username=current_user.get_username())
 
 
 @app.route('/spedu_store/')
@@ -595,8 +596,6 @@ def create_new_course():
     video_link = request.form['video_link']
     course_image = request.files['course_image']
     tag = request.form['tag'].split(",")
-
-
 
     storage.child('/courses/image_of_{}'.format(courseID)).put(course_image)
     course_img_link=""
@@ -699,11 +698,13 @@ def promo_code_form():
         return redirect(url_for('admin_page_promo_codes'))
     return render_template('promo_code_form.html', form=promo_code_info)
 
+
 @app.route('/teach_on_spedu/')
 def teach_on_spedu():
     return render_template('teach_on_spedu.html')
 
-def filter_courses(courses,rating_value,price_value,level_value):
+
+def filter_courses(courses, rating_value, price_value, level_value):
     filtered_list=[]
     print(1)
     if rating_value == None or rating_value == 'None':
@@ -713,7 +714,7 @@ def filter_courses(courses,rating_value,price_value,level_value):
         price_value = 1000000
         print(3)
     if level_value == None or level_value == 'None':
-        level_value = ["All Levels", "Beginner","Intermediate","Professionals"]
+        level_value = ["All Levels", "Beginner", "Intermediate", "Professionals"]
         print(4)
     for course in courses:
         print(5)
@@ -721,6 +722,7 @@ def filter_courses(courses,rating_value,price_value,level_value):
             filtered_list.append(course)
             print(6)
     return filtered_list
+
 
 app.jinja_env.globals.update(filter_courses=filter_courses)
 
