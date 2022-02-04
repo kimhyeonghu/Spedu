@@ -79,3 +79,4 @@ class User:
 class Trainer(User):
     def __init__(self, email, username, password, id):
         super().__init__(email, username, password, id)
+        self.__account_type = "Trainer"

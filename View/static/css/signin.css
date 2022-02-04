@@ -54,6 +54,11 @@ input #remember {
   padding-bottom: 25px;
   color: #8C98A9;
 }
+#incorrect {
+  text-align: center;
+  color: red;
+  margin-bottom: 0;
+}
 form input[type=submit] {
   background-color: #2E384D;
   color: white;

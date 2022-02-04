@@ -272,8 +272,11 @@ def signup1():
 def signup2():
     sign_up_form2 = SignUpForm2(request.form)
     if request.method == "POST" and sign_up_form2.validate():
+        hashed_ans1 = bcrypt.generate_password_hash(sign_up_form2.ans1.data).decode('utf-8')
+        hashed_ans2 = bcrypt.generate_password_hash(sign_up_form2.ans2.data).decode('utf-8')
+        hashed_ans3 = bcrypt.generate_password_hash(sign_up_form2.ans3.data).decode('utf-8')
         user = User(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
-        user.set_security_qns({"qns1": sign_up_form2.qns1.data, "ans1": sign_up_form2.ans1.data, "qns2": sign_up_form2.qns2.data, "ans2": sign_up_form2.ans2.data, "qns3": sign_up_form2.qns3.data, "ans3": sign_up_form2.ans3.data})
+        user.set_security_qns({"qns1": sign_up_form2.qns1.data, "ans1": hashed_ans1, "qns2": sign_up_form2.qns2.data, "ans2": hashed_ans2, "qns3": sign_up_form2.qns3.data, "ans3": hashed_ans3})
         db.collection("Users").document(str(current_user.get_id())).update({"security_qns": user.get_security_qns()})
         return redirect(url_for("account"))
     return render_template('signup2.html', form=sign_up_form2)
@@ -294,6 +297,7 @@ def signin():
     if request.method == "POST" and sign_in_form.validate():
         user = db.collection("Users").where("email", "==", sign_in_form.email.data).get()
         if user:
+            print("user exisst")
             if bcrypt.check_password_hash(user[0].to_dict()["password"], sign_in_form.password.data):
                 user = User.from_dict(user[0].to_dict())
                 # login_user(user)
@@ -305,8 +309,11 @@ def signin():
                     print("Unable to login")
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for("account"))
+            else:
+                flash("Invalid Email or Password.")
+                return render_template('signin.html', form=sign_in_form)
         else:
-            flash("Incorrect Login Credentials.")
+            flash("Invalid Email or Password.")
             return render_template('signin.html', form=sign_in_form)
     return render_template('signin.html', form=sign_in_form)
 
@@ -318,7 +325,7 @@ def signout():
     return redirect(url_for("homepage"))
 
 
-@app.route("/forget_password", methods=['GET', 'POST'])
+@app.route("/forget", methods=['GET', 'POST'])
 def reset1():
     reset_form1 = ForgetPassword1(request.form)
     if request.method == "POST":
@@ -334,18 +341,19 @@ def reset1():
     return render_template("reset.html", form=reset_form1)
 
 
-@app.route("/forget_password/<id>", methods=['GET', 'POST'])
+@app.route("/forget/<id>", methods=['GET', 'POST'])
 def reset2(id):
     # reset_form2 = ForgetPassword2(request.form)
     user = db.collection("Users").document(str(id)).get().to_dict()
     qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
     if request.method == "POST":
-        if request.form["ans1"] == user["security_qns"]["ans1"] and request.form["ans2"] == user["security_qns"]["ans2"] and request.form["ans3"] == user["security_qns"]["ans3"]:
+        # if request.form["ans1"] == user["security_qns"]["ans1"] and request.form["ans2"] == user["security_qns"]["ans2"] and request.form["ans3"] == user["security_qns"]["ans3"]:
+        if bcrypt.check_password_hash(user["security_qns"]["ans1"], request.form["ans1"]) and bcrypt.check_password_hash(user["security_qns"]["ans2"], request.form["ans2"]) and bcrypt.check_password_hash(user["security_qns"]["ans3"], request.form["ans3"]):
             return redirect(url_for("reset3", id=user["id"]))
     return render_template("reset2.html", qns=qns)
 
 
-@app.route("/forget_password/<id>/reset", methods=['GET', 'POST'])
+@app.route("/forget/<id>/reset", methods=['GET', 'POST'])
 def reset3(id):
     reset_form3 = ForgetPassword3(request.form)
     if request.method == "POST" and reset_form3.validate():
