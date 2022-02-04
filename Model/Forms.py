@@ -71,3 +71,4 @@ class PersonalInfo(Form):
 class promo_code_information(Form):
     name_of_code = StringField('Name of code', [validators.Length(min=1), validators.optional()])
     value = IntegerField('Value of Promo Code', [validators.Length(max=3), validators.optional()])
+    select = SelectField("", [validators.DataRequired()], choices=["Percentage","Discount amount"])

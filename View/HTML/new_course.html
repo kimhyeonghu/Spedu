@@ -6,7 +6,7 @@
 {% endblock %}
 {% block body %}
 <div class="new_course">
-  <form action="{{ url_for('create_new_course') }}" method="post" enctype="multipart/form-data">
+  <form action="{{ url_for('create_new_course') }}" method="post" enctype="multipart/form-data" id="create_course_form">
     <input type="text" name="course_image_input" value="" id="course_image_input" style="display:none;">
   <ul>
     <li style="height:40px;"><h2>New Course</h2></li>
@@ -16,11 +16,65 @@
     <li style="height:100px;"><p>Course Short Description</p><textarea name='course_short_desc' style="height:80px;" type="text" placeholder=""></textarea></li>
     <li style="height:180px;"><p>Course Description</p><textarea name='course_desc' style="height:160px;" type="text" placeholder=""></textarea></li>
     <li style="height:100px;"><p>Learning Outcome</p><textarea name='learning_outcome' style="height:80px;" type="text" placeholder=""></textarea></li>
-    <li style="height:50px;"><p>Course Level</p><textarea name='course_level' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;">
+      <p>Course Level</p>
+
+      <label for="All Levels" style="margin-right:10px;"><input type="radio" name="course_level" value="All Levels">All Levels</label>
+      <label for="Beginner" style="margin-right:10px;"><input type="radio" name="course_level" value="Beginner">Beginner</label>
+      <label for="Intermediate" style="margin-right:10px;"><input type="radio" name="course_level" value="Intermediate">Intermediate</label>
+      <label for="Professionals" style="margin-right:10px;"><input type="radio" name="course_level" value="Professionals">Professionals</label>
+    </li>
     <li style="height:50px;"><p>Video Link</p><textarea name='video_link' type="text" placeholder=""></textarea></li>
-    <li style="height:50px;"><p>Course Duration</p><textarea name='tag' type="text" placeholder=""></textarea></li>
-    <li style="height:50px;"><p>Course Tag</p><textarea name='course_duration' type="text" placeholder=""></textarea></li>
-    <li style="height:50px;"><p>Course Image</p><input name='course_image' type="file" placeholder=""></li>
+    <li style="height:50px;"><p>Course Duration</p><textarea name='course_duration' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;">
+      <p>Course Tag</p>
+      <input id="tag_input" type="text" placeholder="">
+      <input id="tag_list" name="tag" type="text" style="display:none;">
+      <button id="enter_tag_button" type="button" name="button" onclick=enter_tag()>Add</button>
+      <div style="display:inline-block;width:calc(100% - 200px);margin-left:200px;overflow: auto;white-space: nowrap;" id="tag_div">
+      </div>
+      <script type="text/javascript">
+        var tag_input = document.getElementById("tag_input");
+        tag_input.addEventListener("keyup", function(event) {
+          if (event.keyCode == 13) {
+            event.preventDefault();
+            if (tag_input.value.length > 0) {
+              document.getElementById("enter_tag_button").click();
+            }
+          }
+        });
+        function enter_tag() {
+          if (tag_input.value.length > 0) {
+              var div = document.getElementById('tag_div');
+              const list = document.createElement("LI");
+              list.className = "tag_li"
+              var colors = ['#FBF8F1', '#FDEBF7', '#EFDAD7', '#C0D8C0', '#FFE162', '#D9D7F1', '#E7FBBE', '#F5F5F5', '#FDF5CA'];
+              list.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+              const list_text = document.createTextNode(tag_input.value);
+              const remove_tag_btn = document.createElement('button');
+              remove_tag_btn.style.border = "none";
+              remove_tag_btn.style["background-color"] = "transparent";
+              remove_tag_btn.innerHTML = '<img src="../../../../static/images/remove_button.png" style="width:10px;height:10px;" />';
+              remove_tag_btn.onclick =  function(){
+                list.parentNode.removeChild(list);
+              };
+              list.appendChild(list_text);
+              list.appendChild(remove_tag_btn);
+              div.appendChild(list);
+
+          }
+
+        }
+        document.addEventListener('keypress', function (e) {
+            if (e.keyCode === 13 || e.which === 13) {
+                e.preventDefault();
+                return false;
+            }
+
+        });
+      </script>
+    </li>
+    <li style="height:50px;margin-top:30px;"><p>Course Image</p><input name='course_image' type="file" placeholder=""></li>
     <br><img id="course_img" src="#">
     <script type="text/javascript">
       window.addEventListener('load', function() {
@@ -35,7 +89,23 @@
         });
 
     </script>
-    <li style="height:50px;"><input type="submit" value="Create" class="new-course-btn"></li>
+    <li style="height:50px;"><button onclick="create()" value="Create" class="new-course-btn" id="create_btn">Create</button></li>
+      <script type="text/javascript">
+        function create() {
+          var tag_lists = document.getElementsByClassName('tag_li');
+          var tags = "";
+          for (var i = 0; i < tag_lists.length; i++) {
+            if (tags.length == 0) {
+              tags=tag_lists[i].innerText;
+            } else {
+              tags = tags + "," +tag_lists[i].innerText;
+            }
+
+          }
+          document.getElementById("tag_list").value = tags;
+          document.getElementById("create_course_form").submit();
+        }
+      </script>
   </ul>
 </form>
 </div>

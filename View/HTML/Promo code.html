@@ -1,27 +1,49 @@
+
+
 {% extends 'admin_page.html' %}
 {% block head %}
+<title>Admin Page Courses</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_page_courses.css') }}">
 
 {% endblock %}
 {% block body %}
-<div style="position:absolute;margin-top:100px;margin-left:220px;">
-    <h1>Promo codes</h1>
-    <hr>
-    <table id="Promo_code_table" style="padding-bottom:300px">
-        <tbody>
-        <tr>
-            <th>Code name</th><th>Value of Code</th>
-        </tr>
-        {% for i in promo_code_dict %}
-        <tr>
-            <td style="text-align: center">{{ i.to_dict()['Name']}}</td>
-            <td style="text-align: center">{{ i.to_dict()['Value']}}</td>
-        </tr>
-        {% endfor %}
-
-        </tbody>
-    </table>
-
-<a href="/admin_page/promo_code_form/" id="Addpc"><strong>Add new</strong></a>
+<div class="search_courses" >
+  <p>Search For Courses</p>
+  <div class="search_bar horizontal">
+    <img id="magnifying_glass" src="../../../static/images/magnifying-glass.png" alt="search">
+    <input type="text" placeholder="Search for courses">
+  </div>
+  <div class="new-course-btn-div">
+    <a href="/admin_page/promo_code_form/"><button class="new-course-btn">New Code</button></a>
+  </div>
 
 </div>
+
+
+  <div class="courses-list" style="position:absolute;margin-top:100px;margin-left:220px;">
+    <form action='/admin_page/courses/about_course/' id="selected_course_form" method="get">
+      <input id="input" type="text" name="selected_courseID" value="" style="display:none;">
+      {% for i in range(promo_code_dict|length) %}
+      {% set promo_code = promo_code_dict[i] %}
+      <a onclick="submit('promo_code')">
+        <div class="courses-list-box">
+            <ul class="course-description">
+              <li class="name" id="name_{{promo_code.name}}">{{promo_code.to_dict()['Name']}}</li>
+              <li class="description">{{promo_code.to_dict()['Value']}}</li>
+            </ul>
+          <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:10px;margin-bottom:8;">
+        </div>
+      </a>
+      {% endfor %}
+
+
+      <script type="text/javascript">
+        function submit(id) {
+            document.getElementById('input').value = id;
+            document.getElementById('selected_course_form').submit();
+        }
+      </script>
+    </form>
+
+  </div>
 {% endblock %}
