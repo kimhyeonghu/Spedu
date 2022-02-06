@@ -30,7 +30,13 @@
                   {{ form.remember.label(class="form-check-label") }}
                 </div>
                 <a class="forgotLink" href="/forget_password">Forgot Password?</a>
-                <!-- <p>Incorrect Email or Password</p> -->
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                      <p id="incorrect">{{ message }}</p>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
                 <input type="submit" value="SIGN IN">
               </form>
               <p id="register">Don't Have An Account? <a class="" href="/signup">Register Here</a></p>
