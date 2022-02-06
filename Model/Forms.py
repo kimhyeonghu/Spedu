@@ -59,7 +59,7 @@ class PersonalInfo(Form):
     first_name = StringField('First Name', [validators.Length(min=1), validators.optional()])
     last_name = StringField('Last Name', [validators.Length(min=1), validators.optional()])
     address = StringField('Address', [validators.Length(min=1), validators.optional()])
-    phone = IntegerField('Phone Number', [validators.Length(max=15), validators.optional()])
+    phone = IntegerField('Phone Number', [validators.Length(max=8), validators.optional()])
     Unit_no = IntegerField('Unit no', [validators.Length(min=16, max=16), validators.optional()])
     Postal_code= IntegerField('Postal Code', [validators.Length(min=6, max=6), validators.optional()])
     Name_on_card = StringField('Name on card',[validators.Length(min=1), validators.optional()])

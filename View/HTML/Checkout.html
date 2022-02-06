@@ -5,11 +5,48 @@
 {% endif %}
 
 {% block head %}
+<title>Checkout</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/shopping_cart.css') }}">
 {% endblock %}
 {% block body %}
 {% from "includes/_formHelper.html" import render_field %}
+<script type="text/javascript">
+	window.addEventListener('load', function() {
+    var courses_cart = JSON.parse({{courseID_array|tojson}});
+    var products_cart = JSON.parse({{productID_array|tojson}});
+    var shopping_cart = courses_cart.concat(products_cart);
+    var total_price = 0
+    for (var i = 0; i < shopping_cart.length; i++) {
+      if (true) {
+      }
+      var id = shopping_cart[i];
+      if (id.substring(0,2)=="CR") {
+        db.collection("Courses").where("courseID", "==", id).get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              total_price += parseFloat(doc.data()['price']);
+              document.getElementById('total_cost').innerHTML = "S$"+String(total_price.toFixed(2));
+            });
+        })
+      } else {
+        db.collection("Products").where("productID", "==", id).get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              total_price += parseFloat(doc.data()['price']);
+              document.getElementById('total_cost').innerHTML = "S$"+String(total_price.toFixed(2));
+            });
+        })
+      }
+
+    }
+
+  })
+
+</script>
+
 <style>
 h1{
+padding-top:20px;
 text-align:center;
 }
 #promo{
@@ -24,55 +61,275 @@ text-align:center;
 text-align:right;
 color: red;
 }
+.shopping_cart_page{
+  max-width: 1400px;
+  min-height: 450px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+.empty_cart_div {
+  width: 100%;
+  text-align: center;
+}
+.courses_cart_div{
+  min-height: 200px;
+  max-width: 1000px;
+  height: auto;
+  margin-left: 90px;
+  width: calc(100% - 440px);
+}
+.products_cart_div{
+  min-height: 200px;
+  height: auto;
+  padding-left: 90px;
+  width: calc(100% - 350px);
+}
+.checkout_div{
+  height: 400px;
+  max-width:300px;
+  width:40%;
+  padding-left: 10px;
+  z-index: 5;
+  float: right;
+  position: absolute;
+  top: 180px;
+  right: 80px;
+}
+.course_overview_div {
+  border-style: solid;
+  border-width: 1px;
+  height: 110px;
+  width:calc(100% - 50px);
+  border-color: #E5E5E5;
+  margin-bottom: 10px;
+}
+.course_overview_div ul{
+  text-align:left;
+  margin-left: 160px;
+  padding-top: 10px;
+  padding-right: 10px;
+  display:inline-block;
+  width: calc(100% - 260px);
+
+  height: 80px;
+  position: relative;
+}
+@media only screen and (max-width: 1000px) {
+  .course_overview_div{
+    height: 120px;
+
+  }
+}
+.price_div {
+  text-align: right;
+  display: inline-block;
+  margin-top: 30px;
+  padding-right: 20px;
+  width: 100px;
+  float: right;
+}
+.remove_btn {
+  font-size: 15px;
+}
+.name {
+  font-weight: bold;
+}
+.trainer {
+  color: #767676;
+}
+
+.rating{
+  color:#EBC805;
+
+}
 
 
 </style>
+<p>helo</p>
 <h1>Checkout</h1>
 <hr>
-<table class="tbl-cart" cellpadding="10" cellspacing="1">
-			<tbody>
-				<tr>
-					<th style="text-align:left;" >Product(s)</th>
-					<th style="text-align:right;" width="33%">Unit Price</th>
-					<th style="text-align:right;" width="33%">Quantity</th>
-					<th style="text-align:center;"width="30%">Total Price</th>
-				</tr>
-      </tbody>
-</table>
-<hr>
-<div id="promo">
-	<p>Promo code used:</p>
+<div class="shopping_cart_page">
+
+  {% if (courses_cart|length+products_cart|length) == 0 %}
+  <div class="empty_cart_div">
+    <img src="../static/images/empty-cart.svg" style="width:40%;min-width:300px;max-width:350px;display:inline-block">
+
+    <h3 style="margin-top:20px;">Your shopping cart is empty</h3>
+  </div>
+
+  </div>
+  {% elif (courses_cart|length) == 0 %}
+  <div class="products_cart_div">
+    <p style="font-size:19px;">{{products_cart|length}} Item(s) in Cart</p>
+    {% for i in range(products_cart|length) %}
+    {% set product = products_cart[i] %}
+    <div class="course_overview_div">
+        <img class="course-image" src="{{product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <ul>
+          <li class="name" id="name_{{product.name}}" style="font-size: 15px;padding-right:10px;">{{product.name}}</li>
+
+          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(product.rating|float)}}</li>
+          <li style="font-size: 13px;color: #767676;"></li>
+        </ul>
+        <div class="price_div">
+          <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(product.price|float)}}</p>
+        </div>
+
+    </div>
+    {% endfor %}
+  </div>
+  <div class="checkout_div">
+    <p style="font-size:19px;font-weight:300;margin-bottom:0px;">Total:</p>
+    <h1 id="total_cost">S$34.99</h1>
+  {% elif (products_cart|length) == 0 %}
+  <div class="courses_cart_div" id="courses_cart_div">
+    <p style="font-size:19px;">{{courses_cart|length}} Course(s) to checkout</p>
+
+    {% for i in range(courses_cart|length) %}
+    {% set course = courses_cart[i] %}
+    <div class="course_overview_div">
+        <img class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <ul>
+          <li class="name" id="name_{{course.name}}" style="font-size: 15px;padding-right:10px;">{{course.name}}</li>
+          <li class="trainer" style="font-size: 11px;">{{course.trainer}}</li>
+          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(course.rating|float)}}</li>
+          <li style="font-size: 13px;color: #767676;">{{course.duration}} total hours | For {{course.level}}</li>
+        </ul>
+        <div class="price_div">
+          <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(course.price|float)}}</p>
+          <button id="remove_btn" onclick="remove_course('{{course.courseID}}')"><img src="../static/images/trashcan.png" style="width:10px;display:inline-block"> Remove</button>
+        </div>
+
+    </div>
+    {% endfor %}
+  </div>
+  <div class="checkout_div">
+    <p style="font-size:19px;font-weight:300;margin-bottom:0px;">Total:</p>
+    <h1 id="total_cost">S$34.99</h1>
+  </div>
+  {% else %}
+  <div class="courses_cart_div" id="courses_cart_div">
+    <p style="font-size:19px;">{{courses_cart|length}} Course(s) to checkout</p>
+
+    {% for i in range(courses_cart|length) %}
+    {% set course = courses_cart[i] %}
+    <div class="course_overview_div">
+        <img class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <ul>
+          <li class="name" id="name_{{course.name}}" style="font-size: 15px;padding-right:10px;">{{course.name}}</li>
+          <li class="trainer" style="font-size: 11px;">{{course.trainer}}</li>
+          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(course.rating|float)}}</li>
+          <li style="font-size: 13px;color: #767676;">{{course.duration}} total hours | For {{course.level}}</li>
+        </ul>
+        <div class="price_div">
+          <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(course.price|float)}}</p>
+        </div>
+
+    </div>
+    {% endfor %}
+  </div>
+  <div class="products_cart_div">
+    <p style="font-size:19px;">{{products_cart|length}} Item(s) to checkout</p>
+    {% for i in range(products_cart|length) %}
+    {% set product = products_cart[i] %}
+    <div class="course_overview_div">
+        <img class="course-image" src="{{product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <ul>
+          <li class="name" id="name_{{product.name}}" style="font-size: 15px;padding-right:10px;">{{product.name}}</li>
+
+          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(product.rating|float)}}</li>
+          <li style="font-size: 13px;color: #767676;"></li>
+        </ul>
+        <div class="price_div">
+          <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(product.price|float)}}</p>
+        </div>
+
+    </div>
+    {% endfor %}
+  </div>
+  <div class="checkout_div">
+      <p style="font-size:19px;font-weight:300;margin-bottom:0px;"><strong>Total Amout due:</strong></p>
+    <h1 id="total_cost" style="color:red;">S$34.99</h1>
+  </div>
+  {% endif %}
+
+
 </div>
-<table id="prices">
-	<tbody>
-	<tr><td>Grand Total Of Items:</td><td id="price">$1234</td></tr>
-	<tr><td>Discount:</td><td id="price">$5</td></tr>
-	<tr><td>Shipping Fee:</td><td id="price">$10</td></tr>
-	</tbody>
-</table>
 <hr>
-<h1>Address</h1>
-<hr>
-<h2>Fill in the Mailing Address</h2>
-<p>Fill in the address where you want your product to be mailed to(For products only)</p>
-<p style="color: red">*Only fill in this part if you are buying any merchandise*</p>
-<hr>
+{% if (products_cart|length) == 0 %}
+<div id="payment">
+    <h1>Payment</h1>
+    <h3>Fill in Credit/Debit Card details</h3>
+    <p>Fill in the details of your credit/debit card to be able to purchase the items and courses</p>
+
+        <form method="POST">
+	        <div class="form-group">
+		        {{ render_field(form.Name_on_card, class="form-control") }}
+	        </div>
+	        <div class="form-group">
+		        {{ render_field(form.exp_date, class="form-control") }}
+	        </div>
+            <div class="form-group">
+		        {{ render_field(form.cvv_code, class="form-control") }}
+	        </div>
+            <div class="form-group">
+		        {{ render_field(form.card_number, class="form-control") }}
+	        </div>
+	        <br>
+	        <input type="submit" value="Submit" class="btn btn-primary"/>
+
+        </form>
+</div>
+{% else %}
 <div id="address">
-<form method="POST">
-	<div class="form-group">
-		{{ render_field(form.first_name, class="form-control") }}
-	</div>
-	<div class="form-group">
-		{{ render_field(form.last_name, class="form-control") }}
-	</div>
-	<br>
-	<input type="submit" value="Submit" class="btn btn-primary"/>
-
-</form>
+    <h1>Address</h1>
+    <h3>Fill in the Mailing Address</h3>
+    <p>Fill in the address where you want your product to be mailed to(For products only)</p>
+    <hr>
+        <form method="POST">
+	        <div class="form-group">
+		        {{ render_field(form.first_name, class="form-control") }}
+	        </div>
+	        <div class="form-group">
+		        {{ render_field(form.last_name, class="form-control") }}
+	        </div>
+            <div class="form-group">
+		        {{ render_field(form.phone, class="form-control") }}
+	        </div>
+            <div class="form-group">
+		        {{ render_field(form.address, class="form-control") }}
+	        </div>
+            <div class="form-group">
+		        {{ render_field(form.Unit_no, class="form-control") }}
+	        </div>
+            <div class="form-group">
+		        {{ render_field(form.Postal_code, class="form-control") }}
+	        </div>
+	        <br>
+        </form>
+            <hr>
+            <div id="payment">
+                <h1>Payment</h1>
+                <h3>Fill in Credit/Debit Card details</h3>
+                <p>Fill in the details of your credit/debit card to be able to purchase the items and courses</p>
+        <form method="POST">
+	        <div class="form-group">
+		        {{ render_field(form.Name_on_card, class="form-control") }}
+	        </div>
+	        <div class="form-group">
+		        {{ render_field(form.exp_date, class="form-control") }}
+	        </div>
+            <div class="form-group">
+		        {{ render_field(form.cvv_code, class="form-control") }}
+	        </div>
+            <div class="form-group">
+		        {{ render_field(form.card_number, class="form-control") }}
+	        </div>
+	        <br>
+            <input type="submit" value="Submit" class="btn btn-primary"/>
+        </form>
 </div>
-
-<h1>Payment</h1>
-<hr>
-<h2>Fill in Credit/Debit Card details</h2>
-<p>Fill in the details of your credit/debit card to be able to purchase the items</p>
+</div>
+{% endif %}
 {% endblock %}
