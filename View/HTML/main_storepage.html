@@ -16,27 +16,41 @@
 {% endblock %}
 
 {% block body %}
-
-
-
-  <div class="products-list" style="position:absolute;margin-top:-500px;margin-left:220px;">
-  <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
+<div class="course-panel">
+    <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
     <input id="input" type="text" name="selected_productID" value="" style="display:none;">
-      <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;position:absolute;top:-50px;">Sports Products</h2>
-      <h5 style="font-family: 'STIXGeneral', serif;font-weight: bold;position:absolute;top:25px;">Top Products</h5>
+      <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Sports Products</h2>
+      <br>
+      <div class="top-course-div">
+        <h4 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Top Products</h4>
+        <ul class="top-course-ul">
 
-      {% for i in range(products|length) %}
-      {% set product = products[i] %}
+          {% for i in range(products|length) %}
+          {% set product = products[i] %}
 
-      <a onclick="submit('{{product.productID}}')">
-        <div class="products-list-box">
-            <img class="image" src="{{product.image}}" style="width:200px;height:130px;margin-left:100px;" alt="Spedu">
-            <h5 class="name">{{products[i].name}}</h5>
-            <p class="category">{{products[i].category}}</p>
-            <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>
-        </div>
-      </a>
-      {% endfor %}
+          <li class="horizontal" style="margin-right: 20px;margin-top:10px;width:270px;;">
+            <a onclick="submit('{{product.productID}}')" class="course-a">
+            <div class="course-short-detail-box">
+
+              <img class="course-image" src="{{product.image}}" style="width:230px;height:130px;margin-top:10px;" alt="yoga_image" >
+              <ul>
+                <li class="name" style="font-size: 15px;padding-right:10px;">{{products[i].name}}</li>
+                <li class="category" style="font-size: 11px;">{{products[i].category}}</li>
+                <li style="font-size: 13px;">${{'%0.2f'| format(products[i].price|float)}}</li>
+              </ul>
+
+            </div>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+
+      </div>
+    </form>
+</div>
+
+
+
   <script type="text/javascript">
           function submit(id) {
               document.getElementById('input').value = id;
@@ -44,11 +58,10 @@
           }
   </script>
 
-  </form>
-</div>
+
 
 <div id="package-ad-banner">
-  <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:400px;margin-bottom:40px;width:82.5%;margin-right:auto;margin-left:auto;">
+  <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:-50px;margin-bottom:40px;width:82.5%;margin-right:auto;margin-left:auto;">
   <div class="btn-group">
     <a href="/store_searchpage"><button>Sports Wear</button></a>
     <a href="/store_searchpage"><button>Game Equipment</button></a>

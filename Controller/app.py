@@ -602,7 +602,8 @@ def Checkout():
                 rating = doc.to_dict()['rating']
                 reviews = doc.to_dict()['reviews']
                 tag = doc.to_dict()['tag']
-                product = Product(productID, category, image, name, price, description, rating, reviews, tag)
+                stock = doc.to_dict()['stock']
+                product = Product(productID, category, image, name, price, description, rating, reviews, tag, stock)
                 products.append(product)
                 productID_array.append(product.productID)
         else:
