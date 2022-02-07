@@ -61,14 +61,14 @@
       </div>
 
 
-<div class="products-list" id="products-list"style="position:absolute;margin-top:100px;margin-left:220px;">
+<div class="products-list" id="products-list" style="position:relative;top:-500px;left:200px;">
   <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
     <input id="input" type="text" name="selected_productID" value="" style="display:none;">
         {% for i in range(products|length) %}
         {% set product = products[i] %}
       <a onclick="submit('{{product.productID}}')">
         <div class="products-list-box">
-            <img class="image" id="jordan-zoom" src="../../static/images/jordan-zoom.png" alt="Spedu">
+            <img class="image" src="{{product.image}}" style="width:200px;height:130px;margin-left:100px;" alt="Spedu">
             <h5 class="name">{{products[i].name}}</h5>
             <p class="category">{{products[i].category}}</p>
             <p class="price">${{'%0.2f'| format(products[i].price|float)}}</p>

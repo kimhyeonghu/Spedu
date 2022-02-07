@@ -1,11 +1,9 @@
-.container .image img {
-   width:45%
+
+.image {
+   margin-top:100px;
+
 }
 
-.container .image {
-   margin-top:100px;
-   margin-left:40px;
-}
 
 .details {
    margin-left:640px;
@@ -27,14 +25,14 @@
 
 #DROPoptions {
    margin-left:40px;
-   position:absolute;
-   top:234px;
+   position:relative;
+   top:-38px;
 }
 
 #options {
    margin-left:203px;
-   position:absolute;
-   top:232px;
+   position:relative;
+   top:-65px;
 }
 
 .btn {
@@ -43,6 +41,7 @@
     color: #fff;
     padding: 12px 70px;
     margin: 30px 78px;
+    margin-top:-20px;
     border-radius: 30px;
     transition: background 0.5s;
     font-weight: 600;

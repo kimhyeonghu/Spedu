@@ -194,7 +194,8 @@ def load_products():
         rating = doc.to_dict()['rating']
         reviews = doc.to_dict()['reviews']
         tag = doc.to_dict()['tag']
-        product = Product(productID, category, image, name, price, description, rating, reviews, tag)
+        stock = doc.to_dict()['stock']
+        product = Product(productID, category, image, name, price, description, rating, reviews, tag, stock)
         products.append(product)
     return products
 
@@ -207,24 +208,25 @@ def create_new_product():
     product_image = request.files['product_image']
     storage.child('/products/image_of_{}'.format(productID)).put(product_image)
 
-  #  product_img_link = storage.child(f"/products/image_of_"+productID).get_url(auth.current_user["idToken"])
+    product_img_link = storage.child(f"/products/image_of_"+productID).get_url(auth.current_user["idToken"])
 
-    product_img_link = ""
     product_category = request.form['product_category']
     product_description = request.form['product_description']
     product_rating = 0
     product_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     product_tag = ""
+    product_stock = int(request.form['product_stock'])
     new_product_data = {
         'productID': productID,
         'category': product_category,
         'image': product_img_link,
         'name': product_name,
-        'price': product_price,
+        'price': float(product_price),
         'description': product_description,
         'rating': product_rating,
         'reviews': product_reviews,
-        'tag': product_tag
+        'tag': product_tag,
+        'stock': int(product_stock)
     }
     db.collection('Products').document().set(new_product_data)
     return render_template('admin_page_products.html', products=load_products())
@@ -253,21 +255,31 @@ def load_update(productID):
     try:
         docs = db.collection('Products').where("productID", "==", productID).get()
         product_category = request.form['update_category']
-        product_image = request.form['update_image']
+        product_image = request.files['update_image']
+        print(product_image.filename)
+        if product_image.filename == '':
+            print('No selected file')
+        if product_image:
+            storage.child('/products/image_of_{}'.format(productID)).put(product_image)
+        product_img_link = request.form["product_image_input"]
+        print(product_img_link)
         product_price = request.form['update_price']
         product_description = request.form['update_description']
-        product_tag = ""
+        product_stock = int(request.form['update_stock'])
+
         for doc in docs:
             key = doc.id
             db.collection('Products').document(key).update({
                  'category': product_category,
-                 'image': product_image,
-                 'price': product_price,
+                 'image': product_img_link,
+                 'price': float(product_price),
                  'description': product_description,
-                 'tag': product_tag
+                 'stock': int(product_stock)
             })
     except:
-        print("Unable to update course!")
+        print("Unable to update product!")
+
+
 
 
 @app.route('/')
@@ -465,11 +477,12 @@ def view_selected_product():
 def update_delete_product():
     current_productID = request.form['current_product']
     action_input_value = request.form['action_input_product']
-
     if action_input_value == 'delete':
         load_delete(current_productID)
         return redirect("/admin_page/products/")
-    else:
+
+    elif action_input_value == 'update':
+        load_update(current_productID)
         return redirect("/admin_page/products/")
 
 
@@ -520,7 +533,8 @@ def shopping_cart():
                 rating = doc.to_dict()['rating']
                 reviews = doc.to_dict()['reviews']
                 tag = doc.to_dict()['tag']
-                product = Product(productID, category, image, name, price, description, rating, reviews, tag)
+                stock = doc.to_dict()['stock']
+                product = Product(productID, category, image, name, price, description, rating, reviews, tag, stock)
                 products.append(product)
                 productID_array.append(product.productID)
         else:
@@ -754,9 +768,7 @@ def new_product():
     return render_template('new_product.html')
 
 
-@app.route('/admin_page/products/update_product')
-def update_product():
-    return render_template('update_product.html')
+
 
 
 @app.route('/admin_page/Promo code/')

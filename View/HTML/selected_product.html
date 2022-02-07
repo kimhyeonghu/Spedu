@@ -11,8 +11,8 @@
 
 {% block body %}
 <div class="container">
-  <div class="image">
-    <img id="jordan-zoombg" src="../../../static/images/jordan-zoombg.jpg" alt="Spedu">
+  <div class="image" onload="load_image()">
+    <img onload="" id="product_image" src="{{selected_product.image}}" style="width:550px;height:480px;" alt="">
   </div>
   <div class="details">
     <h4>{{selected_product.name}}</h4>
@@ -63,5 +63,17 @@
         console.log("Error getting documents: ", error);
     });
   }
+</script>
+
+<script type="text/javascript">
+  function load_image() {
+    var productID = '{{selected_product.productID}}';
+    storage.ref().child('products/image_of_'+productID).getDownloadURL().then(function(url) {
+            document.getElementById('product_image').src = url;
+         }).catch(function(error) {
+
+         });
+  }
+  //window.onload = load_image;
 </script>
 {% endblock %}

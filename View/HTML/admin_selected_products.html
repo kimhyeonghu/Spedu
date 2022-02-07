@@ -7,22 +7,44 @@
 {% block body %}
 <div class="container">
     <div class="image">
-        <img class="" id="jordan-zoom" src="../../../static/images/jordan-zoom.png" alt="Spedu">
-        <a class="change" href=""><p>Change Product Image</p></a>
+        <img onload="" id="product_image" src="{{selected_product.image}}" alt="">
         <h4 class="name">{{selected_product.name}}</h4>
     </div>
 
     <div class="new_update">
        <form action="{{ url_for('update_delete_product') }}" method="post" enctype="multipart/form-data">
            <input type="text" name="current_product" value="{{selected_product.productID}}" style="display:none;">
+           <input type="text" name="product_image_input" value="" id="product_image_input" style="display:none;">
            <input type="text" id="action_input" name="action_input_product" style="display:none;">
+
        <ul>
           <li style="height:50px;margin-top:20px;"><p>Update Name</p>{{selected_product.name}}</li>
           <li style="height:50px;margin-top:20px;"><p>Update Category</p><textarea name='update_category' type="text" placeholder="">{{selected_product.category}}</textarea></li>
           <li style="height:50px;margin-top:20px;"><p>Update Price</p><textarea name='update_price' type="text" placeholder="">{{selected_product.price}}</textarea></li>
           <li style="height:180px;"><p>Update Description</p><textarea name='update_description' style="height:160px;" type="text" placeholder="">{{selected_product.description}}</textarea></li>
            <li style="height:180px;"><p>Update Tag</p><textarea name='tag' style="height:160px;" type="text" placeholder="">{{selected_product.tag}}</textarea></li>
-          <li style="height:50px;"><p>Update Image</p><textarea name='update_image' type="text" placeholder="">{{selected_product.image}}</textarea></li>
+          <li style="height:180px;"><p>Update Stock</p><textarea name='update_stock' type="text" placeholder="">{{selected_product.stock}}</textarea></li>
+          <li style="height:50px;margin-top:-100px;"><p>Update Image</p><input name='update_image' type="file" placeholder="" value="" onclick="update_img()"></li>
+
+
+          <br><img id="product_img" src="#">
+          <script type="text/javascript">
+          function update_img() {
+              document.querySelector('input[type="file"]').addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                  document.getElementById("product_img").src = URL.createObjectURL(this.files[0]);
+                }
+                });
+            };
+            function load_image() {
+              var productID = '{{selected_product.productID}}';
+              storage.ref().child('products/image_of_'+productID).getDownloadURL().then(function(url) {
+                  document.getElementById('product_img').src = url;
+                  document.getElementById('product_image_input').value = url;
+              })
+            }
+            window.onload = load_image;
+          </script>
           <li style="height:50px;"><a onclick="submit('update')"><button type="submit" value="Update" class="update-btn">Update</button></a></li>
           <li style="height:50px;"><a onclick="submit('delete')"><button type="submit" value="Delete" class="delete-btn">Delete</button></a></li>
        </ul>
@@ -41,5 +63,7 @@
        </form>
      </div>
 </div>
+
+
 
 {% endblock %}

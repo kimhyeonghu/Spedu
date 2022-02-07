@@ -1,5 +1,5 @@
 class Product:
-    def __init__(self, productID, category, image, name, price, description, rating, reviews, tag):
+    def __init__(self, productID, category, image, name, price, description, rating, reviews, tag, stock):
         self.productID = productID
         self.category = category
         self.image = image
@@ -9,3 +9,6 @@ class Product:
         self.rating = rating
         self.reviews = reviews
         self.tag = tag
+        self.stock = stock
+
+

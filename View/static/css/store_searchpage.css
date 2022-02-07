@@ -1,9 +1,10 @@
 .products-list {
   top: 50px;
-  left:100px;
   bottom:0;
-  padding-right: 150px;
   position: fixed;
+  overflow-x: hidden;
+  margin-top: 20px;
+  width:calc(100% - 220px);
 }
 .products-list::after {
   content: "";
@@ -13,26 +14,26 @@
 
 .products-list-box {
   float: left;
-  width: 25%;
-  padding: 5px;
-}
-
-.products-list-box img{
-  width: 110%
+  width: 33.33%;
 }
 
 .name {
   font-size:15px;
+  margin-left:100px;
+  margin-top:30px;
 }
 
 .category {
   font-size:13px;
   color:grey;
+  margin-left:100px;
 }
 
 .price {
   font-size:13px;
   font-weight:480;
+  margin-left:100px;
+  margin-bottom:100px;
 }
 
 .product-panel {
