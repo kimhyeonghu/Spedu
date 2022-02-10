@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <title>Spedu Sign Up</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.typekit.net/ktl0fuq.css">
   <link rel="stylesheet" href="../static/css/basicnavbar.css">
   <link rel="stylesheet" href="../static/css/reset2.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/SVG-Morpheus/0.3.2/svg-morpheus.js"></script>
 </head>
 <body>
   {% from "includes/_formHelper.html" import render_field %}
@@ -25,18 +28,55 @@
             </div>
             <br>
             <form method="POST">
-              <div class="form-group">
+              <div class="form-group ans-group">
                 <label for="qns1">{{ qns[0] }}</label>
                 <input type="text" class="form-control" name="ans1" value="" placeholder="Fill in the Answer" required>
+                <div class="svg-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph1" onclick="showPass()">
+                    <g display="none" id="show1">
+                      <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
+                    </g>
+                    <g display="none" id="hide1">
+                      <path id="hide_pass" data-name="hide pass" d="M29.224,2.562,24.236,7.238A19.7,19.7,0,0,0,17.911,6.2C6.628,6.2,0,15.962,0,15.962a30.843,30.843,0,0,0,7.671,7.659L3.332,27.958,5.44,30.066,31.333,4.671,29.224,2.562Zm-8.968,8.615a5.943,5.943,0,0,0-7.849,7.761L9.834,21.482a27.092,27.092,0,0,1-6.052-5.456c2.226-2.457,7.181-6.848,14.129-6.848a16.548,16.548,0,0,1,3.891.47Zm-4.3,11.078,7.588-7.443A5.948,5.948,0,0,1,15.958,22.254Zm19.819-6.292s-6.339,11.1-17.866,11.1a16.251,16.251,0,0,1-5.741-1.1l2.406-2.36a12.734,12.734,0,0,0,3.335.477c7.142,0,12.081-5.258,14.168-8a22.821,22.821,0,0,0-5.347-4.4l2.22-2.176a24.773,24.773,0,0,1,6.826,6.45Z" transform="translate(0 -2.562)"/>
+                    </g>
+                  </svg>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="qns1">{{ qns[1] }}</label>
+              <div class="form-group ans-group">
+                <label for="qns2">{{ qns[1] }}</label>
                 <input type="text" class="form-control" name="ans2" value="" placeholder="Fill in the Answer" required>
+                <div class="svg-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph2" onclick="showPass2()">
+                    <g display="none" id="show1">
+                      <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
+                    </g>
+                    <g display="none" id="hide1">
+                      <path id="hide_pass" data-name="hide pass" d="M29.224,2.562,24.236,7.238A19.7,19.7,0,0,0,17.911,6.2C6.628,6.2,0,15.962,0,15.962a30.843,30.843,0,0,0,7.671,7.659L3.332,27.958,5.44,30.066,31.333,4.671,29.224,2.562Zm-8.968,8.615a5.943,5.943,0,0,0-7.849,7.761L9.834,21.482a27.092,27.092,0,0,1-6.052-5.456c2.226-2.457,7.181-6.848,14.129-6.848a16.548,16.548,0,0,1,3.891.47Zm-4.3,11.078,7.588-7.443A5.948,5.948,0,0,1,15.958,22.254Zm19.819-6.292s-6.339,11.1-17.866,11.1a16.251,16.251,0,0,1-5.741-1.1l2.406-2.36a12.734,12.734,0,0,0,3.335.477c7.142,0,12.081-5.258,14.168-8a22.821,22.821,0,0,0-5.347-4.4l2.22-2.176a24.773,24.773,0,0,1,6.826,6.45Z" transform="translate(0 -2.562)"/>
+                    </g>
+                  </svg>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="qns1">{{ qns[2] }}</label>
+              <div class="form-group ans-group">
+                <label for="qns3">{{ qns[2] }}</label>
                 <input type="text" class="form-control" name="ans3" value="" placeholder="Fill in the Answer" required>
+                <div class="svg-container">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph3" onclick="showPass3()">
+                    <g display="none" id="show1">
+                      <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
+                    </g>
+                    <g display="none" id="hide1">
+                      <path id="hide_pass" data-name="hide pass" d="M29.224,2.562,24.236,7.238A19.7,19.7,0,0,0,17.911,6.2C6.628,6.2,0,15.962,0,15.962a30.843,30.843,0,0,0,7.671,7.659L3.332,27.958,5.44,30.066,31.333,4.671,29.224,2.562Zm-8.968,8.615a5.943,5.943,0,0,0-7.849,7.761L9.834,21.482a27.092,27.092,0,0,1-6.052-5.456c2.226-2.457,7.181-6.848,14.129-6.848a16.548,16.548,0,0,1,3.891.47Zm-4.3,11.078,7.588-7.443A5.948,5.948,0,0,1,15.958,22.254Zm19.819-6.292s-6.339,11.1-17.866,11.1a16.251,16.251,0,0,1-5.741-1.1l2.406-2.36a12.734,12.734,0,0,0,3.335.477c7.142,0,12.081-5.258,14.168-8a22.821,22.821,0,0,0-5.347-4.4l2.22-2.176a24.773,24.773,0,0,1,6.826,6.45Z" transform="translate(0 -2.562)"/>
+                    </g>
+                  </svg>
+                </div>
               </div>
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  {% for message in messages %}
+                    <p id="flash">{{ message }}</p>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
               <input class="text-center" type="submit" value="NEXT STEP">
             </form>
             <p id="signin">Already Have An Account? <a class="" href="/signin">Sign In</a></p>
@@ -45,5 +85,44 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+    $('#flash').delay(5000).animate({
+      opacity: 0
+    }, 1000);
+    var icons = ['show1', 'hide1'];
+    var svgMorpheus = new SVGMorpheus("#morph1");
+    var count = 0;
+    function showPass() {
+      svgMorpheus.to(icons[count++ % 2], {duration: 500});
+      var x = document.getElementById("ans1")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    var svgMorpheus2 = new SVGMorpheus("#morph2");
+    var count2 = 0;
+    function showPass2() {
+      svgMorpheus2.to(icons[count2++ % 2], {duration: 500});
+      var x = document.getElementById("ans2")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    var svgMorpheus3 = new SVGMorpheus("#morph3");
+    var count3 = 0;
+    function showPass3() {
+      svgMorpheus3.to(icons[count3++ % 2], {duration: 500});
+      var x = document.getElementById("ans3")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+  </script>
 </body>
 </html>

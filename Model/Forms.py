@@ -30,7 +30,7 @@ class SignUpForm3(Form):
 
 
 class SignInForm(Form):
-    email = EmailField('Email Address', [validators.DataRequired()])
+    email = EmailField('Email Address', [validators.DataRequired()], render_kw={"placeholder": "Enter your email address"})
     password = PasswordField('Password', [validators.DataRequired()])
     remember = BooleanField("Remember me")
 

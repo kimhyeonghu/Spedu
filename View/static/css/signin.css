@@ -1,5 +1,9 @@
+@font-face {
+  font-family: Avenir Next;
+  src: url('../assets/AvenirNextLTPro-Regular.otf');
+}
 body {
-  font-family: "AvenirNextLTPro", sans-serif;
+  font-family: Avenir Next, sans-serif;
 }
 .background {
   position: relative;
@@ -38,6 +42,9 @@ h1 {
   font-family: "AvenirNextLTPro-Regular", sans-serif;
   font-size: 55px;
 }
+form {
+  position: relative;
+}
 label {
   color: #8C98A9;
 }
@@ -54,10 +61,14 @@ input #remember {
   padding-bottom: 25px;
   color: #8C98A9;
 }
-#incorrect {
+#flash {
   text-align: center;
   color: red;
   margin-bottom: 0;
+}
+input[type=email], input[type=password] {
+  height: 50px;
+  font-size: 21px;
 }
 form input[type=submit] {
   background-color: #2E384D;
@@ -66,6 +77,14 @@ form input[type=submit] {
   border: none;
   padding: 15px 0;
   border-radius: 5px;
+  margin-top: 30px;
+}
+::placeholder {
+  color: #8C98A9;
+  font-family: open-sans, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 20px;
 }
 #register {
   text-align: center;

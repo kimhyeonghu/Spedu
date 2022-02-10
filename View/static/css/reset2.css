@@ -1,5 +1,9 @@
+@font-face {
+  font-family: Avenir Next;
+  src: url('../assets/AvenirNextLTPro-Regular.otf');
+}
 body {
-  font-family: "AvenirNextLTPro", sans-serif;
+  font-family: Avenir Next, sans-serif;
 }
 .background {
   position: relative;
@@ -31,8 +35,10 @@ body {
 .resetContent {
   padding-left: 30px;
   padding-right: 30px;
+  position: relative;
 }
 h1 {
+  font-weight: 600;
   text-align: left;
   font-size: 50px;
   padding-top: 25px;
@@ -47,7 +53,7 @@ h1 {
   width: 100%;
 }
 h3 {
-  font-family: "AvenirNextLTPro-Regular", sans-serif;
+  font-family: "Avenir Next", sans-serif;
   font-size: 25px;
 }
 label, input {
@@ -58,18 +64,25 @@ label, input {
 label {
   color: #6A7481;
 }
-form {
-  margin-top: 15px;
+.ans-group {
+  position: relative;
+}
+.svg-container{
+  position: absolute;
+  bottom: 0px;
+  right: 20px;
 }
 input[type=text], input[type=email], input[type=password]{
   height: 50px;
   font-size: 20px;
-  font-family: "Open Sans", sans-serif;
+  font-family: open-sans, sans-serif;
 }
 ::placeholder {
   color: #8C98A9;
+  font-family: open-sans, sans-serif;
+  font-weight: 300;
+  font-style: normal;
   font-size: 20px;
-  font-family: "Open Sans Light", sans-serif;
 }
 .pass-group {
   position: relative;
@@ -79,6 +92,12 @@ input[type=text], input[type=email], input[type=password]{
   bottom: 0px;
   right: 20px;
 }
+#flash {
+  position: absolute;
+  bottom: 65px;
+  left: 117px;
+  color: red;
+}
 input[type=submit] {
   background-color: #2E384D;
   color: white;
@@ -86,7 +105,7 @@ input[type=submit] {
   border: none;
   padding: 15px 0;
   border-radius: 5px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 .registerContent p {
   margin-top: 5px;
@@ -94,9 +113,6 @@ input[type=submit] {
   margin-bottom: 5px;
   color: #6A7481;
 }
-/* .registerContent a {
-  color: #2AA0B3;
-} */
 #signin {
   text-align: center;
   color: #8C98A9;

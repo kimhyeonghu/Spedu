@@ -395,9 +395,11 @@ def reset2(id):
     user = db.collection("Users").document(str(id)).get().to_dict()
     qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
     if request.method == "POST":
-        # if request.form["ans1"] == user["security_qns"]["ans1"] and request.form["ans2"] == user["security_qns"]["ans2"] and request.form["ans3"] == user["security_qns"]["ans3"]:
         if bcrypt.check_password_hash(user["security_qns"]["ans1"], request.form["ans1"]) and bcrypt.check_password_hash(user["security_qns"]["ans2"], request.form["ans2"]) and bcrypt.check_password_hash(user["security_qns"]["ans3"], request.form["ans3"]):
             return redirect(url_for("reset3", id=user["id"]))
+        else:
+            flash("Incorrect answer(s)! Please try again.")
+            return render_template("reset2.html", qns=qns)
     return render_template("reset2.html", qns=qns)
 
 
