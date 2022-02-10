@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 from django_jinja import library
@@ -382,16 +382,18 @@ def reset1():
             user = db.collection("Users").where("email", "==", reset_form1.email.data).get()
             print(user)
             if user:
-                return redirect(url_for("reset2", id=user[0].to_dict()["id"]))
+                session["id"] = user[0].to_dict()["id"]
+                return redirect(url_for("reset2"))
         else:
             flash("Account does not exist!")
             return redirect(url_for("reset1"))
     return render_template("reset.html", form=reset_form1)
 
 
-@app.route("/forget/<id>", methods=['GET', 'POST'])
-def reset2(id):
-    # reset_form2 = ForgetPassword2(request.form)
+@app.route("/forget/2", methods=['GET', 'POST'])
+def reset2():
+    id = session.get("id")
+    print(id)
     user = db.collection("Users").document(str(id)).get().to_dict()
     qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
     if request.method == "POST":
