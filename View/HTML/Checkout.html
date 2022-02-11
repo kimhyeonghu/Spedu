@@ -141,14 +141,20 @@ color: red;
 
 .rating{
   color:#EBC805;
-
 }
-
+.row {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  -ms-flex-wrap: wrap; /* IE10 */
+  flex-wrap: wrap;
+  margin: 0 -16px;
+}
 
 </style>
 <p>helo</p>
 <h1>Checkout</h1>
 <hr>
+
 <div class="shopping_cart_page">
 
   {% if (courses_cart|length+products_cart|length) == 0 %}
@@ -182,6 +188,8 @@ color: red;
   <div class="checkout_div">
     <p style="font-size:19px;font-weight:300;margin-bottom:0px;">Total:</p>
     <h1 id="total_cost">S$34.99</h1>
+  </div>
+
   {% elif (products_cart|length) == 0 %}
   <div class="courses_cart_div" id="courses_cart_div">
     <p style="font-size:19px;">{{courses_cart|length}} Course(s) to checkout</p>
@@ -208,6 +216,8 @@ color: red;
     <p style="font-size:19px;font-weight:300;margin-bottom:0px;">Total:</p>
     <h1 id="total_cost">S$34.99</h1>
   </div>
+
+
   {% else %}
   <div class="courses_cart_div" id="courses_cart_div">
     <p style="font-size:19px;">{{courses_cart|length}} Course(s) to checkout</p>
@@ -253,9 +263,9 @@ color: red;
     <h1 id="total_cost" style="color:red;">S$34.99</h1>
   </div>
   {% endif %}
-
-
-</div>
+<br>
+<br>
+<br>
 <hr>
 {% if (products_cart|length) == 0 %}
 <div id="payment">
@@ -263,7 +273,7 @@ color: red;
     <h3>Fill in Credit/Debit Card details</h3>
     <p>Fill in the details of your credit/debit card to be able to purchase the items and courses</p>
 
-        <form method="POST">
+        <form method="POST" action="">
 	        <div class="form-group">
 		        {{ render_field(form.Name_on_card, class="form-control") }}
 	        </div>
@@ -281,13 +291,14 @@ color: red;
 
         </form>
 </div>
+
 {% else %}
 <div id="address">
     <h1>Address</h1>
     <h3>Fill in the Mailing Address</h3>
     <p>Fill in the address where you want your product to be mailed to(For products only)</p>
     <hr>
-        <form method="POST">
+        <form method="POST" action="">
 	        <div class="form-group">
 		        {{ render_field(form.first_name, class="form-control") }}
 	        </div>
@@ -307,13 +318,14 @@ color: red;
 		        {{ render_field(form.Postal_code, class="form-control") }}
 	        </div>
 	        <br>
-        </form>
+
+
             <hr>
             <div id="payment">
                 <h1>Payment</h1>
                 <h3>Fill in Credit/Debit Card details</h3>
                 <p>Fill in the details of your credit/debit card to be able to purchase the items and courses</p>
-        <form method="POST">
+
 	        <div class="form-group">
 		        {{ render_field(form.Name_on_card, class="form-control") }}
 	        </div>
@@ -328,8 +340,9 @@ color: red;
 	        </div>
 	        <br>
             <input type="submit" value="Submit" class="btn btn-primary"/>
+            </div>
         </form>
 </div>
-</div>
+
 {% endif %}
 {% endblock %}

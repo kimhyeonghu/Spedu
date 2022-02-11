@@ -56,19 +56,19 @@ class DisplayInfo(Form):
 
 
 class PersonalInfo(Form):
-    first_name = StringField('First Name', [validators.Length(min=1), validators.optional()])
-    last_name = StringField('Last Name', [validators.Length(min=1), validators.optional()])
-    address = StringField('Address', [validators.Length(min=1), validators.optional()])
-    phone = IntegerField('Phone Number', [validators.Length(max=8), validators.optional()])
-    Unit_no = IntegerField('Unit no', [validators.Length(min=16, max=16), validators.optional()])
-    Postal_code= IntegerField('Postal Code', [validators.Length(min=6, max=6), validators.optional()])
-    Name_on_card = StringField('Name on card',[validators.Length(min=1), validators.optional()])
+    first_name = StringField('First Name', [validators.Length(min=1), validators.DataRequired()])
+    last_name = StringField('Last Name', [validators.Length(min=1), validators.DataRequired()])
+    address = StringField('Address', [validators.Length(min=1), validators.DataRequired()])
+    phone = IntegerField('Phone Number', [validators.Length(max=8), validators.DataRequired()])
+    Unit_no = IntegerField('Unit no', [validators.Length(min=16, max=16), validators.DataRequired()])
+    Postal_code = IntegerField('Postal Code', [validators.Length(min=6, max=6), validators.DataRequired()])
+    Name_on_card = StringField('Name on card',[validators.Length(min=1), validators.DataRequired()])
     exp_date = DateField('Exp date', format='%m-%Y')
-    cvv_code = IntegerField("CVC/CVV Code", [validators.length(min=3, max=3), validators.optional()])
-    card_number = IntegerField("Card Number", [validators.Length(min=16, max=16), validators.optional()])
+    cvv_code = IntegerField("CVC/CVV Code", [validators.length(min=3, max=3), validators.DataRequired()])
+    card_number = IntegerField("Card Number", [validators.Length(min=16, max=16), validators.DataRequired()])
 
 
 class promo_code_information(Form):
-    name_of_code = StringField('Name of code', [validators.Length(min=1), validators.optional()])
-    value = IntegerField('Value of Promo Code', [validators.Length(max=3), validators.optional()])
+    name_of_code = StringField('Name of code', [validators.Length(min=1), validators.DataRequired()])
+    value = IntegerField('Value of Promo Code', [validators.Length(max=3), validators.DataRequired()])
     select = SelectField("", [validators.DataRequired()], choices=["Percentage","Discount amount"])

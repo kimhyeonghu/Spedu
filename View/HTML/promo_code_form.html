@@ -5,37 +5,75 @@
 {% block body %}
 {% from "includes/_formHelper.html" import render_field %}
 <style>
-form{
-height:500px;
-width:500px;
-background-color:red;
-margin-left: 300px;
-top: 120px;
-position: absolute;
+
+.new_code {
+  margin-left: 230px;
+  margin-right: 30px;
+  height: auto;
+  width: calc(100% - 230px);
+  top: 55px;
+  bottom:40px;
+  position: fixed;
+  overflow-x: hidden;
+  overflow-y: scroll
+}
+li {
+  padding-top: 0px;
+  vertical-align: top;
+  text-align: left;
+  margin-top: 10px;
+}
+p {
+  margin-top: 0px;
+  font-size: 15px;
+  font-weight: 500;
+  display: inline-block;
+  width: 210px;
+}
+textarea {
+  display: inline-block;
+  width: calc(100% - 230px);
+  font-size: 15px;
+  vertical-align: top;
+  text-align: left;
+  resize: none;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-ul{
-list-style-type:none;
-
+#new_code_button{
+float:right;
+margin-right:10px;
+margin-top:20px;
+cursor: pointer;
+color:white;
+background-color: #1E5D63;
+border: 2px solid #1E5D63;
+height: 40px;
+width: 140px;
 }
 </style>
-
+<div class="new_code">
 <form method="POST">
 	<ul style="list-style-type:none;">
-		<li style="height:50px;margin-top:20px;"><p>Promo Code</p><textarea name='code' type="text" placeholder="Enter promo code"></textarea></li>
-		<li>
-			<p>Discount Amount</p>
-			<input type="radio" id="percentage" name="type_of_discount" value="Percentage">
-			<label for="html">Percentage</label><br>
-			<input type="radio" id="discount_amount" name="type_of_discount" value="Discount Amount">
+		<li style="height:50px;margin-top:20px;"><p>Promo Code</p><textarea name='code' type="text" placeholder="Enter promo code" required></textarea></li>
+		<li id="enter">
+			<p>Discount Type</p>
+			<input type="radio" id="percentage" name="type_of_discount" value="Percentage" required>
+			<label for="html">Percentage</label>
+			<input type="radio" id="discount_amount" name="type_of_discount" value="Discount Amount" required>
 			<label for="css">Fixed Amount</label><br>
-			<textarea name='value' type="text" placeholder="Enter discount value"></textarea>
 		</li>
 		<li>
-			<input type="submit" value="Submit" class="btn btn-primary"/>
+			<p>Discount Amount</p>
+			<textarea  name='value' type="text" placeholder="Enter discount value" required></textarea>
+		</li>
+		</li>
+		<li>
+			<input id="new_code_button" type="submit" value="Submit" class="btn btn-primary"/>
 
 		</li>
 	</ul>
 
 </form>
+</div>
 {% endblock %}
