@@ -32,7 +32,7 @@
                   }
                 });
                 function submit() {
-                  alert(search_input.value);
+                  alert(document.getElementById("search_input").value);
                   var search_form = document.getElementById("search");
                   search_form.submit();
                 };
@@ -78,10 +78,10 @@
 </div>
 </footer>
 </body>
-<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
 <script src="{{ url_for('static', filename='Javascript/firestore.js') }}" charset="utf-8"></script>
 </html>

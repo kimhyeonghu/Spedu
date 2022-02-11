@@ -12,7 +12,7 @@ import sys
 import json
 sys.path.insert(0, '../Model')
 from Course import *
-from Product import Product
+from Product import *
 from Forms import *
 from User import *
 
@@ -154,7 +154,7 @@ def get_courses_from_search(search_value):
     filtered_courses=[]
     related_tags=[]
     for course in courses:
-        if search_value in course.name.lower():
+        if search_value in course.name.lower().split(" "):
             course.search_points += 2
             #related_tags = [tag for tag in related_tags if tag in course.tag]
             related_tags += list(set(course.tag) - set(related_tags))
@@ -165,20 +165,31 @@ def get_courses_from_search(search_value):
         for related_tag in related_tags:
             if related_tag in course.tag:
                 course.search_points += 1
-        print(course.search_points)
-    print(related_tags)
     courses.sort(key=lambda x: x.search_points, reverse=True)
-    print(5890238092842)
-    print(courses)
     filtered_courses = [course for course in courses if course.search_points >= 2]
-    print(filtered_courses)
     return filtered_courses
 
 
 def get_products_from_search(search_value):
-    products=load_products()
+    search_value = search_value.lower()
+    products=load_products_for_search()
     filtered_products=[]
-    return ""
+    related_tags=[]
+    for product in products:
+        if search_value in product.name.lower().split(" "):
+            product.search_points += 2
+            #related_tags = [tag for tag in related_tags if tag in course.tag]
+            related_tags += list(set(product.tag) - set(related_tags))
+        if search_value in product.tag:
+            product.search_points += 2
+            related_tags += list(set(product.tag) - set(related_tags))
+
+        for related_tag in related_tags:
+            if related_tag in product.tag:
+                product.search_points += 1
+    products.sort(key=lambda x: x.search_points, reverse=True)
+    filtered_products = [product for product in products if product.search_points >= 2]
+    return filtered_products
 
 
 def load_products():
@@ -199,6 +210,23 @@ def load_products():
         products.append(product)
     return products
 
+def load_products_for_search():
+    products = []
+    products_docs = db.collection('Products').get()
+    for doc in products_docs:
+        productID = doc.to_dict()['productID']
+        category = doc.to_dict()['category']
+        image = doc.to_dict()['image']
+        name = doc.to_dict()['name']
+        price = doc.to_dict()['price']
+        description = doc.to_dict()['description']
+        rating = doc.to_dict()['rating']
+        reviews = doc.to_dict()['reviews']
+        tag = doc.to_dict()['tag']
+        stock = doc.to_dict()['stock']
+        product = Product_For_Search(productID, category, image, name, price, description, rating, reviews, tag, stock, 0)
+        products.append(product)
+    return products
 
 @app.route('/admin_page/products/', methods=['POST'])
 def create_new_product():
@@ -232,11 +260,26 @@ def create_new_product():
     return render_template('admin_page_products.html', products=load_products())
 
 
-@app.route('/search/', methods=['GET'])
+@app.route('/search/', methods=['GET','POST'])
 def search_result():
     search_input = request.args.get("search_input")
     print(search_input)
-    return render_template('search_page.html', search_results=get_courses_from_search(search_input))
+    sort_attr = ''
+    rating_value=None
+    price_value=None
+    level_value=None
+    if request.method == "POST":
+        sort_attr = request.form["sort_attr"]
+        rating_value = request.form["rating_value"]
+        price_value = request.form["price_value"]
+        level_value = request.form["level_value"]
+    course_search_results=get_courses_from_search(search_input)
+    product_search_results=get_products_from_search(search_input)
+    courseID_array = []
+    for course in course_search_results:
+        courseID_array.append(course.courseID)
+    return render_template('search_page.html', course_search_results=course_search_results,product_search_results=product_search_results, courseID_array= json.dumps(courseID_array), sort_attribute = sort_attr,rating_value=rating_value,price_value=price_value,level_value=level_value)
+
 
 
 def load_delete(productID):
@@ -588,8 +631,7 @@ def Checkout():
                 video_link = doc.to_dict()['video_link']
                 tag = doc.to_dict()['tag']
                 course = Course(courseID, description, short_description, duration, image, learning_outcome, level,
-                                name,
-                                price, rating, reviews, students_count, trainer, video_link, tag)
+                                name,price, rating, reviews, students_count, trainer, video_link, tag)
                 courses.append(course)
                 courseID_array.append(course.courseID)
         elif shopping_cart[index][0:2] == "PR":
@@ -678,7 +720,7 @@ def view_admin_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
     selected_course = db.collection('Courses').where("courseID", "==", selected_courseID).get()[0].to_dict()
-    return render_template('admin_selected_course.html', selected_course=selected_course)
+    return render_template('admin_selected_course.html', selected_course=selected_course,current_username=current_user.get_username())
 
 
 @app.route('/admin_page/products/about_product/', methods=['GET'])

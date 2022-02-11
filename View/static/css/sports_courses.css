@@ -28,6 +28,7 @@
   display: inline-block;
   overflow-wrap: normal;
   position: relative;
+  cursor: pointer;
 
 }
 .top-course-ul {
@@ -119,6 +120,7 @@
   height: 140px;
   margin-right: 20px;
   margin-top: 30px;
+  cursor: pointer;
 
 }
 #selected_course_form a{

@@ -6,10 +6,48 @@
 
 {% block head %}
 <title>Sports Courses</title>
+
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/selected_course.css') }}">
 {% endblock %}
 
 {% block body %}
+<div class="popup">
+  <div class="popuptext" id="myPopup">
+
+    <h3 style="text-align:center;padding-top:10px;font-family: 'STIXGeneral', serif;font-weight: bold; margin-left:10px;">Successfully added to cart!</h3>
+        <img class="course-image" src="{{selected_course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <ul>
+          <li class="name" id="name_{{selected_course.name}}" style="font-size: 15px;padding-right:10px;">{{selected_course.name}}</li>
+          <li class="trainer" style="font-size: 11px;">{{selected_course.trainer}}</li>
+          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(selected_course.rating|float)}}</li>
+          <li style="font-size: 13px;color: #767676;">{{selected_course.duration}} total hours | For {{selected_course.level}}</li>
+        </ul>
+        <div class="price_div">
+          <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(selected_course.price|float)}}</p>
+        </div>
+          <ul style="text-align:center;">
+            <li style="display:inline-block;">
+              <a onclick="close_popup()">
+                <div class="cancel-btn">
+                Close
+                </div>
+              </a>
+            </li>
+            <li style="display:inline-block;">
+              <a href="/Shopping Cart/">
+                <div class="go-to-cart-btn">
+                Go To Cart
+                </div>
+              </a>
+            </li>
+
+          </ul>
+  </div>
+</div>
+<div class="popup2">
+  <div class="popuptext2" id="myPopup2">
+  </div>
+</div>
 <div class="course_overview_div">
   <h2>{{selected_course.name}}</h2>
   <br>
@@ -42,18 +80,23 @@
 {% for review in selected_course.reviews %}
 <div id="review_div">
   <script type="text/javascript">
+    function close_popup(){
+      var popup = document.getElementById("myPopup");
+      popup.classList.toggle("show");
+    }
+    function go_to_cart() {
+
+    }
     const review_json = JSON.parse('{{review|tojson}}');
     document.getElementById('review_div').innerHTML = "<p>"+review_json.reviewer+"</p>" + "<p>"+review_json.rating+"</p>" +"<p>"+review_json.review+"</p>"
 
     function add_to_cart() {
-
-      db.collection("Users").where("username", "==", '{{current_username}}')
+      var username = '{{current_username}}';
+      db.collection("Users").where("username", "==", username)
       .get()
       .then((querySnapshot) => {
-        console.log("here");
           querySnapshot.forEach((doc) => {
               // doc.data() is never undefined for query doc snapshots
-              console.log(doc);
               db.collection("Users").doc(doc.id).update(
                 {
                   shopping_cart:firebase.firestore.FieldValue.arrayUnion("{{selected_course.courseID}}")
@@ -61,13 +104,14 @@
                 }
               )
               .then(() => {
-                alert("Successfully added to cart!");
+                var popup = document.getElementById("myPopup");
+                popup.classList.toggle("show");
               })
           });
 
       })
       .catch((error) => {
-          console.log("Error getting documents: ", error);
+          alert(error);
       });
     }
 
