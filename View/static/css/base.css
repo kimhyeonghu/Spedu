@@ -179,10 +179,13 @@ ul {
 .footer-bar {
   height: auto;
   width: 100%;
+  left: 0;
+  right: 0;
   background-color: #081E21;
   position:relative;
   bottom: -60px;
   padding-top:10px;
+  z-index: 3000;
 }
 
 
@@ -206,12 +209,12 @@ float:right;
 }
 
 #header{
-font-size: 24px;
+font-size: 20px;
 font-weight: bold;
 }
 
 #desc{
-font-size: 14px;
+font-size: 12px;
 }
 
 #word{
@@ -226,6 +229,7 @@ border: 1px solid white;
 #part2{
 width: 20%;
 color: grey;
+font-size: 12px;
 }
 
 #links{
@@ -239,4 +243,11 @@ padding-right:20px;
 color: grey;
 padding-left: 50px;
 padding-right:20px;
+padding-bottom: 20px;
+}
+#part3 img{
+  width: 200px;
+}
+#part3 p{
+  font-size: 12px;
 }

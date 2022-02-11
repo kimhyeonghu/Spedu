@@ -8,10 +8,10 @@
 {% endblock %}
 {% block body %}
 <div class="search_courses" >
-  <p>Search For Courses</p>
+  <p>Search For Promo Codes</p>
   <div class="search_bar horizontal">
     <img id="magnifying_glass" src="../../../static/images/magnifying-glass.png" alt="search">
-    <input type="text" placeholder="Search for courses">
+    <input type="text" placeholder="Search for Promo Codes">
   </div>
   <div class="new-course-btn-div">
     <a href="/admin_page/promo_code_form/"><button class="new-course-btn">New Code</button></a>
@@ -25,15 +25,16 @@
       <input id="input" type="text" name="selected_courseID" value="" style="display:none;">
       {% for i in range(promo_code_dict|length) %}
       {% set promo_code = promo_code_dict[i] %}
-      <a onclick="submit('promo_code')">
         <div class="courses-list-box">
             <ul class="course-description">
-              <li class="name" id="name_{{promo_code.name}}">{{promo_code.to_dict()['Name']}}</li>
-              <li class="description">{{promo_code.to_dict()['Value']}}</li>
+              <br>
+              <li class="name" id="name_{{promo_code.name}}">Name of code: {{promo_code.to_dict()['Name']}}</li>
+              <li class="description">Value of the code: {{promo_code.to_dict()['Value']}}</li>
+              <li class="description">Type of value: {{promo_code.to_dict()['type']}}</li>
             </ul>
-          <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:10px;margin-bottom:8;">
+
+          <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:8;">
         </div>
-      </a>
       {% endfor %}
 
 

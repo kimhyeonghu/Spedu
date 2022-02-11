@@ -7,6 +7,7 @@
 {% block head %}
 <title>Shopping Cart</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/shopping_cart.css') }}">
+<script src="{{url_for('static', filename='Javascript/feature.js')}}"></script>
 {% endblock %}
 
 {% block body %}
@@ -83,9 +84,7 @@
         <img class="course-image" src="{{product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
         <ul>
           <li class="name" id="name_{{product.name}}" style="font-size: 15px;padding-right:10px;">{{product.name}}</li>
-
-          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(product.rating|float)}}</li>
-          <li style="font-size: 13px;color: #767676;"></li>
+          <li style="font-size:13px;position:absolute;top:70px;color:grey;">Quantity:</li>
         </ul>
         <div class="price_div">
           <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(product.price|float)}}</p>
@@ -97,7 +96,7 @@
   </div>
   <div class="checkout_div">
     <p style="font-size:19px;font-weight:300;margin-bottom:0px;">Total:</p>
-    <h1 id="total_cost">S$34.99</h1>
+    <h1 id="total_cost"></h1>
     <a href="/Checkout/" class="checkout_btn" type="button" name="button">Checkout</a>
     <!--<button class="checkout_btn" type="button" name="button">Checkout</button>-->
     <br>
@@ -128,7 +127,7 @@
   </div>
   <div class="checkout_div">
     <p style="font-size:19px;font-weight:300;margin-bottom:0px;">Total:</p>
-    <h1 id="total_cost">S$34.99</h1>
+    <h1 id="total_cost"></h1>
     <a href="/Checkout/" class="checkout_btn" type="button" name="button">Checkout</a>
     <!--<button class="checkout_btn" type="button" name="button" href="/Checkout/">Checkout</button>-->
     <br>
@@ -166,9 +165,7 @@
         <img class="course-image" src="{{product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
         <ul>
           <li class="name" id="name_{{product.name}}" style="font-size: 15px;padding-right:10px;">{{product.name}}</li>
-
-          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(product.rating|float)}}</li>
-          <li style="font-size: 13px;color: #767676;"></li>
+          <li style="font-size:13px;position:absolute;top:70px;color:grey;">Quantity:</li>
         </ul>
         <div class="price_div">
           <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(product.price|float)}}</p>
@@ -180,7 +177,7 @@
   </div>
   <div class="checkout_div">
     <p style="font-size:19px;font-weight:300;margin-bottom:0px;">Total:</p>
-    <h1 id="total_cost">S$34.99</h1>
+    <h1 id="total_cost"></h1>
     <a href="/Checkout/" class="checkout_btn" type="button" name="button">Checkout</a>
     <!--<button class="checkout_btn" type="button" name="button" href="/Checkout/">Checkout</button>-->
     <br>

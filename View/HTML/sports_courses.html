@@ -57,12 +57,12 @@
       <li>
         <label for="dropdown" style="font-size:14px;font-weight:bold;">Sort by : </label>
         <div class="dropdown" >
-          <button class="dropbtn" id="dropbtn">Popularity</button>
+          <button class="dropbtn" id="dropbtn"></button>
           <div class="dropdown-content">
-              <a onclick="sort_filter_courses('popularity','{{rating_value}}','{{price_value}}','{{level_value}}'">Popularity</a>
+              <a onclick="sort_filter_courses('popularity','{{rating_value}}','{{price_value}}','{{level_value}}')">popularity</a>
               <a onclick="sort_filter_courses('price high to low','{{rating_value}}','{{price_value}}','{{level_value}}')">price high to low</a>
               <a onclick="sort_filter_courses('price low to high','{{rating_value}}','{{price_value}}','{{level_value}}')">price low to high</a>
-              <a onclick="sort_filter_courses('rating high to low','{{rating_value}}','{{price_value}}','{{level_value}}')">Rating high to low</a>
+              <a onclick="sort_filter_courses('rating high to low','{{rating_value}}','{{price_value}}','{{level_value}}')">rating high to low</a>
               <a onclick="sort_filter_courses('rating low to high','{{rating_value}}','{{price_value}}','{{level_value}}')">rating low to high</a>
           </div>
         </div>
@@ -280,8 +280,16 @@
     document.getElementById('price_value').value = price_value;
     document.getElementById('level_value').value = level_value;
     document.getElementById('sort_attr').value = sort_attr;
+
+
     document.getElementById('sort_filter_courses_form').submit();
 
+  }
+  var sort_attr = '{{sort_attribute}}';
+  if (sort_attr=="None") {
+    document.getElementById('dropbtn').innerText = "popularity";
+  } else{
+    document.getElementById('dropbtn').innerText = sort_attr;
   }
 
   var rating_value = '{{rating_value}}';
