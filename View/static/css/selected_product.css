@@ -19,20 +19,16 @@
 }
 
 .quantity {
-   margin-left:130px;
-   margin-top:-40px;
+   margin-left:1px;
+   margin-top:10px;
 }
 
-#DROPoptions {
-   margin-left:40px;
-   position:relative;
-   top:-38px;
-}
+
 
 #options {
-   margin-left:203px;
+   margin-left:75px;
    position:relative;
-   top:-65px;
+   top:-41px;
 }
 
 .btn {
@@ -41,7 +37,7 @@
     color: #fff;
     padding: 12px 70px;
     margin: 30px 78px;
-    margin-top:-20px;
+    margin-top:1px;
     border-radius: 30px;
     transition: background 0.5s;
     font-weight: 600;

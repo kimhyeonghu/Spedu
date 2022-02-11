@@ -7,6 +7,7 @@
 {% block head %}
 <title>Shopping Cart</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/shopping_cart.css') }}">
+<script src="{{url_for('static', filename='Javascript/feature.js')}}"></script>
 {% endblock %}
 
 {% block body %}
@@ -83,9 +84,7 @@
         <img class="course-image" src="{{product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
         <ul>
           <li class="name" id="name_{{product.name}}" style="font-size: 15px;padding-right:10px;">{{product.name}}</li>
-
-          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(product.rating|float)}}</li>
-          <li style="font-size: 13px;color: #767676;"></li>
+          <li style="font-size:13px;position:absolute;top:70px;color:grey;">Quantity:</li>
         </ul>
         <div class="price_div">
           <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(product.price|float)}}</p>
@@ -166,9 +165,7 @@
         <img class="course-image" src="{{product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
         <ul>
           <li class="name" id="name_{{product.name}}" style="font-size: 15px;padding-right:10px;">{{product.name}}</li>
-
-          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(product.rating|float)}}</li>
-          <li style="font-size: 13px;color: #767676;"></li>
+          <li style="font-size:13px;position:absolute;top:70px;color:grey;">Quantity:</li>
         </ul>
         <div class="price_div">
           <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(product.price|float)}}</p>

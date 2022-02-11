@@ -1,10 +1,9 @@
-.products-list {
-  top: 50px;
-  bottom:0;
+.products-list {;
+  bottom:-200px;
   position: fixed;
   overflow-x: hidden;
   margin-top: 20px;
-  width:calc(100% - 220px);
+  width:calc(100% - 200px);
 }
 .products-list::after {
   content: "";
