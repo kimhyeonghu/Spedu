@@ -7,6 +7,7 @@
 {% block head %}
 <title>Sports Products</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/selected_product.css') }}">
+<script src="{{url_for('static', filename='Javascript/feature.js')}}"></script>
 {% endblock %}
 
 {% block body %}
@@ -18,18 +19,9 @@
     <h4>{{selected_product.name}}</h4>
     <p class="category">{{selected_product.category}}</p>
     <p class="price">${{'%0.2f'| format(selected_product.price|float)}}</p>
-    <p class="size">Size:</p>
     <p class="quantity">Quantity:</p>
-    <select id="DROPoptions">
-      <option>US 5</option>
-      <option>US 6</option>
-      <option>US 7</option>
-      <option>US 8</option>
-      <option>US 9</option>
-      <option>US 10</option>
-    </select>
     <input id="options" type="number" placeholder="Quantity" min="1" value="1">
-    <button class="btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
+    <button class="btn" type="button" name="button" onclick="add_to_cart();">Add to cart</button>
     <p class="">{{selected_product.description}}</p>
     <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:25px;margin-bottom:25px;">
     <h4 style="margin-bottom:12px;">Reviews</h4>
@@ -62,8 +54,15 @@
     .catch((error) => {
         console.log("Error getting documents: ", error);
     });
+
   }
 </script>
+
+
+
+
+
+
 
 <script type="text/javascript">
   function load_image() {
@@ -76,4 +75,5 @@
   }
   //window.onload = load_image;
 </script>
+
 {% endblock %}

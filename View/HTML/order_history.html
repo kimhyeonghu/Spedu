@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Account Page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/base.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/account.css">
+</head>
+<body>
+  {% from "includes/_formHelper.html" import render_field %}
+  {% block navbar %}
+    {% include 'includes/_base_signed_in.html' %}
+  {% endblock %}
+  <div class="row">
+    <div class="col-4 accountLeft vertical-center d-flex justify-content-end">
+      <div class="row">
+        <div class="col-12 userBox justify-content-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="144.268" height="144.268" viewBox="0 0 144.268 144.268">
+            <path id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M72.134.562A72.134,72.134,0,1,0,144.268,72.7,72.122,72.122,0,0,0,72.134.562Zm0,27.923a25.6,25.6,0,1,1-25.6,25.6A25.6,25.6,0,0,1,72.134,28.485Zm0,100.057a55.737,55.737,0,0,1-42.611-19.837,32.429,32.429,0,0,1,28.65-17.394,7.117,7.117,0,0,1,2.065.32,38.51,38.51,0,0,0,11.9,2.007,38.364,38.364,0,0,0,11.9-2.007,7.117,7.117,0,0,1,2.065-.32,32.429,32.429,0,0,1,28.65,17.394A55.737,55.737,0,0,1,72.134,128.542Z" transform="translate(0 -0.563)"/>
+          </svg>
+          <p>{{ user["username"] }}</p>
+          <p>User ID: {{ user["id"] }}</p>
+        </div>
+        <p></p>
+        <div class="sideBar col-12">
+          <a href="#">My Account</a><br>
+          <a href="#">Account Security</a><br>
+          <a href="/order_history/">Order History</a><br>
+        </div>
+        </div>
+    </div>
+ <div class="col-8 userInfo">
+      <h1>Order History</h1>
+      <p>View all the Courses and Products you have bought</p>
+      <hr>
+  <div class="products_cart_div">
+    <p style="font-size:19px;">You've bought {{all_items_bought|length}} Item(s)</p>
+    <p>There are {{products_cart|length}} Products</p>
+    {% for i in range(products_cart|length) %}
+    {% set product = products_cart[i] %}
+    <div class="course_overview_div">
+        <img class="course-image" src="{{product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <ul>
+          <li class="name" id="name_{{product.name}}" style="font-size: 15px;padding-right:10px;">{{product.name}}</li>
+
+          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(product.rating|float)}}</li>
+          <li style="font-size: 13px;color: #767676;"></li>
+        </ul>
+        <div class="price_div">
+          <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(product.price|float)}}</p>
+        </div>
+    <hr>
+    </div>
+    {% endfor %}
+        <div class="courses_cart_div" id="courses_cart_div">
+    {% for i in range(courses_cart|length) %}
+    {% set course = courses_cart[i] %}
+    <div class="course_overview_div">
+        <img class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <ul>
+          <li class="name" id="name_{{course.name}}" style="font-size: 15px;padding-right:10px;">{{course.name}}</li>
+          <li class="trainer" style="font-size: 11px;">{{course.trainer}}</li>
+          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(course.rating|float)}}</li>
+          <li style="font-size: 13px;color: #767676;">{{course.duration}} total hours | For {{course.level}}</li>
+        </ul>
+        <div class="price_div">
+          <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(course.price|float)}}</p>
+        </div>
+
+    </div>
+    {% endfor %}
+  </div>
+  </div>
+
+
+    </div>
+  </div>
+</body>
+</html>
