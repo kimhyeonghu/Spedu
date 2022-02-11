@@ -179,10 +179,13 @@ ul {
 .footer-bar {
   height: auto;
   width: 100%;
+  left: 0;
+  right: 0;
   background-color: #081E21;
   position:relative;
   bottom: -60px;
   padding-top:10px;
+  z-index: 3000;
 }
 
 

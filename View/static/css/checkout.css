@@ -1,0 +1,81 @@
+h1{
+padding-top:20px;
+text-align:center;
+}
+#promo{
+text-align:center;
+}
+#prices{
+  border-spacing: 10px;
+  width: 200px;
+  margin-left: 1100px;
+}
+#price{
+text-align:right;
+color: red;
+}
+.checkout_div{
+  max-width: 1000px;
+  width: 100%;
+  min-height: 450px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  padding-left:50px;
+  padding-right:50px;
+}
+
+
+.course_overview_div {
+  border-style: solid;
+  border-width: 1px;
+  height: 110px;
+  width:100%;
+  border-color: #E5E5E5;
+  margin-bottom: 10px;
+}
+.course_overview_div ul{
+  text-align:left;
+  margin-left: 160px;
+  padding-top: 10px;
+  padding-right: 10px;
+  display:inline-block;
+  width: calc(100% - 260px);
+
+  height: 80px;
+  position: relative;
+}
+.price_div {
+  text-align: right;
+  display: inline-block;
+  margin-top: 30px;
+  padding-right: 20px;
+  width: 100px;
+  float: right;
+}
+#payment{
+  width: 100%;
+}
+.pay_btn{
+  float: right;
+  height: 40px;
+  width: 280px;
+  text-decoration: none;
+  display: block;
+  margin-top: 10px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+  padding-right: 20px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  color: white;
+  background-color: #1E5D63;
+  border: 1px solid #1E5D63;
+
+}
+.pay_btn:hover{
+  text-decoration: none;
+  background-color: white;
+  color: #1E5D63;
+}
