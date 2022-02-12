@@ -668,6 +668,8 @@ def Checkout():
             counter = 0
             courses_to_add = []
             products_to_add= products_purchased+productID_array
+            items_not_bought_before = productID_array
+            print(items_not_bought_before)
             while counter < len(courseID_array):
                 if courseID_array[index] in courses_purchased:
                     counter+=1
@@ -690,14 +692,16 @@ def Checkout():
             db.collection("Users").document(str(current_user.get_id())).update({"shopping_cart": shopping_cart})
             docs = db.collection('Users').where("username", "==", current_user.get_username()).get()
             count = 0
-            while count<len(products_to_add):
-                products_docs = db.collection('Products').where("productID", "==", products_to_add[index]).get()
+            while count<len(items_not_bought_before):
+                products_docs = db.collection('Products').where("productID", "==", items_not_bought_before[count]).get()
                 for doc in products_docs:
                     stock = doc.to_dict()['stock']
-                    stock -= 1
-                    db.collection('Products').document(products_to_add[index]).update({"stock":stock})
+                    old_stock = stock
+                    new_stock = old_stock - 1
+                    print(new_stock)
+                    db.collection('Products').document(doc.id).update({"stock": int(new_stock)})
+                    #db.collection('Products').document(products_to_add[index]).update({'stock': int(new_stock)})
                 count+=1
-
         except:
             print("except")
         #print(productID_array)
@@ -713,8 +717,8 @@ def Checkout():
             print(shopping_cart)
             db.collection("Users").document(str(current_user.get_id())).update({"shopping_cart": shopping_cart})
             count = 0
-            while count < len(productID_array):
-                products_docs = db.collection('Products').where("productID", "==", productID_array[index]).get()
+            while count < len(items_not_bought_before):
+                products_docs = db.collection('Products').where("productID", "==", items_not_bought_before[count]).get()
                 for doc in products_docs:
                     stock = doc.to_dict()['stock']
                     stock -= 1
