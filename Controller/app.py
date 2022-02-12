@@ -353,7 +353,7 @@ def signup1():
         except:
             id = 1
         hashed_password = bcrypt.generate_password_hash(sign_up_form1.password.data).decode('utf-8')
-        user = User(sign_up_form1.username.data, sign_up_form1.email.data, hashed_password, id, "Trainee", None, None, None)
+        user = User(sign_up_form1.username.data, sign_up_form1.email.data, hashed_password, id, "Trainee", None, None, {}, {}, {})
         db.collection("Users").document(str(id)).set(user.to_dict())
         login_user(user)
 
@@ -392,9 +392,9 @@ def signup3():
         print(current_user.get_account_type())
         sign_up_form3 = SignUpForm3(request.form)
         if request.method == "POST" and sign_up_form3.validate():
-            user = User(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
-            user.set_user_info({"name": sign_up_form3.name.data, "address": sign_up_form3.address.data, "phone": sign_up_form3.phone.data})
-            db.collection("Users").document(str(current_user.get_id())).update({"user_info": user.get_user_info()})
+            user = User.from_dict(db.collection("Users").document(str(current_user.get_id())).get().to_dict())
+            # user.set_user_info({"name": sign_up_form3.first_name.data, "address": sign_up_form3.address.data, "phone": sign_up_form3.phone.data})
+            # db.collection("Users").document(str(current_user.get_id())).update({"user_info": user.get_user_info()})
             return redirect(url_for("homepage"))
     else:
         return redirect(url_for("account"))

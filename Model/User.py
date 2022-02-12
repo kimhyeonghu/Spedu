@@ -1,5 +1,5 @@
 class User:
-    def __init__(self, username, email, password, id, account_type, security_qns, user_info, cart):
+    def __init__(self, username, email, password, id, account_type, security_qns, user_info, cart, course_purchased, products_purchased):
         self.__user_id = id
         self.__email = email
         self.__username = username
@@ -8,6 +8,8 @@ class User:
         self.__security_qns = security_qns
         self.__user_info = user_info
         self.__cart = cart
+        self.__course_purchased = course_purchased
+        self.__products_purchased = products_purchased
 
     def get_email(self):
         return self.__email
@@ -68,11 +70,11 @@ class User:
 
     @staticmethod
     def from_dict(source):
-        user = User(source["username"], source["email"], source["password"], source["id"], source["account_type"], source["security_qns"], source["user_info"], source["shopping_cart"])
+        user = User(source["username"], source["email"], source["password"], source["id"], source["account_type"], source["security_qns"], source["user_info"], source["shopping_cart"], source["Courses_Purchased"], source["Products_Purchased"])
         return user
 
     def to_dict(self):
-        user_dict = {"username": self.__username, "email": self.__email, "password": self.__password, "id": self.__user_id, "security_qns": self.__security_qns, "user_info": self.__user_info, "account_type": self.__account_type, "shopping_cart": self.__cart}
+        user_dict = {"username": self.__username, "email": self.__email, "password": self.__password, "id": self.__user_id, "security_qns": self.__security_qns, "user_info": self.__user_info, "account_type": self.__account_type, "shopping_cart": self.__cart, "Courses_Purchased": self.__course_purchased, "Products_Purchased": self.__products_purchased}
         return user_dict
 
 
