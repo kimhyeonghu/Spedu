@@ -349,12 +349,12 @@ def signup1():
             # user is not registered
             pass
         try:
-            id = db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
+            id = db.collection("Test").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
         except:
-            id = 1
+            id = "00001"
         hashed_password = bcrypt.generate_password_hash(sign_up_form1.password.data).decode('utf-8')
-        user = User(sign_up_form1.username.data, sign_up_form1.email.data, hashed_password, id, "Trainee", None, None, {}, {}, {})
-        db.collection("Users").document(str(id)).set(user.to_dict())
+        user = User(sign_up_form1.username.data, sign_up_form1.email.data, hashed_password, id, "Trainee", None, None, [], [], [])
+        db.collection("Test").document(str(id)).set(user.to_dict())
         login_user(user)
 
         auth.create_user_with_email_and_password(sign_up_form1.email.data, sign_up_form1.password.data)
@@ -393,9 +393,9 @@ def signup3():
         sign_up_form3 = SignUpForm3(request.form)
         if request.method == "POST" and sign_up_form3.validate():
             user = User.from_dict(db.collection("Users").document(str(current_user.get_id())).get().to_dict())
-            # user.set_user_info({"name": sign_up_form3.first_name.data, "address": sign_up_form3.address.data, "phone": sign_up_form3.phone.data})
-            # db.collection("Users").document(str(current_user.get_id())).update({"user_info": user.get_user_info()})
-            return redirect(url_for("homepage"))
+            user.set_user_info({"first_name": sign_up_form3.first_name.data, "last_name": sign_up_form3.last_name.data, "address": sign_up_form3.address.data, "unit_no": sign_up_form3.unit_no.data, "country": sign_up_form3.country.data, "phone": sign_up_form3.phone.data})
+            db.collection("Users").document(str(current_user.get_id())).update({"user_info": user.get_user_info()})
+            return redirect(url_for("account"))
     else:
         return redirect(url_for("account"))
     return render_template('signup3.html', form=sign_up_form3)
