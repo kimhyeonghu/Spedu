@@ -1,5 +1,9 @@
+@font-face {
+  font-family: Avenir;
+  src: url('../assets/AvenirLTStd-Book.otf');
+}
 body {
-  font-family: "AvenirNextLTPro", sans-serif;
+  font-family: Avenir, sans-serif;
 }
 .background {
   position: relative;
@@ -34,7 +38,7 @@ body {
 }
 h1 {
   text-align: left;
-  font-size: 50px;
+  font-size: 46px;
   padding-top: 20px;
   padding-bottom: 5px;
 }
@@ -42,20 +46,20 @@ h1 {
   margin-left: auto;
   margin-right: auto;
 }
-.tab2 {
-  border-bottom: 2px solid #297F87;
-}
 .tab1, .tab2 {
   margin-right: 20px;
 }
-.tab1, .tab3 {
+.tab1, .tab2 {
   border-bottom: 2px solid rgba(70, 207, 220, 0.75);
+}
+.tab3 {
+  border-bottom: 2px solid #297F87;
 }
 .tab1, .tab2, .tab3 {
   width: 210px;
 }
 h3 {
-  font-family: "AvenirNextLTPro-Regular", sans-serif;
+  font-family: Avenir, sans-serif;
   font-size: 25px;
 }
 label, input {
@@ -66,24 +70,38 @@ label, input {
 label {
   color: #6A7481;
 }
-#qns1, #qns2, #qns3 {
+.name {
+  margin: 0 10px;
+}
+.first_name {
+  padding: 0 5px 0 0;
+}
+.last_name {
+  padding: 0 0 0 5px;
+}
+.address_group {
+  margin: 0 10px;
+}
+.address {
+  padding: 0 5px 0 0;
+}
+.unit_no {
+  padding: 0 0 0 5px;
+}
+input[type=text], input[type=email], input[type=password], input[type=tel], select {
   height: 50px;
   font-size: 21px;
-  max-width: 650px;
-  margin-left: auto;
-  margin-right: auto;
+  color: #2E384D;
 }
-.ans-group {
-  position: relative;
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, input[type=tel]:focus, select:focus {
+  color: #2E384D;
 }
-.svg-container{
-  position: absolute;
-  bottom: 0px;
-  right: 20px;
-}
-input[type=text], input[type=email], input[type=password] {
-  height: 50px;
-  font-size: 21px;
+::placeholder {
+  color: #8C98A9;
+  font-family: open-sans, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 20px;
 }
 .skip, .next{
   width: 50%

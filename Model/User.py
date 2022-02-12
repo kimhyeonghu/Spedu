@@ -68,7 +68,7 @@ class User:
 
     @staticmethod
     def from_dict(source):
-        user = User(source["username"], source["email"], source["password"], source["id"], source["security_qns"], source["user_info"], source["account_type"], source["shopping_cart"])
+        user = User(source["username"], source["email"], source["password"], source["id"])
         return user
 
     def to_dict(self):

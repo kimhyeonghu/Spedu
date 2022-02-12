@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <title>Spedu Sign Up</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.typekit.net/ktl0fuq.css">
   <link rel="stylesheet" href="../static/css/basicnavbar.css">
-  <link rel="stylesheet" href="../static/css/signup2.css">
+  <link rel="stylesheet" href="../static/css/signup3.css">
   <script src="//cdnjs.cloudflare.com/ajax/libs/SVG-Morpheus/0.3.2/svg-morpheus.js"></script>
 </head>
 <body>
@@ -32,8 +33,30 @@
             <br>
             <form method="POST">
               {% from "includes/_formHelper.html" import render_field %}
+              <div class="row name">
+                <div class="form-group col first_name">
+                  {{ render_field(form.first_name, class="form-control") }}
+                </div>
+                <div class="form-group col last_name">
+                  {{ render_field(form.last_name, class="form-control") }}
+                </div>
+              </div>
+              <div class="row address_group">
+                <div class="form-group col-8 address">
+                  {{ render_field(form.address, class="form-control") }}
+                </div>
+                <div class="form-group col-4 unit_no">
+                  {{ render_field(form.unit_no, class="form-control") }}
+                </div>
+              </div>
               <div class="form-group">
-                {{ render_field(form.first_name, class="form-control") }}
+                {{ render_field(form.postal, class="form-control") }}
+              </div>
+              <div class="form-group">
+                {{ render_field(form.country, class="form-control") }}
+              </div>
+              <div class="form-group">
+                {{ render_field(form.phone, class="form-control") }}
               </div>
               <div class="d-flex flex-row buttons">
                 <div class="skip">

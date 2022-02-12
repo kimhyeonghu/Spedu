@@ -364,15 +364,17 @@ def signup1():
 def signup2():
     if not current_user.is_authenticated:
         redirect(url_for("signup1"))
-    print(User.from_dict(db.collection("Users").document(str(current_user.get_id())).get().to_dict()))
-    sign_up_form2 = SignUpForm2(request.form)
-    if request.method == "POST" and sign_up_form2.validate():
-        hashed_ans1 = bcrypt.generate_password_hash(sign_up_form2.ans1.data).decode('utf-8')
-        hashed_ans2 = bcrypt.generate_password_hash(sign_up_form2.ans2.data).decode('utf-8')
-        hashed_ans3 = bcrypt.generate_password_hash(sign_up_form2.ans3.data).decode('utf-8')
-        user = User(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
-        user.set_security_qns({"qns1": sign_up_form2.qns1.data, "ans1": hashed_ans1, "qns2": sign_up_form2.qns2.data, "ans2": hashed_ans2, "qns3": sign_up_form2.qns3.data, "ans3": hashed_ans3})
-        db.collection("Users").document(str(current_user.get_id())).update({"security_qns": user.get_security_qns()})
+    if db.collection("Users").document(str(current_user.get_id())).get().to_dict()["security_qns"] is None:
+        sign_up_form2 = SignUpForm2(request.form)
+        if request.method == "POST" and sign_up_form2.validate():
+            hashed_ans1 = bcrypt.generate_password_hash(sign_up_form2.ans1.data).decode('utf-8')
+            hashed_ans2 = bcrypt.generate_password_hash(sign_up_form2.ans2.data).decode('utf-8')
+            hashed_ans3 = bcrypt.generate_password_hash(sign_up_form2.ans3.data).decode('utf-8')
+            user = User(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
+            user.set_security_qns({"qns1": sign_up_form2.qns1.data, "ans1": hashed_ans1, "qns2": sign_up_form2.qns2.data, "ans2": hashed_ans2, "qns3": sign_up_form2.qns3.data, "ans3": hashed_ans3})
+            db.collection("Users").document(str(current_user.get_id())).update({"security_qns": user.get_security_qns()})
+            return redirect(url_for("signup3"))
+    else:
         return redirect(url_for("signup3"))
     return render_template('signup2.html', form=sign_up_form2)
 
@@ -382,7 +384,15 @@ def signup2():
 def signup3():
     if not current_user.is_authenticated:
         redirect(url_for("signup1"))
-    sign_up_form3 = SignUpForm3(request.form)
+    if db.collection("Users").document(str(current_user.get_id())).get().to_dict()["user_info"] is None:
+        sign_up_form3 = SignUpForm3(request.form)
+        if request.method == "POST" and sign_up_form3.validate():
+            user = User(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
+            user.set_user_info({"name": sign_up_form3.name.data, "address": sign_up_form3.address.data, "phone": sign_up_form3.phone.data})
+            db.collection("Users").document(str(current_user.get_id())).update({"user_info": user.get_user_info()})
+            return redirect(url_for("homepage"))
+    else:
+        return redirect(url_for("account"))
     return render_template('signup3.html', form=sign_up_form3)
 
 
