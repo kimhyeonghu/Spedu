@@ -197,13 +197,15 @@
               <div class="form-group">
   		        {{ render_field(form.Postal_code, class="form-control") }}
   	        </div>
+              <div class="form-group">
+                  {{ render_field(form.country, class="form-control") }}
+              </div>
   	        <br>
-          </form>
+
         <hr>
         <br>
     <div id="payment">
           <h3 style="margin-bottom:20px;">Credit/Debit Card details</h3>
-          <form method="POST">
   	        <div class="form-group">
   		        {{ render_field(form.Name_on_card, class="form-control") }}
   	        </div>
@@ -217,8 +219,12 @@
   		        {{ render_field(form.card_number, class="form-control") }}
   	        </div>
   	        <br>
+            <input type="submit" value="Submit" class="pay_btn"/>
+              <!--
             <button class="pay_btn" type="button" name="button" onclick="submit()">Make Payment</button>
+            -->
             <br>
+    </div>
           </form>
     </div>
   </div>

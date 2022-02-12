@@ -21,7 +21,11 @@
     <p class="price">${{'%0.2f'| format(selected_product.price|float)}}</p>
     <p class="quantity">Quantity:</p>
     <input id="options" type="number" placeholder="Quantity" min="1" value="1">
-    <button class="btn" type="button" name="button" onclick="add_to_cart();">Add to cart</button>
+    {% if (selected_product.stock) == 0 %}
+      <h3 style="text-align:center; color:red; padding-bottom:10px;">*Product is temporarily out-of-stock*</h3>
+    {% else %}
+      <button class="btn" type="button" name="button" onclick="add_to_cart();">Add to cart</button>
+    {% endif %}
     <p class="">{{selected_product.description}}</p>
     <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:25px;margin-bottom:25px;">
     <h4 style="margin-bottom:12px;">Reviews</h4>
