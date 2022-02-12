@@ -160,7 +160,9 @@
   overflow-wrap: normal;
   position: relative;
 }
-
+.course-short-detail-box:hover{
+  color: gray;
+}
 .course-short-detail-box ul {
   text-align:left;
   padding-left: 10px;

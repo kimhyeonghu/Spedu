@@ -242,9 +242,9 @@ def create_new_product():
 
     product_category = request.form['product_category']
     product_description = request.form['product_description']
+    product_tag = request.form['tag'].split(",")
     product_rating = 0
     product_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
-    product_tag = ""
     product_stock = int(request.form['product_stock'])
     new_product_data = {
         'productID': productID,
@@ -253,9 +253,9 @@ def create_new_product():
         'name': product_name,
         'price': float(product_price),
         'description': product_description,
+        'tag': product_tag,
         'rating': product_rating,
         'reviews': product_reviews,
-        'tag': product_tag,
         'stock': int(product_stock)
     }
     db.collection('Products').document().set(new_product_data)
@@ -309,6 +309,7 @@ def load_update(productID):
         print(product_img_link)
         product_price = request.form['update_price']
         product_description = request.form['update_description']
+        product_tag = request.form['update_tag'].split(",")
         product_stock = int(request.form['update_stock'])
 
         for doc in docs:
@@ -318,6 +319,7 @@ def load_update(productID):
                  'image': product_img_link,
                  'price': float(product_price),
                  'description': product_description,
+                 'tag':product_tag,
                  'stock': int(product_stock)
             })
     except:
@@ -699,6 +701,7 @@ def Checkout():
                     new_stock = old_stock - 1
                     print(new_stock)
                     db.collection('Products').document(doc.id).update({"stock": int(new_stock)})
+
                     #db.collection('Products').document(products_to_add[index]).update({'stock': int(new_stock)})
                 count+=1
         except:

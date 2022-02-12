@@ -22,7 +22,55 @@
           <li style="height:50px;margin-top:20px;"><p>Update Category</p><textarea name='update_category' type="text" placeholder="">{{selected_product.category}}</textarea></li>
           <li style="height:50px;margin-top:20px;"><p>Update Price</p><textarea name='update_price' type="text" placeholder="">{{selected_product.price}}</textarea></li>
           <li style="height:180px;"><p>Update Description</p><textarea name='update_description' style="height:160px;" type="text" placeholder="">{{selected_product.description}}</textarea></li>
-           <li style="height:180px;"><p>Update Tag</p><textarea name='tag' style="height:160px;" type="text" placeholder="">{{selected_product.tag}}</textarea></li>
+          <li style="height:50px;">
+            <p>Update Tag</p>
+            <input id="tag_input" type="text" placeholder="">
+            <input id="tag_list" name="update_tag" type="text" style="display:none;">
+            <button id="enter_tag_button" type="button" name="button" onclick=enter_tag()>Add</button>
+            <div style="display:inline-block;width:calc(100% - 200px);margin-left:200px;overflow: auto;white-space: nowrap;" id="tag_div">
+            </div>
+            <script type="text/javascript">
+              var tag_input = document.getElementById("tag_input");
+              tag_input.addEventListener("keyup", function(event) {
+                if (event.keyCode == 13) {
+                  event.preventDefault();
+                  if (tag_input.value.length > 0) {
+                    document.getElementById("enter_tag_button").click();
+                  }
+                }
+              });
+
+              function enter_tag() {
+                if (tag_input.value.length > 0) {
+                    var div = document.getElementById('tag_div');
+                    const list = document.createElement("LI");
+                    list.className = "tag_li"
+                    var colors = ['#FBF8F1', '#FDEBF7', '#EFDAD7', '#C0D8C0', '#FFE162', '#D9D7F1', '#E7FBBE', '#F5F5F5', '#FDF5CA'];
+                    list.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    const list_text = document.createTextNode(tag_input.value);
+                    const remove_tag_btn = document.createElement('button');
+                    remove_tag_btn.style.border = "none";
+                    remove_tag_btn.style["background-color"] = "transparent";
+                    remove_tag_btn.innerHTML = '<img src="../../../../static/images/remove_button.png" style="width:10px;height:10px;" />';
+                    remove_tag_btn.onclick =  function(){
+                      list.parentNode.removeChild(list);
+                    };
+                    list.appendChild(list_text);
+                    list.appendChild(remove_tag_btn);
+                    div.appendChild(list);
+
+                }
+
+              }
+              document.addEventListener('keypress', function (e) {
+                  if (e.keyCode === 13 || e.which === 13) {
+                      e.preventDefault();
+                      return false;
+                  }
+
+              });
+            </script>
+          </li>
           <li style="height:180px;"><p>Update Stock</p><textarea name='update_stock' type="text" placeholder="">{{selected_product.stock}}</textarea></li>
           <li style="height:50px;margin-top:-100px;"><p>Update Image</p><input name='update_image' type="file" placeholder="" value="" onclick="update_img()"></li>
 
@@ -45,7 +93,7 @@
             }
             window.onload = load_image;
           </script>
-          <li style="height:50px;"><a onclick="submit('update')"><button type="submit" value="Update" class="update-btn">Update</button></a></li>
+          <li style="height:50px;"><a onclick="submit('update');update();"><button type="submit" value="Update" class="update-btn">Update</button></a></li>
           <li style="height:50px;"><a onclick="submit('delete')"><button type="submit" value="Delete" class="delete-btn">Delete</button></a></li>
        </ul>
        <script type="text/javascript">
@@ -59,6 +107,21 @@
           }
           document.getElementById('selected_action').submit();
         }
+      </script>
+      <script type="text/javascript">
+      function update() {
+        var tag_lists = document.getElementsByClassName('tag_li');
+        var tags = "";
+        for (var i = 0; i < tag_lists.length; i++) {
+          if (tags.length == 0) {
+            tags=tag_lists[i].innerText;
+          } else {
+            tags = tags + "," +tag_lists[i].innerText;
+          }
+        }
+        document.getElementById("tag_list").value = tags;
+        document.getElementById("update_product_form").submit();
+      }
       </script>
        </form>
      </div>
