@@ -353,7 +353,7 @@ def signup1():
         except:
             id = 1
         hashed_password = bcrypt.generate_password_hash(sign_up_form1.password.data).decode('utf-8')
-        user = User(sign_up_form1.username.data, sign_up_form1.email.data, hashed_password, id, "Trainee")
+        user = User(sign_up_form1.username.data, sign_up_form1.email.data, hashed_password, id, "Trainee", None, None, None)
         db.collection("Users").document(str(id)).set(user.to_dict())
         login_user(user)
 
@@ -374,7 +374,7 @@ def signup2():
             hashed_ans1 = bcrypt.generate_password_hash(sign_up_form2.ans1.data).decode('utf-8')
             hashed_ans2 = bcrypt.generate_password_hash(sign_up_form2.ans2.data).decode('utf-8')
             hashed_ans3 = bcrypt.generate_password_hash(sign_up_form2.ans3.data).decode('utf-8')
-            user = User(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
+            user = User.from_dict(db.collection("Users").document(str(current_user.get_id())).get().to_dict())
             user.set_security_qns({"qns1": sign_up_form2.qns1.data, "ans1": hashed_ans1, "qns2": sign_up_form2.qns2.data, "ans2": hashed_ans2, "qns3": sign_up_form2.qns3.data, "ans3": hashed_ans3})
             db.collection("Users").document(str(current_user.get_id())).update({"security_qns": user.get_security_qns()})
             return redirect(url_for("signup3"))
