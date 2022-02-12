@@ -389,10 +389,8 @@ def signin():
     if request.method == "POST" and sign_in_form.validate():
         user = db.collection("Users").where("email", "==", sign_in_form.email.data).get()
         if user:
-            print("user exisst")
             if bcrypt.check_password_hash(user[0].to_dict()["password"], sign_in_form.password.data):
                 user = User.from_dict(user[0].to_dict())
-                # login_user(user)
                 login_user(user, remember=sign_in_form.remember.data)
 
                 auth.sign_in_with_email_and_password(sign_in_form.email.data, sign_in_form.password.data)
