@@ -36,7 +36,7 @@
   height: 320px;
   display: block;
   position:relative;
-  overflow: auto;
+  overflow: hidden;
   white-space: nowrap;
 }
 .course-short-detail-box ul {
@@ -188,3 +188,21 @@
 #no_course_div {
   text-align: center;
 }
+#slideRight{
+  float: left;
+  position: absolute;
+  z-index: 1;
+  margin-top: 125px;
+}
+#slideLeft{
+  right: 0px;
+  z-index: 1;
+  position: absolute;
+  margin-top: -210px;
+}
+.slide_button{
+  background-color: transparent;
+  border-style: none;
+  outline: none;
+}
+button:focus {outline:0;}

@@ -14,94 +14,114 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+
 {% endblock %}
 
 
 {% block body %}
-<div id="search_page_main_div">
-  {% for course in course_search_results %}
-  <h1>{{course.name}}</h1>
-  {% endfor %}
-  {% for product in product_search_results %}
-  <h1>{{product.name}}</h1>
-  {% endfor %}
+<div style="margin-top:100px;margin-left:50px;">
+  <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;margin-bottom:30px;">Search result(s) for '{{search_input}}'</h2>
+  <input id="toggle-course-product" type="checkbox" checked data-toggle="toggle" data-on="Sports Courses" data-off="Spedu Store" data-onstyle="warning" data-offstyle="info">
 </div>
+<script type="text/javascript">
+  // $(function() {
+  //   $('#toggle-course-product').change(function() {
+  //     document.getElementById('product-panel').style.display = "none"
+  //     document.getElementById('view-courses').style.display = "block"
+  //   })
+  // })
+  document.getElementById('toggle-course-product').onchange = function(e){
+
+        if(e.target.checked) {
+          document.getElementById('product-panel').style.display = "none"
+          document.getElementById('view-courses').style.display = "block"
+        } else {
+          document.getElementById('product-panel').style.display = "block"
+          document.getElementById('view-courses').style.display = "none"
+        }
+    };
 
 
-<div class="product-panel">
-        <ul>
-          <li><h3 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Sports Product</h3></li>
-          <li>
-            <label for="dropdown" style="font-size:14px;font-weight:bold;">Sort by : </label>
-            <div class="dropdown" >
-              <button class="dropbtn" id="dropbtn">Default</button>
-              <div class="dropdown-content">
-                  <a onclick="sort('default')">Default</a>
-                  <a onclick="sort('price high to low')">price high to low</a>
-                  <a onclick="sort('price low to high')">price low to high</a>
+
+</script>
+<div id="product-panel">
+  <div class="product-panel" >
+          <ul>
+            <li>
+              <label for="dropdown" style="font-size:14px;font-weight:bold;">Sort by : </label>
+              <div class="dropdown" >
+                <button class="dropbtn" id="dropbtn">Default</button>
+                <div class="dropdown-content">
+                    <a onclick="sort('default')">Default</a>
+                    <a onclick="sort('price high to low')">price high to low</a>
+                    <a onclick="sort('price low to high')">price low to high</a>
+                </div>
+                <form action='/store_searchpage/' id="sort_attr_form" method="get">
+                <input id="sort_attr" type="text" name="sort_attr" value="" style="display:none;">
+                </form>
+                <script type="text/javascript">
+                  function sort(sort_attr) {
+                    document.getElementById('sort_attr').value = sort_attr;
+                    document.getElementById('sort_attr_form').submit();
+                    // $( "#products-list" ).load(window.location.href + " #products-list" );
+                  }
+                </script>
               </div>
-              <form action='/store_searchpage/' id="sort_attr_form" method="get">
-              <input id="sort_attr" type="text" name="sort_attr" value="" style="display:none;">
-              </form>
-              <script type="text/javascript">
-                function sort(sort_attr) {
-                  document.getElementById('sort_attr').value = sort_attr;
-                  document.getElementById('sort_attr_form').submit();
-                  // $( "#products-list" ).load(window.location.href + " #products-list" );
-                }
-              </script>
-            </div>
-          </li>
-        </ul>
-    </div>
-    <div class="view-products">
-      <div class="product-filter">
-        <ul>
-          <li style="">
-            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
-            <h6>Ratings</h6>
-          </li>
-          <li style="">
-            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
-            <h6>Price</h6>
-          </li>
-          <li style="">
-            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
-            <h6>Levels</h6>
-          </li>
-          <li style="">
-            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
-            <h6>Video Duration</h6>
-          </li>
-        </ul>
+            </li>
+          </ul>
       </div>
-
-
-<div class="products-list" id="products-list" style="position:relative;top:-500px;left:200px;">
-  <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
-    <input id="input" type="text" name="selected_productID" value="" style="display:none;">
-        {% for i in range(product_search_results|length) %}
-        {% set product = product_search_results[i] %}
-      <a onclick="submit('{{product.productID}}')">
-        <div class="products-list-box">
-            <img class="image" src="{{product.image}}" style="width:200px;height:130px;margin-left:100px;" alt="Spedu">
-            <h5 class="name">{{product.name}}</h5>
-            <p class="category">{{product.category}}</p>
-            <p class="price">${{'%0.2f'| format(product.price|float)}}</p>
+      <div class="view-products">
+        <div class="product-filter">
+          <ul>
+            <li style="">
+              <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+              <h6>Ratings</h6>
+            </li>
+            <li style="">
+              <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+              <h6>Price</h6>
+            </li>
+            <li style="">
+              <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+              <h6>Levels</h6>
+            </li>
+            <li style="">
+              <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
+              <h6>Video Duration</h6>
+            </li>
+          </ul>
         </div>
-      </a>
-        {% endfor %}
-  <script type="text/javascript">
-          function submit(id) {
-              document.getElementById('input').value = id;
-              document.getElementById('selected_product_form').submit();
-          }
-  </script>
+     </div>
 
-  </form>
-</div>
-</div>
+  <div class="products-list" id="products-list" style="position:relative;top:-500px;left:200px;">
+    <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
+      <input id="input" type="text" name="selected_productID" value="" style="display:none;">
+          {% for i in range(product_search_results|length) %}
+          {% set product = product_search_results[i] %}
+        <a onclick="submit('{{product.productID}}')">
+          <div class="products-list-box">
+              <img class="image" src="{{product.image}}" style="width:200px;height:130px;margin-left:100px;" alt="Spedu">
+              <h5 class="name">{{product.name}}</h5>
+              <p class="category">{{product.category}}</p>
+              <p class="price">${{'%0.2f'| format(product.price|float)}}</p>
+          </div>
+        </a>
+          {% endfor %}
+    <script type="text/javascript">
+            function submit(id) {
+                document.getElementById('input').value = id;
+                document.getElementById('selected_product_form').submit();
+            }
+    </script>
 
+    </form>
+  </div>
+
+
+
+</div>
 
 
 
@@ -119,12 +139,11 @@
 <div class="view-courses" id="view-courses" style="">
   <div class="course-sort">
     <ul>
-      <li><h4 style="font-family: 'STIXGeneral', serif;font-weight: bold;">All Courses</h4></li>
       <br>
       <li>
         <label for="dropdown" style="font-size:14px;font-weight:bold;">Sort by : </label>
         <div class="dropdown" >
-          <button class="dropbtn" id="dropbtn"></button>
+          <button class="dropbtn" id="dropbtn">popularity</button>
           <div class="dropdown-content">
               <a onclick="sort_filter_courses('popularity','{{rating_value}}','{{price_value}}','{{level_value}}')">popularity</a>
               <a onclick="sort_filter_courses('price high to low','{{rating_value}}','{{price_value}}','{{level_value}}')">price high to low</a>
@@ -135,11 +154,12 @@
         </div>
       </li>
     </ul>
-    <form action="{{ url_for('search_result') }}" id="sort_filter_courses_form" method="post" enctype="multipart/form-data">
+    <form action="{{ url_for('search_result') }}" id="sort_filter_courses_form" method="get">
     <input id="sort_attr" type="text" name="sort_attr" value="" style="display:none;">
     <input id="rating_value" type="text" name="rating_value" value="" style="display:none;">
     <input id="price_value" type="text" name="price_value" value="" style="display:none;">
     <input id="level_value" type="text" name="level_value" value="" style="display:none;">
+    <input id="search_input2" type="text" name="search_input2" value="" style="display:none;">
     </form>
   </div>
       <div class="course-filter">
@@ -214,8 +234,8 @@
       </div>
       <div class="courses-list" id="courses-list">
 
-      <form action='/sports_courses/about_course/' id="selected_course_form" method="get">
-        <input id="input" type="text" name="selected_courseID" value="" style="display:none;">
+      <form action="{{ url_for('view_selected_course') }}" id="selected_course_form_search" method="get">
+        <input id="input2" type="text" name="selected_courseID" value="" style="display:none;">
         {% if courses_filtered|length == 0 %}
         <div id="no_course_div">
           <img src="../../static/images/no-results-found.jpeg" alt="">
@@ -224,7 +244,7 @@
         </div>
         {% elif sort_attribute == 'popularity' %}
         {% for course in courses_filtered|sort(attribute='students_count', reverse = True) %}
-        <a onclick="submit('{{course.courseID}}')">
+        <a onclick="submit_from_search('{{course.courseID}}')">
         <div class="courses-list-box">
         <img class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
         <ul class="course-description">
@@ -242,7 +262,7 @@
         {% endfor %}
         {% elif sort_attribute == 'rating high to low' %}
           {% for course in courses_filtered|sort(attribute='rating', reverse = True) %}
-          <a onclick="submit('{{course.courseID}}')">
+          <a onclick="submit_from_search('{{course.courseID}}')">
           <div class="courses-list-box">
           <img class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
           <ul class="course-description">
@@ -260,7 +280,7 @@
           {% endfor %}
         {% elif sort_attribute == 'rating low to high' %}
           {% for course in courses_filtered|sort(attribute='rating', reverse = False) %}
-            <a onclick="submit('{{course.courseID}}')">
+            <a onclick="submit_from_search('{{course.courseID}}')">
         <div class="courses-list-box">
             <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
             <ul class="course-description">
@@ -277,7 +297,7 @@
           {% endfor %}
         {% elif sort_attribute == 'price high to low' %}
           {% for course in courses_filtered|sort(attribute='price', reverse = True) %}
-            <a onclick="submit('{{course.courseID}}')">
+            <a onclick="submit_from_search('{{course.courseID}}')">
         <div class="courses-list-box">
             <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
             <ul class="course-description">
@@ -294,7 +314,7 @@
           {% endfor %}
         {% elif sort_attribute == 'price low to high' %}
           {% for course in courses_filtered|sort(attribute='price', reverse = False) %}
-            <a onclick="submit('{{course.courseID}}')">
+            <a onclick="submit_from_search('{{course.courseID}}')">
           <div class="courses-list-box">
               <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
               <ul class="course-description">
@@ -311,7 +331,7 @@
           {% endfor %}
         {% else %}
           {% for course in courses_filtered|sort(attribute='students_count', reverse = True) %}
-            <a onclick="submit('{{course.courseID}}')">
+            <a onclick="submit_from_search('{{course.courseID}}')">
           <div class="courses-list-box">
               <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
               <ul class="course-description">
@@ -327,26 +347,29 @@
             </a>
           {% endfor %}
         {% endif %}
-
-
-
         </form>
       </div>
 
 
 </div>
 <script type="text/javascript">
-  function submit(id) {
-      document.getElementById('input').value = id;
-      document.getElementById('selected_course_form').submit();
+  function submit_from_search(id) {
+      document.getElementById('input2').value = id;
+      document.getElementById('selected_course_form_search').submit();
   }
 </script>
 <script type="text/javascript">
+  document.getElementById('product-panel').style.display = "none"
+  document.getElementById('view-courses').style.display = "block"
+  document.getElementById('search_input').placeholder = '{{search_input}}';
   function sort_filter_courses(sort_attr,rating_value,price_value,level_value) {
     document.getElementById('rating_value').value = rating_value;
     document.getElementById('price_value').value = price_value;
     document.getElementById('level_value').value = level_value;
     document.getElementById('sort_attr').value = sort_attr;
+    document.getElementById('search_input').placeholder = '{{search_input}}';
+    document.getElementById('search_input2').value = '{{search_input}}';
+
 
 
     document.getElementById('sort_filter_courses_form').submit();
@@ -402,6 +425,8 @@
   }
   var levelRadioBtn = document.getElementById(level_value_id);
   levelRadioBtn.checked = true;
+
+
 
 </script>
 {% endblock %}
