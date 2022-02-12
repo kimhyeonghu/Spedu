@@ -45,15 +45,16 @@ h1 {
 form {
   position: relative;
 }
+.svg-container{
+  position: absolute;
+  bottom: 165px;
+  right: 10px;
+}
 label {
   color: #8C98A9;
 }
-.remember {
-  margin-left: 0;
-  margin-right: auto;
-}
-input #remember {
-  margin-left: 0;
+form .remember {
+  margin-left: 20px;
   margin-right: auto;
 }
 .forgotLink {
@@ -66,7 +67,7 @@ input #remember {
   color: red;
   margin-bottom: 0;
 }
-input[type=email], input[type=password] {
+input[type=text], input[type=email], input[type=password] {
   height: 50px;
   font-size: 21px;
 }

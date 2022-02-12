@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 from django_jinja import library
@@ -210,6 +210,7 @@ def load_products():
         products.append(product)
     return products
 
+
 def load_products_for_search():
     products = []
     products_docs = db.collection('Products').get()
@@ -227,6 +228,7 @@ def load_products_for_search():
         product = Product_For_Search(productID, category, image, name, price, description, rating, reviews, tag, stock, 0)
         products.append(product)
     return products
+
 
 @app.route('/admin_page/products/', methods=['POST'])
 def create_new_product():
@@ -278,8 +280,7 @@ def search_result():
     courseID_array = []
     for course in course_search_results:
         courseID_array.append(course.courseID)
-    return render_template('search_page.html', course_search_results=course_search_results,product_search_results=product_search_results, courseID_array= json.dumps(courseID_array), sort_attribute = sort_attr,rating_value=rating_value,price_value=price_value,level_value=level_value)
-
+    return render_template('search_page.html', course_search_results=course_search_results, product_search_results=product_search_results, courseID_array=json.dumps(courseID_array), sort_attribute=sort_attr, rating_value=rating_value, price_value=price_value, level_value=level_value)
 
 
 def load_delete(productID):
@@ -321,8 +322,6 @@ def load_update(productID):
             })
     except:
         print("Unable to update product!")
-
-
 
 
 @app.route('/')
@@ -389,10 +388,8 @@ def signin():
     if request.method == "POST" and sign_in_form.validate():
         user = db.collection("Users").where("email", "==", sign_in_form.email.data).get()
         if user:
-            print("user exisst")
             if bcrypt.check_password_hash(user[0].to_dict()["password"], sign_in_form.password.data):
                 user = User.from_dict(user[0].to_dict())
-                # login_user(user)
                 login_user(user, remember=sign_in_form.remember.data)
 
                 auth.sign_in_with_email_and_password(sign_in_form.email.data, sign_in_form.password.data)
@@ -425,16 +422,18 @@ def reset1():
             user = db.collection("Users").where("email", "==", reset_form1.email.data).get()
             print(user)
             if user:
-                return redirect(url_for("reset2", id=user[0].to_dict()["id"]))
+                session["id"] = user[0].to_dict()["id"]
+                return redirect(url_for("reset2"))
         else:
             flash("Account does not exist!")
             return redirect(url_for("reset1"))
     return render_template("reset.html", form=reset_form1)
 
 
-@app.route("/forget/<id>", methods=['GET', 'POST'])
-def reset2(id):
-    # reset_form2 = ForgetPassword2(request.form)
+@app.route("/forget/2", methods=['GET', 'POST'])
+def reset2():
+    id = session.get("id")
+    print(id)
     user = db.collection("Users").document(str(id)).get().to_dict()
     qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
     if request.method == "POST":
