@@ -19,7 +19,7 @@
     <div class="right">
       <div class="vertical-center">
         <div class="login">
-          <div class="loginContent">
+          <div class="loginContent" class="text-nowrap">
             <h1>Sign In</h1>
             <form class="" method="POST">
               <div class="form-group">
@@ -42,7 +42,7 @@
                 {{ form.remember(class="form-check-input") }}
                 {{ form.remember.label(class="form-check-label") }}
               </div>
-              <a class="forgotLink" href="/forget_password">Forgot Password?</a>
+              <a class="forgotLink" href="/forget">Forgot Password?</a>
               {% with messages = get_flashed_messages() %}
                 {% if messages %}
                   {% for message in messages %}

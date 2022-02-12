@@ -126,9 +126,27 @@
       for (var i in newoptions) {
         optionHTML += '<option value="' + i + '">' + newoptions[i] + '</option>';
       }
-      qns1_select.innerHTML = ('<option value="' + qns1_select.value + '">' + qns1_select.value + '</option>' + optionHTML);
-      qns2_select.innerHTML = ('<option value="' + qns2_select.value + '">' + qns2_select.value + '</option>' + optionHTML);
-      qns3_select.innerHTML = ('<option value="' + qns3_select.value + '">' + qns3_select.value + '</option>' + optionHTML);
+      if (qns1 == "") {
+        qns1 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns1 = '<option value="' + qns1 + '">' + qns1 + '</option>'
+      }
+      if (qns2 == "") {
+        qns2 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns2 = '<option value="' + qns2 + '">' + qns2 + '</option>'
+      }
+      if (qns3 == "") {
+        qns3 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns3 = '<option value="' + qns3 + '">' + qns3 + '</option>'
+      }
+      qns1_select.innerHTML = (qns1 + optionHTML);
+      qns2_select.innerHTML = (qns2 + optionHTML);
+      qns3_select.innerHTML = (qns3 + optionHTML);
     }
     qns2_select.onchange = function() {
       var qns1 = qns1_select.value;
@@ -143,10 +161,27 @@
       for (var i in newoptions) {
         optionHTML += '<option value="' + i + '">' + newoptions[i] + '</option>';
       }
-      qns1_select.innerHTML = ('<option value="' + qns1_select.value + '">' + qns1_select.value + '</option>' + optionHTML);
-      qns2_select.innerHTML = ('<option value="' + qns2_select.value + '">' + qns2_select.value + '</option>' + optionHTML);
-      qns3_select.innerHTML = ('<option value="' + qns3_select.value + '">' + qns3_select.value + '</option>' + optionHTML);
-    }
+      if (qns1 == "") {
+        qns1 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns1 = '<option value="' + qns1 + '">' + qns1 + '</option>'
+      }
+      if (qns2 == "") {
+        qns2 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns2 = '<option value="' + qns2 + '">' + qns2 + '</option>'
+      }
+      if (qns3 == "") {
+        qns3 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns3 = '<option value="' + qns3 + '">' + qns3 + '</option>'
+      }
+      qns1_select.innerHTML = (qns1 + optionHTML);
+      qns2_select.innerHTML = (qns2 + optionHTML);
+      qns3_select.innerHTML = (qns3 + optionHTML);    }
     qns3_select.onchange = function() {
       var qns1 = qns1_select.value;
       var qns2 = qns2_select.value;
@@ -160,10 +195,27 @@
       for (var i in newoptions) {
         optionHTML += '<option value="' + i + '">' + newoptions[i] + '</option>';
       }
-      qns1_select.innerHTML = ('<option value="' + qns1_select.value + '">' + qns1_select.value + '</option>' + optionHTML);
-      qns2_select.innerHTML = ('<option value="' + qns2_select.value + '">' + qns2_select.value + '</option>' + optionHTML);
-      qns3_select.innerHTML = ('<option value="' + qns3_select.value + '">' + qns3_select.value + '</option>' + optionHTML);
-    }
+      if (qns1 == "") {
+        qns1 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns1 = '<option value="' + qns1 + '">' + qns1 + '</option>'
+      }
+      if (qns2 == "") {
+        qns2 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns2 = '<option value="' + qns2 + '">' + qns2 + '</option>'
+      }
+      if (qns3 == "") {
+        qns3 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns3 = '<option value="' + qns3 + '">' + qns3 + '</option>'
+      }
+      qns1_select.innerHTML = (qns1 + optionHTML);
+      qns2_select.innerHTML = (qns2 + optionHTML);
+      qns3_select.innerHTML = (qns3 + optionHTML);    }
 
     var icons = ['show1', 'hide1'];
     var svgMorpheus = new SVGMorpheus("#morph1");

@@ -1,5 +1,9 @@
+@font-face {
+  font-family: Avenir;
+  src: url('../assets/AvenirLTStd-Book.otf');
+}
 body {
-  font-family: "AvenirNextLTPro", sans-serif;
+  font-family: Avenir, sans-serif;
 }
 .background {
   position: relative;
@@ -31,10 +35,11 @@ body {
 .registerContent {
   padding-left: 30px;
   padding-right: 30px;
+  position: relative;
 }
 h1 {
   text-align: left;
-  font-size: 50px;
+  font-size: 46px;
   padding-top: 25px;
   padding-bottom: 25px;
 }
@@ -66,12 +71,13 @@ label, input {
 label {
   color: #6A7481;
 }
-form {
-  margin-top: 15px;
-}
-input[type=text], input[type=email], input[type=password]{
+input[type=text], input[type=email], input[type=password] {
   height: 50px;
   font-size: 21px;
+  color: #2E384D;
+}
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
+  color: #2E384D;
 }
 .pass-group {
   position: relative;
@@ -81,6 +87,14 @@ input[type=text], input[type=email], input[type=password]{
   bottom: 0px;
   right: 20px;
 }
+#flash {
+  position: absolute;
+  color: red;
+  bottom: 66px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
 input[type=submit] {
   background-color: #2E384D;
   color: white;
@@ -88,13 +102,14 @@ input[type=submit] {
   border: none;
   padding: 15px 0;
   border-radius: 5px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
-.registerContent p {
-  margin-top: 5px;
-  text-align: center;
-  margin-bottom: 5px;
-  color: #6A7481;
+::placeholder {
+  color: #8C98A9;
+  font-family: open-sans, sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  font-size: 20px;
 }
 /* .registerContent a {
   color: #2AA0B3;
@@ -102,4 +117,6 @@ input[type=submit] {
 #signin {
   text-align: center;
   color: #8C98A9;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
