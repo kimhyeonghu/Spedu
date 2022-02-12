@@ -337,7 +337,7 @@ def signup1():
     if request.method == "POST" and sign_up_form1.validate():
         try:
             if sign_up_form1.email.data == db.collection("Users").where("email", "==", sign_up_form1.email.data).get()[0].to_dict()["email"]:
-                flash("Email already registered.")
+                flash("Email already registered. Please Sign In.")
                 return render_template('signup.html', form=sign_up_form1)
         except:
             # user is not registered
@@ -353,7 +353,6 @@ def signup1():
 
         auth.create_user_with_email_and_password(sign_up_form1.email.data, sign_up_form1.password.data)
         user = auth.current_user
-
         return redirect(url_for("signup2"))
     return render_template('signup.html', form=sign_up_form1)
 
@@ -383,7 +382,7 @@ def signup3():
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
     if current_user.is_authenticated:
-        return redirect(url_for("homepage"))
+        return redirect(next_page) if next_page else redirect(url_for("homepage"))
     sign_in_form = SignInForm(request.form)
     if request.method == "POST" and sign_in_form.validate():
         user = db.collection("Users").where("email", "==", sign_in_form.email.data).get()
@@ -396,7 +395,7 @@ def signin():
                 user = auth.current_user
 
                 next_page = request.args.get('next')
-                return redirect(next_page) if next_page else redirect(url_for("account"))
+                return redirect(next_page) if next_page else redirect(url_for("homepage"))
             else:
                 flash("Invalid Email or Password.")
                 return render_template('signin.html', form=sign_in_form)
@@ -413,17 +412,20 @@ def signout():
     return redirect(url_for("homepage"))
 
 
-@app.route("/forget", methods=['GET', 'POST'])
+@app.route("/forget/1", methods=['GET', 'POST'])
 def reset1():
     reset_form1 = ForgetPassword1(request.form)
     if request.method == "POST":
         if reset_form1.validate():
-            print(reset_form1.email.data)
             user = db.collection("Users").where("email", "==", reset_form1.email.data).get()
-            print(user)
             if user:
-                session["id"] = user[0].to_dict()["id"]
+                global reset_user_id
+                reset_user_id = user[0].to_dict()["id"]
+                # session["id"] = user[0].to_dict()["id"]
                 return redirect(url_for("reset2"))
+            else:
+                flash("Email does not exist.")
+                return render_template('reset.html', form=reset_form1)
         else:
             flash("Account does not exist!")
             return redirect(url_for("reset1"))
@@ -432,28 +434,29 @@ def reset1():
 
 @app.route("/forget/2", methods=['GET', 'POST'])
 def reset2():
-    id = session.get("id")
-    print(id)
-    user = db.collection("Users").document(str(id)).get().to_dict()
-    qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
-    if request.method == "POST":
-        if bcrypt.check_password_hash(user["security_qns"]["ans1"], request.form["ans1"]) and bcrypt.check_password_hash(user["security_qns"]["ans2"], request.form["ans2"]) and bcrypt.check_password_hash(user["security_qns"]["ans3"], request.form["ans3"]):
-            return redirect(url_for("reset3", id=user["id"]))
-        else:
-            flash("Incorrect answer(s)! Please try again.")
-            return render_template("reset2.html", qns=qns)
+    if reset_user_id:
+        user = db.collection("Users").document(str(reset_user_id)).get().to_dict()
+        qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
+        if request.method == "POST":
+            if bcrypt.check_password_hash(user["security_qns"]["ans1"], request.form["ans1"]) and bcrypt.check_password_hash(user["security_qns"]["ans2"], request.form["ans2"]) and bcrypt.check_password_hash(user["security_qns"]["ans3"], request.form["ans3"]):
+                return redirect(url_for("reset3", id=user["id"]))
+            else:
+                flash("Incorrect answer(s)! Please try again.")
+                return render_template("reset2.html", qns=qns)
+    else:
+        return redirect(url_for("reset1"))
     return render_template("reset2.html", qns=qns)
 
 
-@app.route("/forget/<id>/reset", methods=['GET', 'POST'])
-def reset3(id):
+@app.route("/forget/3", methods=['GET', 'POST'])
+def reset3():
     reset_form3 = ForgetPassword3(request.form)
     if request.method == "POST" and reset_form3.validate():
         hashed_password = bcrypt.generate_password_hash(reset_form3.password.data).decode('utf-8')
-        db.collection("Users").document(str(id)).update({"password": hashed_password})
+        db.collection("Users").document(str(reset_user_id)).update({"password": hashed_password})
         # user = User.from_dict(db.collection("Users").where("email", "==", sign_in_form.email.data).get()[0].to_dict())
-        # login_user(user)
-        return redirect(url_for("signin"))
+        login_user(user)
+        return redirect(url_for("account"))
     return render_template("reset3.html", form=reset_form3)
 
 

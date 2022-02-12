@@ -1,6 +1,6 @@
 @font-face {
   font-family: Avenir Next;
-  src: url('../assets/AvenirNextLTPro-Regular.otf');
+  src: url('../assets/AvenirLTStd-Book.otf');
 }
 body {
   font-family: Avenir Next, sans-serif;
@@ -38,7 +38,7 @@ body {
   position: relative;
 }
 h1 {
-  font-weight: 600;
+  font-weight: 400;
   text-align: left;
   font-size: 50px;
   padding-top: 25px;
@@ -53,7 +53,7 @@ h1 {
   width: 100%;
 }
 h3 {
-  font-family: "Avenir Next", sans-serif;
+  font-family: Avenir, sans-serif;
   font-size: 25px;
 }
 label, input {

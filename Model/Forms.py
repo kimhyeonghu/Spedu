@@ -3,10 +3,10 @@ from wtforms.validators import EqualTo
 
 
 class SignUpForm1(Form):
-    email = EmailField('Email Address *', [validators.Length(max=320), validators.DataRequired()])
-    username = StringField('Username *', [validators.Length(min=3, max=32), validators.DataRequired()])
-    password = PasswordField('Password *', [validators.Length(min=8, max=64), validators.DataRequired()])
-    confirm_password = PasswordField('Confirm Password *', [validators.DataRequired(), EqualTo("password")])
+    email = EmailField('Email Address *', [validators.Length(max=320), validators.DataRequired()], render_kw={"placeholder": "Enter your email address"})
+    username = StringField('Username *', [validators.Length(min=3, max=32), validators.DataRequired()], render_kw={"placeholder": "Enter your username"})
+    password = PasswordField('Password *', [validators.Length(min=8, max=64), validators.DataRequired()], render_kw={"placeholder": "Enter your password"})
+    confirm_password = PasswordField('Confirm Password *', [validators.DataRequired(), EqualTo("password")], render_kw={"placeholder": "Confirm your password"})
 
 
 class SignUpForm2(Form):

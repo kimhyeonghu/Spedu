@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <title>Spedu Sign Up</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.typekit.net/ktl0fuq.css">
   <link rel="stylesheet" href="../static/css/basicnavbar.css">
   <link rel="stylesheet" href="../static/css/signup.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/SVG-Morpheus/0.3.2/svg-morpheus.js"></script>
 </head>
 <body>
@@ -64,6 +66,13 @@
                   </svg>
                 </div>
               </div>
+              {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                  {% for message in messages %}
+                    <p id="flash">{{ message }}</p>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
               <input class="text-center" type="submit" value="NEXT STEP">
             </form>
             <p id="signin">Already Have An Account? <a class="" href="/signin">Sign In</a></p>
@@ -73,6 +82,9 @@
     </div>
   </div>
   <script type="text/javascript">
+    $('#flash').delay(5000).animate({
+      opacity: 0
+    }, 1000);
     var icons = ['show1', 'hide1'];
     var svgMorpheus = new SVGMorpheus("#morph1");
     var count = 0;
