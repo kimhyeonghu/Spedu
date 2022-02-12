@@ -1,0 +1,72 @@
+{% if current_user.is_authenticated %}
+    {% extends 'base_signed_in.html' %}
+{% else %}
+    {% extends 'base.html' %}
+{% endif %}
+
+{% block head %}
+<title>Sports Courses</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/mylearning.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sports_courses.css') }}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+{% endblock %}
+
+{% block body %}
+
+
+
+
+<div class="course-panel">
+      <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;">My Courses</h2>
+      <br>
+      <div class="top-course-div" id="top-course-div">
+        <button class="slide_button" id="slideRight" type="button" name="button"><img src="../../static/images/left-arrow.png" alt="" style="height:40px;width:auto;"></button>
+        <ul class="top-course-ul" id="top-course-ul">
+          {% for i in range(my_courses|length) %}
+          {% set my_course = my_courses[i] %}
+
+          <li class="horizontal" style="margin-right: 5px;margin-top:10px;width:270px;margin-left: 5px;">
+            <a onclick="" class="course-a">
+            <div class="course-short-detail-box">
+
+              <img id="img_{{my_course.courseID}}" class="course-image" src="{{my_course.image}}" style="width:230px;height:130px;margin-top:10px;" alt="yoga_image" >
+              <ul>
+                <li class="name" id="name_{{my_course.name}}" style="font-size: 15px;padding-right:10px;">{{my_course.name}}</li>
+                <li class="trainer" style="font-size: 11px;">{{my_course.trainer}}</li>
+                <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(my_course.rating|float)}}</li>
+                <li style="font-size: 13px;">${{'%0.2f'| format(my_course.price|float)}}</li>
+              </ul>
+
+            </div>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        <button class="slide_button" id="slideLeft" type="button" name="button"><img src="../../static/images/right-arrow.png" alt="" style="height:40px;width:auto;"></button>
+      </div>
+</div>
+<script type="text/javascript">
+  const buttonRight = document.getElementById('slideRight');
+   const buttonLeft = document.getElementById('slideLeft');
+   buttonRight.style.display = "none";
+   var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
+   if (width<$(document).width()) {
+     buttonRight.style.display = "none";
+     buttonLeft.style.display = "none";
+   } else {
+     buttonRight.style.display = "none";
+     buttonLeft.style.display = "block";
+   }
+   buttonRight.onclick = function () {
+     document.getElementById('top-course-ul').scrollLeft -= ($(document).width()-250);
+     buttonRight.style.display = "none";
+     buttonLeft.style.display = "block";
+   };
+   buttonLeft.onclick = function () {
+     document.getElementById('top-course-ul').scrollLeft += ($(document).width()-250);
+     buttonLeft.style.display = "none";
+     buttonRight.style.display = "block";
+   };
+</script>
+{% endblock %}
