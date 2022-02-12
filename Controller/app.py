@@ -349,12 +349,12 @@ def signup1():
             # user is not registered
             pass
         try:
-            id = db.collection("Test").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
+            id = db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
         except:
-            id = "00001"
+            id = 1
         hashed_password = bcrypt.generate_password_hash(sign_up_form1.password.data).decode('utf-8')
         user = User(sign_up_form1.username.data, sign_up_form1.email.data, hashed_password, id, "Trainee", None, None, [], [], [])
-        db.collection("Test").document(str(id)).set(user.to_dict())
+        db.collection("Users").document(str(id)).set(user.to_dict())
         login_user(user)
 
         auth.create_user_with_email_and_password(sign_up_form1.email.data, sign_up_form1.password.data)
