@@ -1,10 +1,10 @@
 class User:
-    def __init__(self, username, email, password, id):
+    def __init__(self, username, email, password, id, account_type):
         self.__user_id = id
         self.__email = email
         self.__username = username
         self.__password = password
-        self.__account_type = "Trainee"
+        self.__account_type = account_type
         self.__security_qns = None
         self.__user_info = None
         self.__cart = None
@@ -68,7 +68,7 @@ class User:
 
     @staticmethod
     def from_dict(source):
-        user = User(source["username"], source["email"], source["password"], source["id"])
+        user = User(source["username"], source["email"], source["password"], source["id"], source["account_type"])
         return user
 
     def to_dict(self):
