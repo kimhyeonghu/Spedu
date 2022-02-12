@@ -210,6 +210,7 @@ def load_products():
         products.append(product)
     return products
 
+
 def load_products_for_search():
     products = []
     products_docs = db.collection('Products').get()
@@ -227,6 +228,7 @@ def load_products_for_search():
         product = Product_For_Search(productID, category, image, name, price, description, rating, reviews, tag, stock, 0)
         products.append(product)
     return products
+
 
 @app.route('/admin_page/products/', methods=['POST'])
 def create_new_product():
@@ -278,8 +280,7 @@ def search_result():
     courseID_array = []
     for course in course_search_results:
         courseID_array.append(course.courseID)
-    return render_template('search_page.html', course_search_results=course_search_results,product_search_results=product_search_results, courseID_array= json.dumps(courseID_array), sort_attribute = sort_attr,rating_value=rating_value,price_value=price_value,level_value=level_value)
-
+    return render_template('search_page.html', course_search_results=course_search_results, product_search_results=product_search_results, courseID_array=json.dumps(courseID_array), sort_attribute=sort_attr, rating_value=rating_value, price_value=price_value, level_value=level_value)
 
 
 def load_delete(productID):
@@ -321,8 +322,6 @@ def load_update(productID):
             })
     except:
         print("Unable to update product!")
-
-
 
 
 @app.route('/')

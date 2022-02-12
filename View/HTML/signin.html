@@ -25,7 +25,7 @@
               <div class="form-group">
                 {{ render_field(form.email, class="form-control") }}
               </div>
-              <div class="form-group">
+              <div class="form-group pass">
                 {{ render_field(form.password, class="form-control") }}
                 <div class="svg-container">
                   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph1" onclick="showPass()">
@@ -62,6 +62,18 @@
     $('#flash').delay(5000).animate({
       opacity: 0
     }, 1000);
+    var icons = ['show1', 'hide1'];
+    var svgMorpheus = new SVGMorpheus("#morph1");
+    var count = 0;
+    function showPass() {
+      svgMorpheus.to(icons[count++ % 2], {duration: 500});
+      var x = document.getElementById("password")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
   </script>
 </body>
 </html>
