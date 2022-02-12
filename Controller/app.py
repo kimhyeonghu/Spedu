@@ -362,6 +362,9 @@ def signup1():
 @app.route('/signup2', methods=['GET', 'POST'])
 @login_required
 def signup2():
+    if not current_user.is_authenticated:
+        redirect(url_for("signup1"))
+    print(User.from_dict(db.collection("Users").document(str(current_user.get_id())).get().to_dict()))
     sign_up_form2 = SignUpForm2(request.form)
     if request.method == "POST" and sign_up_form2.validate():
         hashed_ans1 = bcrypt.generate_password_hash(sign_up_form2.ans1.data).decode('utf-8')
@@ -370,13 +373,15 @@ def signup2():
         user = User(current_user.get_email, current_user.get_username, current_user.get_password, current_user.get_id)
         user.set_security_qns({"qns1": sign_up_form2.qns1.data, "ans1": hashed_ans1, "qns2": sign_up_form2.qns2.data, "ans2": hashed_ans2, "qns3": sign_up_form2.qns3.data, "ans3": hashed_ans3})
         db.collection("Users").document(str(current_user.get_id())).update({"security_qns": user.get_security_qns()})
-        return redirect(url_for("account"))
+        return redirect(url_for("signup3"))
     return render_template('signup2.html', form=sign_up_form2)
 
 
 @app.route('/signup3', methods=['GET', 'POST'])
 @login_required
 def signup3():
+    if not current_user.is_authenticated:
+        redirect(url_for("signup1"))
     sign_up_form3 = SignUpForm3(request.form)
     return render_template('signup3.html', form=sign_up_form3)
 
@@ -423,7 +428,6 @@ def reset1():
             if user:
                 global reset_user_id
                 reset_user_id = user[0].to_dict()["id"]
-                # session["id"] = user[0].to_dict()["id"]
                 return redirect(url_for("reset2"))
             else:
                 flash("Email does not exist.")
