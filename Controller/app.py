@@ -10,6 +10,7 @@ from firebase_admin import storage as storage_firbase_admin
 import random
 import sys
 import json
+from datetime import datetime
 sys.path.insert(0, '../Model')
 from Course import *
 from Product import *
@@ -342,19 +343,24 @@ def signup1():
     sign_up_form1 = SignUpForm1(request.form)
     if request.method == "POST" and sign_up_form1.validate():
         try:
-            if sign_up_form1.email.data == db.collection("Users").where("email", "==", sign_up_form1.email.data).get()[0].to_dict()["email"]:
+            if sign_up_form1.email.data.lower() == db.collection("Users").where("email", "==", sign_up_form1.email.data).get()[0].to_dict()["email"]:
                 flash("Email already registered. Please Sign In.")
                 return render_template('signup.html', form=sign_up_form1)
         except:
             # user is not registered
             pass
         try:
-            id = db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
+            id = int(db.collection("Users").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"].lstrip("0")) + 1
+            number_of_zero = 5 - len(str(id))
+            id = "0" * number_of_zero + str(id)
         except:
-            id = 1
+            id = "00001"
         hashed_password = bcrypt.generate_password_hash(sign_up_form1.password.data).decode('utf-8')
-        user = User(sign_up_form1.username.data, sign_up_form1.email.data, hashed_password, id, "Trainee", None, None, {}, {}, {})
-        db.collection("Users").document(str(id)).set(user.to_dict())
+        now = datetime.now()
+        date = now.strftime("%d/%m/%Y")
+        time = now.strftime("%H:%M:%S")
+        user = User(sign_up_form1.username.data, sign_up_form1.email.data.lower(), hashed_password, id, "Trainee", None, None, [], [], [], {"date": date, "time": time})
+        db.collection("Users").document(id).set(user.to_dict())
         login_user(user)
 
         auth.create_user_with_email_and_password(sign_up_form1.email.data, sign_up_form1.password.data)
@@ -368,15 +374,15 @@ def signup1():
 def signup2():
     if not current_user.is_authenticated:
         redirect(url_for("signup1"))
-    if db.collection("Users").document(str(current_user.get_id())).get().to_dict()["security_qns"] is None:
+    if db.collection("Users").document(current_user.get_id()).get().to_dict()["security_qns"] is None:
         sign_up_form2 = SignUpForm2(request.form)
         if request.method == "POST" and sign_up_form2.validate():
             hashed_ans1 = bcrypt.generate_password_hash(sign_up_form2.ans1.data).decode('utf-8')
             hashed_ans2 = bcrypt.generate_password_hash(sign_up_form2.ans2.data).decode('utf-8')
             hashed_ans3 = bcrypt.generate_password_hash(sign_up_form2.ans3.data).decode('utf-8')
-            user = User.from_dict(db.collection("Users").document(str(current_user.get_id())).get().to_dict())
+            user = User.from_dict(db.collection("Users").document(current_user.get_id()).get().to_dict())
             user.set_security_qns({"qns1": sign_up_form2.qns1.data, "ans1": hashed_ans1, "qns2": sign_up_form2.qns2.data, "ans2": hashed_ans2, "qns3": sign_up_form2.qns3.data, "ans3": hashed_ans3})
-            db.collection("Users").document(str(current_user.get_id())).update({"security_qns": user.get_security_qns()})
+            db.collection("Users").document(current_user.get_id()).update({"security_qns": user.get_security_qns()})
             return redirect(url_for("signup3"))
     else:
         return redirect(url_for("signup3"))
@@ -388,14 +394,14 @@ def signup2():
 def signup3():
     if not current_user.is_authenticated:
         redirect(url_for("signup1"))
-    if db.collection("Users").document(str(current_user.get_id())).get().to_dict()["user_info"] is None:
+    if db.collection("Users").document(current_user.get_id()).get().to_dict()["user_info"] is None:
         print(current_user.get_account_type())
         sign_up_form3 = SignUpForm3(request.form)
         if request.method == "POST" and sign_up_form3.validate():
-            user = User.from_dict(db.collection("Users").document(str(current_user.get_id())).get().to_dict())
-            # user.set_user_info({"name": sign_up_form3.first_name.data, "address": sign_up_form3.address.data, "phone": sign_up_form3.phone.data})
-            # db.collection("Users").document(str(current_user.get_id())).update({"user_info": user.get_user_info()})
-            return redirect(url_for("homepage"))
+            user = User.from_dict(db.collection("Users").document(current_user.get_id()).get().to_dict())
+            user.set_user_info({"first_name": sign_up_form3.first_name.data, "last_name": sign_up_form3.last_name.data, "address": sign_up_form3.address.data, "unit_no": sign_up_form3.unit_no.data, "country": sign_up_form3.country.data, "phone": sign_up_form3.phone.data})
+            db.collection("Users").document(current_user.get_id()).update({"user_info": user.get_user_info()})
+            return redirect(url_for("account"))
     else:
         return redirect(url_for("account"))
     return render_template('signup3.html', form=sign_up_form3)
@@ -484,7 +490,7 @@ def reset3():
 @app.route('/account', methods=['GET', 'POST'])
 @login_required
 def account():
-    user = db.collection("Users").document(str(current_user.get_id())).get().to_dict()
+    user = db.collection("Users").document(current_user.get_id()).get().to_dict()
     display_info = DisplayInfo(request.form)
     print(request.method == "GET")
     if request.method == "GET":
@@ -494,10 +500,10 @@ def account():
             display_info.username.data = user["username"]
             return redirect(url_for("account"))
         elif request.form["displayInfo"] == "Update":
-            db.collection("Users").document(str(current_user.get_id())).update({"username": display_info.username.data})
+            db.collection("Users").document(current_user.get_id()).update({"username": display_info.username.data})
             return redirect(url_for("account"))
     if request.method == "POST" and request.form["delete"] == "Delete Account":
-        db.collection("Users").document(str(current_user.get_id())).delete()
+        db.collection("Users").document(current_user.get_id()).delete()
         logout_user()
         redirect(url_for("homepage"))
     return render_template("account.html", user=user, displayinfo=display_info)
@@ -533,6 +539,9 @@ def view_selected_course():
         username = current_user.get_username()
     except:
         username = ""
+    if request.method == "POST":
+        db.collection("Users").document(str(current_user.get_id())).update({"Courses_Purchased": courseID_array})
+        return redirect(url_for('homepage'))
     return render_template('selected_course.html', selected_course=selected_course,current_username = username)
 
 
@@ -708,10 +717,14 @@ def Checkout():
             print(items_bought)
             print(products_to_add)
             print(courses_to_add)
-            products_purchased.append(products_to_add)
-            courses_purchased.append(courses_to_add)
+            products_purchased = products_purchased+products_to_add
+            courses_purchased=courses_purchased+courses_to_add
+            #products_purchased.append(products_to_add)
+            #courses_purchased.append(courses_to_add)
+            print(products_purchased)
+            print(courses_purchased)
             db.collection("Users").document(str(current_user.get_id())).update({"Products_Purchased": products_to_add})
-            db.collection("Users").document(str(current_user.get_id())).update({"Courses_Purchased": courseID_array})
+            db.collection("Users").document(str(current_user.get_id())).update({"Courses_Purchased": courses_purchased})
             while index<len(items_bought):
                 shopping_cart.remove(items_bought[index])
                 index+=1
@@ -745,7 +758,7 @@ def Checkout():
             print(shopping_cart)
             db.collection("Users").document(str(current_user.get_id())).update({"shopping_cart": shopping_cart})
             count = 0
-            while count < len(items_not_bought_before):
+            while count < len(productID_array):
                 products_docs = db.collection('Products').where("productID", "==", items_not_bought_before[count]).get()
                 for doc in products_docs:
                     stock = doc.to_dict()['stock']
@@ -907,7 +920,7 @@ def promo_code_form():
     return render_template('promo_code_form.html', form=promo_code_info)
 
 
-@app.route('/order_history/')
+@app.route('/order_history/', methods=["POST","GET"])
 def order_history():
     all_items_bought = []
     user = db.collection("Users").document(str(current_user.get_id())).get().to_dict()
@@ -1016,6 +1029,79 @@ def load_my_courses():
 def load_learn_page():
     course = request.args.get('course')
     return render_template('course_learn.html',my_courses=my_courses)
+
+@app.route('/Checkout_instant/',methods=["POST","GET"])
+def checkout_instant():
+    personal_details = PersonalInfo(request.form)
+    docs = db.collection('Users').where("username", "==", current_user.get_username()).get()
+    buy_now = []
+    for doc in docs:
+        buying_now = doc.to_dict()['instant_buy']
+    print(buying_now)
+    index = 0
+    courses = []
+    courseID_array = []
+    products = []
+    productID_array = []
+    while index < len(buying_now):
+        if buying_now[index][0:2] == "CR":
+            courses_docs = db.collection("Courses").where("courseID", "==", buying_now[index]).get()
+            for doc in courses_docs:
+                courseID = doc.to_dict()['courseID']
+                description = doc.to_dict()['description']
+                short_description = doc.to_dict()['short_description']
+                duration = doc.to_dict()['duration']
+                image = doc.to_dict()['image']
+                learning_outcome = doc.to_dict()['learning_outcome']
+                level = doc.to_dict()['level']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                students_count = doc.to_dict()['students_count']
+                trainer = doc.to_dict()['trainer']
+                video_link = doc.to_dict()['video_link']
+                tag = doc.to_dict()['tag']
+                course = Course(courseID, description, short_description, duration, image, learning_outcome, level,
+                                name, price, rating, reviews, students_count, trainer, video_link, tag)
+                courses.append(course)
+                courseID_array.append(course.courseID)
+        elif buying_now[index][0:2] == "PR":
+            products_docs = db.collection('Products').where("productID", "==", buying_now[index]).get()
+            for doc in products_docs:
+                productID = doc.to_dict()['productID']
+                category = doc.to_dict()['category']
+                image = doc.to_dict()['image']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                description = doc.to_dict()['description']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                tag = doc.to_dict()['tag']
+                stock = doc.to_dict()['stock']
+                product = Product(productID, category, image, name, price, description, rating, reviews, tag, stock)
+                products.append(product)
+                productID_array.append(product.productID)
+        else:
+            pass
+        index += 1
+        print(productID_array)
+        print(courseID_array)
+    print(request.method)
+    print(buying_now)
+    if request.method == "POST":
+        print("hello")
+        docs = db.collection('Users').where("username", "==", current_user.get_username()).get()
+        for doc in docs:
+            course_in_cart=doc.to_dict()['Courses_Purchased']
+        print(course_in_cart)
+        courses = course_in_cart + courseID_array
+        print(courses)
+        db.collection("Users").document(str(current_user.get_id())).update({"Courses_Purchased": courses})
+        db.collection("Users").document(str(current_user.get_id())).update({"instant_buy": []})
+        print("done")
+        return redirect(url_for('homepage'))
+    return render_template('Checkout_instant.html', instant_buys=buy_now, form=personal_details, courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products, current_username=current_user.get_username())
 
 def filter_courses(courses, rating_value, price_value, level_value):
     filtered_list=[]

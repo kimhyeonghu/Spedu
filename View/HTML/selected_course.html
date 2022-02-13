@@ -64,7 +64,8 @@
   <h4 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h4>
   <form class="" action="index.html" method="post">
     <button class="add_to_cart_btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
-    <button class="buy_now_btn" type="button" name="button" onclick="load_image()">Buy now</button>
+    <button class="buy_now_btn" type="button" name="button" onclick="buy_now()">Buy now</button>
+    <!--<button class="buy_now_btn" type="button" name="button" onclick="load_image()">Buy now</button>-->
 
   </form>
 
@@ -87,6 +88,7 @@
     function go_to_cart() {
 
     }
+
     const review_json = JSON.parse('{{review|tojson}}');
     document.getElementById('review_div').innerHTML = "<p>"+review_json.reviewer+"</p>" + "<p>"+review_json.rating+"</p>" +"<p>"+review_json.review+"</p>"
 
@@ -115,6 +117,30 @@
       });
     }
 
+
+    function buy_now() {
+      var username = '{{current_username}}';
+      db.collection("Users").where("username", "==", username)
+      .get()
+      .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+              // doc.data() is never undefined for query doc snapshots
+              db.collection("Users").doc(doc.id).update(
+                {
+                  instant_buy:firebase.firestore.FieldValue.arrayUnion("{{selected_course.courseID}}")
+
+                }
+              )
+              .then(() => {
+                window.location.href = "/Checkout_instant/"
+              })
+          });
+
+      })
+      .catch((error) => {
+          alert(error);
+      });
+    }
   </script>
   <p id="reviewer"></p>
 </div>
