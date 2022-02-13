@@ -539,6 +539,9 @@ def view_selected_course():
         username = current_user.get_username()
     except:
         username = ""
+    if request.method == "POST":
+        db.collection("Users").document(str(current_user.get_id())).update({"Courses_Purchased": courseID_array})
+        return redirect(url_for('homepage'))
     return render_template('selected_course.html', selected_course=selected_course,current_username = username)
 
 
@@ -714,10 +717,14 @@ def Checkout():
             print(items_bought)
             print(products_to_add)
             print(courses_to_add)
-            products_purchased.append(products_to_add)
-            courses_purchased.append(courses_to_add)
+            products_purchased = products_purchased+products_to_add
+            courses_purchased=courses_purchased+courses_to_add
+            #products_purchased.append(products_to_add)
+            #courses_purchased.append(courses_to_add)
+            print(products_purchased)
+            print(courses_purchased)
             db.collection("Users").document(str(current_user.get_id())).update({"Products_Purchased": products_to_add})
-            db.collection("Users").document(str(current_user.get_id())).update({"Courses_Purchased": courseID_array})
+            db.collection("Users").document(str(current_user.get_id())).update({"Courses_Purchased": courses_purchased})
             while index<len(items_bought):
                 shopping_cart.remove(items_bought[index])
                 index+=1
@@ -751,7 +758,7 @@ def Checkout():
             print(shopping_cart)
             db.collection("Users").document(str(current_user.get_id())).update({"shopping_cart": shopping_cart})
             count = 0
-            while count < len(items_not_bought_before):
+            while count < len(productID_array):
                 products_docs = db.collection('Products').where("productID", "==", items_not_bought_before[count]).get()
                 for doc in products_docs:
                     stock = doc.to_dict()['stock']
@@ -913,7 +920,7 @@ def promo_code_form():
     return render_template('promo_code_form.html', form=promo_code_info)
 
 
-@app.route('/order_history/')
+@app.route('/order_history/', methods=["POST","GET"])
 def order_history():
     all_items_bought = []
     user = db.collection("Users").document(str(current_user.get_id())).get().to_dict()
@@ -1018,6 +1025,79 @@ def load_my_courses():
             my_courses.append(course)
     return render_template('mylearning.html',my_courses=my_courses)
 
+
+@app.route('/Checkout_instant/',methods=["POST","GET"])
+def checkout_instant():
+    personal_details = PersonalInfo(request.form)
+    docs = db.collection('Users').where("username", "==", current_user.get_username()).get()
+    buy_now = []
+    for doc in docs:
+        buying_now = doc.to_dict()['instant_buy']
+    print(buying_now)
+    index = 0
+    courses = []
+    courseID_array = []
+    products = []
+    productID_array = []
+    while index < len(buying_now):
+        if buying_now[index][0:2] == "CR":
+            courses_docs = db.collection("Courses").where("courseID", "==", buying_now[index]).get()
+            for doc in courses_docs:
+                courseID = doc.to_dict()['courseID']
+                description = doc.to_dict()['description']
+                short_description = doc.to_dict()['short_description']
+                duration = doc.to_dict()['duration']
+                image = doc.to_dict()['image']
+                learning_outcome = doc.to_dict()['learning_outcome']
+                level = doc.to_dict()['level']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                students_count = doc.to_dict()['students_count']
+                trainer = doc.to_dict()['trainer']
+                video_link = doc.to_dict()['video_link']
+                tag = doc.to_dict()['tag']
+                course = Course(courseID, description, short_description, duration, image, learning_outcome, level,
+                                name, price, rating, reviews, students_count, trainer, video_link, tag)
+                courses.append(course)
+                courseID_array.append(course.courseID)
+        elif buying_now[index][0:2] == "PR":
+            products_docs = db.collection('Products').where("productID", "==", buying_now[index]).get()
+            for doc in products_docs:
+                productID = doc.to_dict()['productID']
+                category = doc.to_dict()['category']
+                image = doc.to_dict()['image']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                description = doc.to_dict()['description']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                tag = doc.to_dict()['tag']
+                stock = doc.to_dict()['stock']
+                product = Product(productID, category, image, name, price, description, rating, reviews, tag, stock)
+                products.append(product)
+                productID_array.append(product.productID)
+        else:
+            pass
+        index += 1
+        print(productID_array)
+        print(courseID_array)
+    print(request.method)
+    print(buying_now)
+    if request.method == "POST":
+        print("hello")
+        docs = db.collection('Users').where("username", "==", current_user.get_username()).get()
+        for doc in docs:
+            course_in_cart=doc.to_dict()['Courses_Purchased']
+        print(course_in_cart)
+        courses = course_in_cart + courseID_array
+        print(courses)
+        db.collection("Users").document(str(current_user.get_id())).update({"Courses_Purchased": courses})
+        db.collection("Users").document(str(current_user.get_id())).update({"instant_buy": []})
+        print("done")
+        return redirect(url_for('homepage'))
+    return render_template('Checkout_instant.html', instant_buys=buy_now, form=personal_details, courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products, current_username=current_user.get_username())
 
 def filter_courses(courses, rating_value, price_value, level_value):
     filtered_list=[]
