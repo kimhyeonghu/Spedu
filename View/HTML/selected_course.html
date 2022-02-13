@@ -11,6 +11,18 @@
 {% endblock %}
 
 {% block body %}
+<script type="text/javascript">
+
+  function disable_button() {
+    alert(3);
+    document.getElementById("add_to_cart_btn").disabled = true;
+  }
+  window.onload = diable_button();
+  window.addEventListener('load', (event) => {
+    alert(3);
+    document.getElementById("add_to_cart_btn").disabled = true;
+  });
+</script>
 <div class="popup">
   <div class="popuptext" id="myPopup">
 
@@ -58,13 +70,13 @@
     <li class="rating">★{{'%0.1f'| format(selected_course.rating|float)}} <p style="color:#AFADAD;display:inline-block;font-size:14px;">| {{selected_course.students_count}} students are enrolled</p></li>
   </ul>
 </div>
-<div class="course_purchase_div" onload="load_image()">
+<div class="course_purchase_div" onload="disable_button()">
 
-  <img onload="" id="course_image" src="{{selected_course.image}}" style="width:280px;height:180px;" alt="">
+  <img onload="disable_button()" id="course_image" src="{{selected_course.image}}" style="width:280px;height:180px;" alt="">
   <h4 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h4>
   <form class="" action="" method="post">
-    <button class="add_to_cart_btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
-    <button class="buy_now_btn" type="button" name="button" onclick="buy_now()">Buy now</button>
+    <button class="add_to_cart_btn" id="add_to_cart_btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
+    <button class="buy_now_btn" id="buy_now_btn" type="button" name="button" onclick="buy_now()">Buy now</button>
     <!--<button class="buy_now_btn" type="button" name="button" onclick="load_image()">Buy now</button>-->
 
   </form>
@@ -132,15 +144,5 @@
 {% endfor %}
 
 </div>
-<script type="text/javascript">
-  function load_image() {
-    var courseID = '{{selected_course.courseID}}';
-    storage.ref().child('courses/image_of_'+courseID).getDownloadURL().then(function(url) {
-            document.getElementById('course_image').src = url;
-         }).catch(function(error) {
 
-         });
-  }
-  //window.onload = load_image;
-</script>
 {% endblock %}

@@ -1257,7 +1257,12 @@ def checkout_instant():
         course_in_cart.append(courseID)
         db.collection("Users").document(str(current_user.get_id())).update({"Courses_Purchased": course_in_cart})
         print("done")
-        return redirect(url_for('homepage'))
+        courses_docs = db.collection("Courses").where("courseID", "==",courseID).get()
+        for doc in courses_docs:
+            id = doc.id
+            students_count = doc.to_dict()['students_count']
+            db.collection("Courses").document(id).update({"students_count": students_count+1})
+        return redirect(url_for('load_my_courses'))
     return render_template('Checkout_instant.html', form=personal_details,course=course)
 
 
