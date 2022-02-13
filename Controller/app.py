@@ -836,7 +836,9 @@ def admin_page():
 @app.route('/admin_page/users')
 @login_required
 def admin_page_users():
-    return render_template('adminPageUsers.html')
+
+    users = db.collection('Users').get()
+    return render_template('adminPageUsers.html', users=users)
 
 
 @app.route('/admin_page/courses/')
@@ -947,7 +949,7 @@ def update_course():
             print('No selected file')
     if course_image:
         storage.child('/courses/image_of_{}'.format(courseID)).put(course_image)
-    course_img_link=request.form["course_image_input"]
+    course_img_link = request.form["course_image_input"]
     print(course_img_link)
     course_rating = ""
     course_reviews = []
@@ -1022,7 +1024,7 @@ def all_orders():
         index += 1
     print(all_products_admin)
     print(all_courses_admin)
-    return render_template('all_orders.html', all_courses = all_courses_admin, all_products = all_products_admin, courses_cart = courses, products_cart=products, current_username=current_user.get_username())
+    return render_template('all_orders.html', all_courses=all_courses_admin, all_products=all_products_admin, courses_cart=courses, products_cart=products, current_username=current_user.get_username())
 
 
 @app.route('/admin_page/products/new_product')
@@ -1052,8 +1054,8 @@ def promo_code_form():
         # pc_data = Promo_code_data(promo_code_info.name_of_code.data, promo_code_info.value.data)
         # pc_data.set_code_name(promo_code_info.name_of_code.data)
         # pc_data.set_code_value(promo_code_info.value.data)
-        #Promo_code_data.set_code_name(promo_code_info.name_of_code.data)
-        #Promo_code_data.set_code_value(promo_code_info.value.data)
+        # Promo_code_data.set_code_name(promo_code_info.name_of_code.data)
+        # Promo_code_data.set_code_value(promo_code_info.value.data)
         try:
             id = db.collection("Promo codes").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
         except:
@@ -1076,12 +1078,12 @@ def order_history():
     for doc in docs:
         courses_bought = doc.to_dict()['Courses_Purchased']
         all_items_bought.append(courses_bought)
-    #print(courses_bought)
+    # print(courses_bought)
     for item in docs:
         products_bought = item.to_dict()['Products_Purchased']
-    #print(products_bought)
+    # print(products_bought)
     all_items_bought = courses_bought+products_bought
-    #print(all_items_bought)
+    # print(all_items_bought)
 
     index = 0
     courses = []
@@ -1170,6 +1172,7 @@ def load_my_courses():
             my_courses.append(course)
     return render_template('mylearning.html',my_courses=my_courses)
 
+
 @app.route('/mylearning/learn/', methods=['GET'])
 def load_learn_page():
     courseID = request.args.get('course')
@@ -1199,6 +1202,7 @@ def load_learn_page():
         students_count = doc.to_dict()['students_count']
         trainer = doc.to_dict()['trainer']
     return render_template('course_learn.html',course=course)
+
 
 @app.route('/Checkout_instant/',methods=["POST","GET"])
 def checkout_instant():
