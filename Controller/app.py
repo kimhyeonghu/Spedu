@@ -115,13 +115,11 @@ def course_CRUD(course, method):
             db.collection('Courses').document(key).update({
                 'description': course.description,
                 'short_description': course.short_description,
-                'duration': course.duration,
                 'image': course.image,
                 'learning_outcome': course.learning_outcome,
                 'level': course.level,
                 'price': course.price,
                 'trainer': course.trainer,
-                'video_link': course.video_link,
                 'tag':course.tag
             })
     elif method == 'delete':
@@ -364,7 +362,7 @@ def signup1():
         login_user(user)
 
         auth.create_user_with_email_and_password(sign_up_form1.email.data, sign_up_form1.password.data)
-        user = auth.current_user
+
         return redirect(url_for("signup2"))
     return render_template('signup.html', form=sign_up_form1)
 
@@ -697,6 +695,7 @@ def spedu_searchpage():
 @app.route('/Checkout/', methods=["POST","GET"])
 def Checkout():
     personal_details = PersonalInfo(request.form)
+    promo_code = db.collection('Promo codes').get()
     docs = db.collection('Users').where("username", "==", current_user.get_username()).get()
     for doc in docs:
         shopping_cart = doc.to_dict()['shopping_cart']
@@ -825,7 +824,7 @@ def Checkout():
                     db.collection('Products').document(productID_array[index]).update({"stock": stock})
                 count += 1
         return redirect(url_for('homepage'))
-    return render_template('Checkout.html', form=personal_details, courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products, current_username=current_user.get_username())
+    return render_template('Checkout.html', form=personal_details, courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products, current_username=current_user.get_username(), promo_code=promo_code)
 
 
 @app.route('/admin_page/')
@@ -867,7 +866,7 @@ def view_admin_selected_product():
 @app.route('/admin_page/courses/', methods=['POST'])
 def create_new_course():
     course_name = request.form['course_name']
-    courseID = 'CR'+course_name.split(' ')[0][0] + course_name.split(' ')[0][1] + str(random.randrange(0, 1000))
+    courseID = request.form['courseID_input']
     course_trainer = request.form['course_trainer']
     course_short_desc = request.form['course_short_desc']
     course_desc = request.form['course_desc']
@@ -875,23 +874,24 @@ def create_new_course():
     course_price = float(request.form['course_price'])
     learning_outcome = request.form['learning_outcome']
     course_level = request.form['course_level']
-    video_link = request.form['video_link']
-    course_image = request.files['course_image']
+    video = request.files['video']
+
     tag = request.form['tag'].split(",")
-
-    storage.child('/courses/image_of_{}'.format(courseID)).put(course_image)
-    course_img_link=""
     user1 = auth.current_user
-    print(user1)
-    course_img_link = storage.child('/courses/image_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
 
-    print(course_img_link)
+    course_img_link=request.form["course_image_input"]
+    #course_img_link = storage.child('/courses/image_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
+
+    #storage.child('/courses/video_of_{}'.format(courseID)).put(video)
+    video_link =request.form["course_video_input"]
+    #video_link = storage.child('/courses/video_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
+
     course_rating = 0
     course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     students_count = 0
     new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link,tag)
     course_CRUD(course=new_course, method='create')
-    return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
+    return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'),products=load_products())
 
 
 @app.route('/admin_page/courses/about_course/', methods=['POST'])
@@ -919,11 +919,11 @@ def update_course():
     course_trainer = request.form['course_trainer']
     course_short_desc = request.form['course_short_desc']
     course_desc = request.form['course_desc']
-    course_duration = request.form['course_duration']
+    course_duration = 0
     course_price = float(request.form['course_price'])
     learning_outcome = request.form['learning_outcome']
     course_level = request.form['course_level']
-    video_link = request.form['video_link']
+    video_link = ""
     tag = request.form['tag'].split(",")
     course_image = request.files['course_image']
     print(course_image.filename)
@@ -939,7 +939,71 @@ def update_course():
     course = Course(courseID, course_desc, course_short_desc, course_duration,course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link,tag)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
-
+@app.route('/admin_page/all_orders')
+def all_orders():
+    docs = db.collection('Users').get()
+    all_courses_bought = []
+    for doc in docs:
+        all_courses_bought_individual = doc.to_dict()['Courses_Purchased']
+        all_courses_bought = all_courses_bought+all_courses_bought_individual
+    all_products_bought =[]
+    for doc in docs:
+        all_products_bought_individual = doc.to_dict()['Products_Purchased']
+        all_products_bought = all_products_bought + all_products_bought_individual
+    print(all_courses_bought)
+    print(all_products_bought)
+    all_items_bought_admin = all_courses_bought + all_products_bought
+    print(all_items_bought_admin)
+    index = 0
+    courses = []
+    all_courses_admin = []
+    products = []
+    all_products_admin = []
+    while index < len(all_items_bought_admin):
+        if all_items_bought_admin[index][0:2] == "CR":
+            courses_docs = db.collection("Courses").where("courseID", "==", all_items_bought_admin[index]).get()
+            for doc in courses_docs:
+                courseID = doc.to_dict()['courseID']
+                description = doc.to_dict()['description']
+                short_description = doc.to_dict()['short_description']
+                duration = doc.to_dict()['duration']
+                image = doc.to_dict()['image']
+                learning_outcome = doc.to_dict()['learning_outcome']
+                level = doc.to_dict()['level']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                students_count = doc.to_dict()['students_count']
+                trainer = doc.to_dict()['trainer']
+                video_link = doc.to_dict()['video_link']
+                tag = doc.to_dict()['tag']
+                course = Course(courseID, description, short_description, duration, image, learning_outcome, level,
+                                name,price, rating, reviews, students_count, trainer, video_link, tag)
+                courses.append(course)
+                all_courses_admin.append(course.courseID)
+        elif all_items_bought_admin[index][0:2] == "PR":
+            products_docs = db.collection('Products').where("productID", "==", all_items_bought_admin[index]).get()
+            for doc in products_docs:
+                productID = doc.to_dict()['productID']
+                category = doc.to_dict()['category']
+                image = doc.to_dict()['image']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                description = doc.to_dict()['description']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                tag = doc.to_dict()['tag']
+                stock = doc.to_dict()['stock']
+                product = Product(productID, category, image, name, price, description, rating, reviews, tag, stock)
+                products.append(product)
+                all_products_bought.append(product.productID)
+        else:
+            pass
+        index += 1
+    print(all_products_admin)
+    print(all_courses_admin)
+    return render_template('all_orders.html', all_courses = all_courses_admin, all_products = all_products_admin, courses_cart = courses, products_cart=products, current_username=current_user.get_username())
 
 @app.route('/admin_page/products/new_product')
 def new_product():
@@ -1081,6 +1145,30 @@ def load_my_courses():
             my_courses.append(course)
     return render_template('mylearning.html',my_courses=my_courses)
 
+@app.route('/mylearning/learn/', methods=['GET'])
+def load_learn_page():
+    courseID = request.args.get('course')
+    course = ""
+    courses_docs = db.collection('Courses').where("courseID", "==", courseID).get()
+    for doc in courses_docs:
+        courseID = doc.to_dict()['courseID']
+        description = doc.to_dict()['description']
+        short_description = doc.to_dict()['short_description']
+        duration = doc.to_dict()['duration']
+        image = doc.to_dict()['image']
+        learning_outcome = doc.to_dict()['learning_outcome']
+        level = doc.to_dict()['level']
+        name = doc.to_dict()['name']
+        price = doc.to_dict()['price']
+        rating = doc.to_dict()['rating']
+        reviews = doc.to_dict()['reviews']
+        students_count = doc.to_dict()['students_count']
+        trainer = doc.to_dict()['trainer']
+        video_link = doc.to_dict()['video_link']
+        tag = doc.to_dict()['tag']
+        course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
+                    price, rating, reviews, students_count, trainer, video_link,tag)
+    return render_template('course_learn.html',course=course)
 
 @app.route('/Checkout_instant/',methods=["POST","GET"])
 def checkout_instant():

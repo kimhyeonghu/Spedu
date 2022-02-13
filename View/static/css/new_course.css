@@ -35,18 +35,18 @@
 }
 .new-course-btn {
 
-  height: 40px;
+  height: auto;
   width: 140px;
   float: right;
-  padding-bottom: 0px;
   text-decoration: none;
-  display: block;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: inline-block;
   margin-top: 40px;
   margin-right: 20px;
   font-size: 17px;
   text-align: center;
   font-weight: 600;
-  padding-right: 20px;
   transition-duration: 0.4s;
   cursor: pointer;
   color: white;
@@ -68,4 +68,95 @@
   padding-right: 5px;
   width: auto;
   margin-top:5px;
+}
+.cancel-btn {
+
+  height: auto;
+  width: 140px;
+  float: right;
+  text-decoration: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: inline-block;
+  margin-top: 40px;
+  margin-right: 20px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  color: black;
+  background-color: white;
+  border: 2px solid black;
+
+}
+.cancel-btn:hover{
+  text-decoration: none;
+  background-color: black;
+  color: white;
+}
+.loading {
+    cursor: wait; /* busy cursor feedback */
+}
+
+.loading * {
+    /* disable all mouse events on subElements */
+    pointer-events: none;
+}
+
+.popup {
+  position: absolute;
+  display: inline-block;
+
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+  visibility: hidden;
+  width: 240px;
+  height: 190px;
+  background-color: white;
+  color: black;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: fixed;
+  display: block;
+  z-index: 1000;
+  box-shadow: 0 0 20px 10px rgba(0,0,0,0.3);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.popuptext ul{
+  text-align:left;
+  margin-left: 160px;
+  padding-top: 10px;
+  padding-right: 10px;
+  display:inline-block;
+  width: calc(100% - 260px);
+}
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s
+}
+.popup .hide {
+  visibility: hidden;
+}
+.loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

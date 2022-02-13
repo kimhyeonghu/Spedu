@@ -6,7 +6,6 @@
 
 {% block head %}
 <title>Sports Courses</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/mylearning.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sports_courses.css') }}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -15,7 +14,9 @@
 {% block body %}
 
 
-
+<form action='/mylearning/learn/' id="course_learn_form" method="get">
+<input id="course" type="text" name="course" value="" style="display:none;">
+</form>
 
 <div class="course-panel">
       <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;">My Courses</h2>
@@ -27,7 +28,7 @@
           {% set my_course = my_courses[i] %}
 
           <li class="horizontal" style="margin-right: 5px;margin-top:10px;width:270px;margin-left: 5px;">
-            <a onclick="" class="course-a">
+            <a onclick="submit('{{my_course.courseID}}')" class="course-a">
             <div class="course-short-detail-box">
 
               <img id="img_{{my_course.courseID}}" class="course-image" src="{{my_course.image}}" style="width:230px;height:130px;margin-top:10px;" alt="yoga_image" >
@@ -50,14 +51,18 @@
   const buttonRight = document.getElementById('slideRight');
    const buttonLeft = document.getElementById('slideLeft');
    buttonRight.style.display = "none";
-   var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
-   if (width<$(document).width()) {
-     buttonRight.style.display = "none";
-     buttonLeft.style.display = "none";
-   } else {
-     buttonRight.style.display = "none";
-     buttonLeft.style.display = "block";
-   }
+   buttonLeft.style.display = "none";
+   window.onresize = function(event) {
+     var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
+     if (width<$(document).width()) {
+       buttonRight.style.display = "none";
+       buttonLeft.style.display = "none";
+     } else {
+       buttonRight.style.display = "none";
+       buttonLeft.style.display = "block";
+     }
+    };
+
    buttonRight.onclick = function () {
      document.getElementById('top-course-ul').scrollLeft -= ($(document).width()-250);
      buttonRight.style.display = "none";
@@ -68,5 +73,11 @@
      buttonLeft.style.display = "none";
      buttonRight.style.display = "block";
    };
+   function submit(id) {
+     document.getElementById('course').value = id;
+
+     document.getElementById('course_learn_form').submit();
+
+   }
 </script>
 {% endblock %}

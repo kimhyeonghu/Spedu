@@ -23,16 +23,14 @@
       <h4 style="text-align:center; color:red; padding-bottom:40px;">*Product is temporarily out-of-stock*</h4>
     {% else %}
       <p class="quantity">Quantity:</p>
-      <form action="/Shopping Cart">
-        <input id="options" type="number" name="number" placeholder="Quantity" min="1" value="1">
-        <input style="position:absolute;top:230px;margin-left:10px;" type="submit">
-      </form>
+      <input id="options" type="number" name="number" placeholder="Quantity" min="1" max="1" value="1">
       <button class="btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
     {% endif %}
     <p class="">{{selected_product.description}}</p>
     <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:25px;margin-bottom:25px;">
     <h4 style="margin-bottom:12px;">Reviews</h4>
     <div id="review_div">
+
     </div>
     <a href=""><p style="position:relative;top:-191px;margin-left:355px;">Write a Review</p></a>
   </div>

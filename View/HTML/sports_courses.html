@@ -51,15 +51,16 @@
 <script type="text/javascript">
   const buttonRight = document.getElementById('slideRight');
    const buttonLeft = document.getElementById('slideLeft');
-   var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
-
-   if (width<$(document).width()) {
-     buttonRight.style.display = "none";
-     buttonLeft.style.display = "none";
-   } else {
-     buttonRight.style.display = "none";
-     buttonLeft.style.display = "block";
-   }
+   window.onresize = function(event) {
+     var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
+     if (width<$(document).width()) {
+       buttonRight.style.display = "none";
+       buttonLeft.style.display = "none";
+     } else {
+       buttonRight.style.display = "none";
+       buttonLeft.style.display = "block";
+     }
+    };
    buttonRight.style.display = "none";
    buttonRight.onclick = function () {
      document.getElementById('top-course-ul').scrollLeft -= ($(document).width()-250);
@@ -187,7 +188,7 @@
           <li class="name" id="name_{{course.name}}">{{course.name}}</li>
           <li class="description">{{course.short_description}}</li>
           <li class="trainer">{{course.trainer}}</li>
-          <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+          <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
           <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
         </ul>
         <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
@@ -205,7 +206,7 @@
             <li class="name" id="name_{{course.name}}">{{course.name}}</li>
             <li class="description">{{course.short_description}}</li>
             <li class="trainer">{{course.trainer}}</li>
-            <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+            <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
             <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
           </ul>
           <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
@@ -223,7 +224,7 @@
               <li class="name" id="name_{{course.name}}">{{course.name}}</li>
               <li class="description">{{course.short_description}}</li>
               <li class="trainer">{{course.trainer}}</li>
-              <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+              <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
               <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
             </ul>
             <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
@@ -240,7 +241,7 @@
               <li class="name" id="name_{{course.name}}">{{course.name}}</li>
               <li class="description">{{course.short_description}}</li>
               <li class="trainer">{{course.trainer}}</li>
-              <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+              <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
               <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
             </ul>
             <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
@@ -257,7 +258,7 @@
                 <li class="name" id="name_{{course.name}}">{{course.name}}</li>
                 <li class="description">{{course.short_description}}</li>
                 <li class="trainer">{{course.trainer}}</li>
-                <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+                <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
                 <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
               </ul>
               <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
@@ -274,7 +275,7 @@
                 <li class="name" id="name_{{course.name}}">{{course.name}}</li>
                 <li class="description">{{course.short_description}}</li>
                 <li class="trainer">{{course.trainer}}</li>
-                <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+                <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
                 <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
               </ul>
               <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
