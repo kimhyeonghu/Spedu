@@ -9,7 +9,6 @@
 
 <title>Main Store Page</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main_storepage.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/store_searchpage.css') }}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock %}
 
@@ -78,7 +77,7 @@
 
 
 
-<h2 class="title">Our Distributors</h2>
+<h2 class="title" style="font-family: 'STIXGeneral', serif;font-weight: bold;">Our Distributors</h2>
 <div class="row">
   <div class="column">
     <img src="../../static/images/reebok.png" alt="reebok" style="width:180px;">
@@ -152,7 +151,7 @@
       </div>
 
 
-<div class="products-list" id="products-list" style="position:absolute;top:1050px;left:200px;">
+<div class="products-list" id="products-list" style="position:absolute;">
   <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
     <input id="input" type="text" name="selected_productID" value="" style="display:none;">
         {% for i in range(products|length) %}
