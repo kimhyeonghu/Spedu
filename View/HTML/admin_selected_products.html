@@ -12,7 +12,7 @@
     </div>
 
     <div class="new_update">
-       <form action="{{ url_for('update_delete_product') }}" method="post" enctype="multipart/form-data">
+       <form action="{{ url_for('update_delete_product') }}" method="post" enctype="multipart/form-data" id="update_product_form">
            <input type="text" name="current_product" value="{{selected_product.productID}}" style="display:none;">
            <input type="text" name="product_image_input" value="" id="product_image_input" style="display:none;">
            <input type="text" id="action_input" name="action_input_product" style="display:none;">
@@ -25,7 +25,7 @@
           <li style="height:50px;">
             <p>Update Tag</p>
             <input id="tag_input" type="text" placeholder="">
-            <input id="tag_list" name="update_tag" type="text" style="display:none;">
+            <input id="tag_list" name="tag" type="text" style="display:none;">
             <button id="enter_tag_button" type="button" name="button" onclick=enter_tag()>Add</button>
             <div style="display:inline-block;width:calc(100% - 200px);margin-left:200px;overflow: auto;white-space: nowrap;" id="tag_div">
             </div>
@@ -39,6 +39,26 @@
                   }
                 }
               });
+              var product_tag = {{selected_product_tag|safe}};
+              for (var i = 0; i < product_tag.length; i++) {
+                var tag = product_tag[i];
+                var div = document.getElementById('tag_div');
+                const list = document.createElement("LI");
+                list.className = "tag_li"
+                var colors = ['#FBF8F1', '#FDEBF7', '#EFDAD7', '#C0D8C0', '#FFE162', '#D9D7F1', '#E7FBBE', '#F5F5F5', '#FDF5CA'];
+                list.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                const list_text = document.createTextNode(tag);
+                const remove_tag_btn = document.createElement('button');
+                remove_tag_btn.style.border = "none";
+                remove_tag_btn.style["background-color"] = "transparent";
+                remove_tag_btn.innerHTML = '<img src="../../../../static/images/remove_button.png" style="width:10px;height:10px;" />';
+                remove_tag_btn.onclick =  function(){
+                  list.parentNode.removeChild(list);
+                };
+                list.appendChild(list_text);
+                list.appendChild(remove_tag_btn);
+                div.appendChild(list);
+              }
 
               function enter_tag() {
                 if (tag_input.value.length > 0) {
@@ -93,7 +113,7 @@
             }
             window.onload = load_image;
           </script>
-          <li style="height:50px;"><a onclick="submit('update');update();"><button type="submit" value="Update" class="update-btn">Update</button></a></li>
+          <li style="height:50px;"><a onclick="submit('update');updatetag();"><button type="submit" value="Update" class="update-btn">Update</button></a></li>
           <li style="height:50px;"><a onclick="submit('delete')"><button type="submit" value="Delete" class="delete-btn">Delete</button></a></li>
        </ul>
        <script type="text/javascript">
@@ -104,25 +124,25 @@
 
           } else if (action=='update') {
             action_input_value.value = 'update'
+            alert("urmom");
           }
           document.getElementById('selected_action').submit();
         }
-      </script>
-      <script type="text/javascript">
-      function update() {
-        var tag_lists = document.getElementsByClassName('tag_li');
-        var tags = "";
-        for (var i = 0; i < tag_lists.length; i++) {
-          if (tags.length == 0) {
-            tags=tag_lists[i].innerText;
-          } else {
-            tags = tags + "," +tag_lists[i].innerText;
+        function updatetag() {
+          alert("urmom");
+          var tag_lists = document.getElementsByClassName('tag_li');
+          var tags = "";
+          for (var i = 0; i < tag_lists.length; i++) {
+            if (tags.length == 0) {
+              tags=tag_lists[i].innerText;
+            } else {
+              tags = tags + "," +tag_lists[i].innerText;
+            }
           }
+          document.getElementById("tag_list").value = tags;
+          document.getElementById("update_product_form").submit();
         }
-        document.getElementById("tag_list").value = tags;
-        document.getElementById("update_product_form").submit();
-      }
-      </script>
+       </script>
        </form>
      </div>
 </div>

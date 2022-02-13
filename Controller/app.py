@@ -314,7 +314,7 @@ def load_update(productID):
         print(product_img_link)
         product_price = request.form['update_price']
         product_description = request.form['update_description']
-        product_tag = request.form['update_tag'].split(",")
+        product_tag = request.form['tag'].split(",")
         product_stock = int(request.form['update_stock'])
 
         for doc in docs:
@@ -802,7 +802,7 @@ def view_admin_selected_product():
     selected_productID = request.args.get("selected_productID")
     print(selected_productID)
     selected_product = db.collection('Products').where("productID", "==", selected_productID).get()[0].to_dict()
-    return render_template('admin_selected_products.html', selected_product=selected_product)
+    return render_template('admin_selected_products.html', selected_product=selected_product, selected_product_tag = json.dumps(selected_product['tag']))
 
 
 @app.route('/admin_page/courses/', methods=['POST'])

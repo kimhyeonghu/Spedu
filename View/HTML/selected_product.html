@@ -19,12 +19,15 @@
     <h4>{{selected_product.name}}</h4>
     <p class="category">{{selected_product.category}}</p>
     <p class="price">${{'%0.2f'| format(selected_product.price|float)}}</p>
-    <p class="quantity">Quantity:</p>
-    <input id="options" type="number" placeholder="Quantity" min="1" value="1">
     {% if (selected_product.stock) == 0 %}
       <h4 style="text-align:center; color:red; padding-bottom:40px;">*Product is temporarily out-of-stock*</h4>
     {% else %}
-      <button class="btn" type="button" name="button" onclick="add_to_cart();quantity(parseInt(document.getElementById('options').value));">Add to cart</button>
+      <p class="quantity">Quantity:</p>
+      <form action="/Shopping Cart">
+        <input id="options" type="number" name="number" placeholder="Quantity" min="1" value="1">
+        <input style="position:absolute;top:230px;margin-left:10px;" type="submit">
+      </form>
+      <button class="btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
     {% endif %}
     <p class="">{{selected_product.description}}</p>
     <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:25px;margin-bottom:25px;">

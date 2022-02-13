@@ -1,5 +1,8 @@
-function quantity(quantity) {
-    alert("quantity")
-    var quantity = parseInt(document.getElementById('options').value)
-    document.getElementById("quantity").innerHTML = quantity
-}
+window.addEventListener('load', () => {
+
+    const params = (new URL(document.location)).searchParams;
+    const number = params.get('number');
+
+    document.getElementById('quantity').innerHTML = number;
+
+})
