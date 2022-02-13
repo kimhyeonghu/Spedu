@@ -154,7 +154,9 @@ def get_courses_from_search(search_value):
     for course in courses:
         if search_value in course.name.lower().split(" "):
             course.search_points += 2
-            #related_tags = [tag for tag in related_tags if tag in course.tag]
+            related_tags += list(set(course.tag) - set(related_tags))
+        if search_value in course.name.lower():
+            course.search_points += 2
             related_tags += list(set(course.tag) - set(related_tags))
         if search_value in course.tag:
             course.search_points += 2
@@ -176,7 +178,8 @@ def get_products_from_search(search_value):
     for product in products:
         if search_value in product.name.lower().split(" "):
             product.search_points += 2
-            #related_tags = [tag for tag in related_tags if tag in course.tag]
+        if search_value in product.name.lower():
+            product.search_points += 2
             related_tags += list(set(product.tag) - set(related_tags))
         if search_value in product.tag:
             product.search_points += 2
