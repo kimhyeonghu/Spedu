@@ -473,7 +473,6 @@ def reset2():
     except:
         # reset_user_id does not exist
         return redirect(url_for("reset1"))
-
     return render_template("reset2.html", qns=qns)
 
 
