@@ -157,6 +157,9 @@ ul {
 #user-icon {
   height: 30px;
 }
+.dropdown-nav {
+  position: relative;
+}
 .dropdown-menu-navbar {
   border-radius: 10px;
   margin-top: 10px;

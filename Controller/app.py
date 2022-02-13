@@ -833,7 +833,7 @@ def Checkout():
 @app.route('/admin_page/')
 @login_required
 def admin_page():
-    return render_template('admin_page.html')
+    return render_template('admin_page_dashboard.html')
 
 
 @app.route('/admin_page/users')

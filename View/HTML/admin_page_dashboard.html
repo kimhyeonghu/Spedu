@@ -1,9 +1,9 @@
 {% extends 'admin_page.html' %}
 {% block head %}
-<title>Admin Sports Courses</title>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_selected_course.css') }}">
-{% endblock %}
+<title>Admin Page Dashboard</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='') }}">
 
+{% endblock %}
 {% block body %}
 <div class="menu">
   <div class="userBox">
@@ -20,7 +20,7 @@
     <p id="menuUsername">{{ current_user.get_username() }}</p>
   </div>
   <ul class="sideBar">
-    <li class="option">
+    <li class="option"  id="selected">
       <a href="/admin_page/">
         <svg xmlns="http://www.w3.org/2000/svg" width="38.263" height="36.509" viewBox="0 0 38.263 36.509">
           <path id="Path_292" data-name="Path 292" d="M37.91,27.614,19.9,11.512a.505.505,0,0,0-.1-.079,1.065,1.065,0,0,0-1.44-.024L.355,27.511A1.065,1.065,0,0,0,1.772,29.1l3.242-2.9V44.974A2.679,2.679,0,0,0,7.69,47.65h5.682a2.512,2.512,0,0,0,2.51-2.51V35.594a.386.386,0,0,1,.386-.386H22a.386.386,0,0,1,.386.386V45.14a2.512,2.512,0,0,0,2.51,2.51h5.682c1.5,0,2.676-1.472,2.676-3.353v-18L36.5,29.2a1.07,1.07,0,0,0,1.5-.087A1.083,1.083,0,0,0,37.91,27.614Zm-6.784,5.249V44.282c0,.763-.378,1.228-.551,1.228H24.893a.386.386,0,0,1-.386-.386v-9.53A2.512,2.512,0,0,0,22,33.083H16.26a2.512,2.512,0,0,0-2.51,2.51V45.14a.386.386,0,0,1-.386.386H7.682a.552.552,0,0,1-.551-.551V24.293L19.077,13.621,31.126,24.395v8.468Z" transform="translate(0 -11.141)" fill="#fff"/>
@@ -28,7 +28,7 @@
         <h4 class="align-middle">Dashboard</h4>
       </a>
     </li>
-    <li class="option"  id="selected">
+    <li class="option">
       <a href="/admin_page/courses/">
         <svg xmlns="http://www.w3.org/2000/svg" width="48.386" height="26.093" viewBox="0 0 48.386 26.093">
           <path id="Path_294" data-name="Path 294" d="M1.075,23.947H5.213a.925.925,0,0,1-.689-.89V.917A.921.921,0,0,1,5.441,0H42.7a.921.921,0,0,1,.917.917V23.053a.92.92,0,0,1-.689.89h4.378a1.076,1.076,0,0,1,1.075,1.075h0a1.076,1.076,0,0,1-1.075,1.075H1.075A1.076,1.076,0,0,1,0,25.018H0a1.073,1.073,0,0,1,1.075-1.071Zm10.7-19.628h9.6V15.832c-.02.323-.433.331-.882.311H11.623a1.13,1.13,0,1,0,0,2.26H20.9V17.2h.882V18.73a.5.5,0,0,1-.5.5H11.666a1.542,1.542,0,0,1-2.032-1.618V6.461a2.152,2.152,0,0,1,2.142-2.142Zm14.5,14.3a.624.624,0,0,1,0-1.244H37.806a.624.624,0,0,1,0,1.244ZM26.191,5.032H38.9a.5.5,0,0,1,.5.5V7.3a.5.5,0,0,1-.5.5H26.191a.5.5,0,0,1-.5-.5V5.528a.5.5,0,0,1,.5-.5Zm.083,6.634a.624.624,0,0,1,0-1.244H37.015a.624.624,0,0,1,0,1.244Zm0,3.477a.624.624,0,0,1,0-1.244h9.068a.624.624,0,0,1,0,1.244Zm-14.1-9.15h.358a.307.307,0,0,1,.331.268v8.414a.307.307,0,0,1-.331.268h-.358a.307.307,0,0,1-.331-.268V6.26a.3.3,0,0,1,.331-.268ZM6.091,1.437H42.177V22.793H6.091V1.437Zm17.2,22.911h3.02a.518.518,0,0,1,.516.516h0a.518.518,0,0,1-.516.516h-3.02a.518.518,0,0,1-.516-.516h0a.515.515,0,0,1,.516-.516Z" fill="#fff" fill-rule="evenodd"/>
@@ -86,67 +86,4 @@
     </a>
   </div>
 </div>
-
-<div id="navigation_panel_div">
-  <a href="{{url_for('admin_page_courses')}}" style="color:black;">
-    <img class="horizontal" style="width:14px;" src="../../../../static/images/arrow-left.png" alt="arrow-left">
-     Back
-  </a>
-</div>
-<div class="about_course_div">
-  <div class="course_overview_div">
-    <h1>{{selected_course.name}}</h1>
-    <br>
-    <ul>
-      <li class="short_description">{{selected_course.short_description}}</li>
-      <li class="trainer" style="color:#AFADAD;">{{selected_course.trainer}}</li>
-      <li class="trainer" style="font-weight:light;">{{selected_course.duration}} total mins | For {{selected_course.level}}</li>
-      <li class="rating">★{{'%0.1f'| format(selected_course.rating|float)}} <p style="color:#AFADAD;display:inline-block;">| {{selected_course.students_count}} students are enrolled</p></li>
-    </ul>
-  </div>
-  <div class="course_purchase_div">
-    <img src="{{selected_course.image}}" style="width:280px;height:140px;" alt="">
-    <h2 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h2>
-      <form action="{{ url_for('update_delete_course') }}" id="selected_action" method="post" enctype="multipart/form-data">
-      <input type="text" name="current_course" value="{{selected_course.courseID}}" style="display:none;">
-      <input type="text" id="action_input" name="action_input" style="display:none;">
-      <a onclick="submit('update')"><button class="add_to_cart_btn" type="button" >Update</button></a>
-      <a onclick="submit('delete')"><button class="buy_now_btn" type="button" name="button">Delete</button></a>
-      <script type="text/javascript">
-        function submit(action) {
-          var action_input_value = document.getElementById('action_input')
-          if (action=='delete') {
-            action_input_value.value = 'delete'
-
-          } else if (action=='update') {
-            action_input_value.value = 'update'
-          }
-          document.getElementById('selected_action').submit()
-        }
-      </script>
-      </form>
-    <br>
-    <p style="font-weight:bold;">What you will learn</p>
-    <p>{{selected_course.learning_outcome}}</p>
-  </div>
-  <div class="course_description_div">
-  <h3>Description</h3>
-  <p>{{selected_course.description}}</p>
-  <br>
-  <h3>Review</h3>
-  {% for review in selected_course.reviews %}
-  <div id="review_div">
-    <script type="text/javascript">
-      const review_json = JSON.parse('{{review|tojson}}');
-      document.getElementById('review_div').innerHTML = "<p>"+review_json.reviewer+"</p>" + "<p>"+review_json.rating+"</p>" +"<p>"+review_json.review+"</p>"
-
-    </script>
-    <p id="reviewer"></p>
-  </div>
-
-  {% endfor %}
-
-  </div>
-</div>
-
 {% endblock %}
