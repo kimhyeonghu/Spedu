@@ -119,7 +119,6 @@ def course_CRUD(course, method):
                 'learning_outcome': course.learning_outcome,
                 'level': course.level,
                 'price': course.price,
-                'trainer': course.trainer,
                 'tag':course.tag
             })
     elif method == 'delete':
@@ -828,7 +827,7 @@ def view_admin_selected_product():
 def create_new_course():
     course_name = request.form['course_name']
     courseID = request.form['courseID_input']
-    course_trainer = request.form['course_trainer']
+    course_trainer = current_user.get_id()
     course_short_desc = request.form['course_short_desc']
     course_desc = request.form['course_desc']
     course_duration = request.form['course_duration']
@@ -877,7 +876,7 @@ def update_page(current_courseID):
 def update_course():
     course_name = ""
     courseID = request.form['courseID']
-    course_trainer = request.form['course_trainer']
+    course_trainer = ""
     course_short_desc = request.form['course_short_desc']
     course_desc = request.form['course_desc']
     course_duration = 0
@@ -1110,6 +1109,7 @@ def load_my_courses():
 def load_learn_page():
     courseID = request.args.get('course')
     course = ""
+    trainer = ""
     courses_docs = db.collection('Courses').where("courseID", "==", courseID).get()
     for doc in courses_docs:
         courseID = doc.to_dict()['courseID']
@@ -1129,6 +1129,10 @@ def load_learn_page():
         tag = doc.to_dict()['tag']
         course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
                     price, rating, reviews, students_count, trainer, video_link,tag)
+    trainers_docs = db.collection('Users').where("username", "==", course.trainer).where("account_type", "==", "Admin").get()
+    for doc in trainers_docs:
+        students_count = doc.to_dict()['students_count']
+        trainer = doc.to_dict()['trainer']
     return render_template('course_learn.html',course=course)
 
 @app.route('/Checkout_instant/',methods=["POST","GET"])
