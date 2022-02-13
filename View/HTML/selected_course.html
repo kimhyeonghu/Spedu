@@ -62,11 +62,14 @@
 
   <img onload="" id="course_image" src="{{selected_course.image}}" style="width:280px;height:180px;" alt="">
   <h4 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h4>
-  <form class="" action="index.html" method="post">
+  <form class="" action="" method="post">
     <button class="add_to_cart_btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
     <button class="buy_now_btn" type="button" name="button" onclick="buy_now()">Buy now</button>
     <!--<button class="buy_now_btn" type="button" name="button" onclick="load_image()">Buy now</button>-->
 
+  </form>
+  <form id="courseID_form" action="/Checkout_instant/" method="get">
+    <input style="display:none;" type="text" id="courseID" name="courseID" value="">
   </form>
 
   <br>
@@ -119,27 +122,8 @@
 
 
     function buy_now() {
-      var username = '{{current_username}}';
-      db.collection("Users").where("username", "==", username)
-      .get()
-      .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-              // doc.data() is never undefined for query doc snapshots
-              db.collection("Users").doc(doc.id).update(
-                {
-                  instant_buy:firebase.firestore.FieldValue.arrayUnion("{{selected_course.courseID}}")
-
-                }
-              )
-              .then(() => {
-                window.location.href = "/Checkout_instant/"
-              })
-          });
-
-      })
-      .catch((error) => {
-          alert(error);
-      });
+      document.getElementById('courseID').value = '{{selected_course.courseID}}';
+      document.getElementById('courseID_form').submit();
     }
   </script>
   <p id="reviewer"></p>
