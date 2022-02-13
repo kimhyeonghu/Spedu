@@ -1,0 +1,15 @@
+{% if current_user.is_authenticated %}
+    {% extends 'base_signed_in.html' %}
+{% else %}
+    {% extends 'base.html' %}
+{% endif %}
+
+{% block head %}
+<title>Sports Courses</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/course_learn.css') }}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+{% endblock %}
+
+{% block body %}
+{% endblock %}

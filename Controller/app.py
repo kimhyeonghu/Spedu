@@ -1012,6 +1012,10 @@ def load_my_courses():
             my_courses.append(course)
     return render_template('mylearning.html',my_courses=my_courses)
 
+@app.route('/mylearning/learn/', methods=['GET'])
+def load_learn_page():
+    course = request.args.get('course')
+    return render_template('course_learn.html',my_courses=my_courses)
 
 def filter_courses(courses, rating_value, price_value, level_value):
     filtered_list=[]

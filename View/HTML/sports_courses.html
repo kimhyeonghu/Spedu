@@ -51,15 +51,16 @@
 <script type="text/javascript">
   const buttonRight = document.getElementById('slideRight');
    const buttonLeft = document.getElementById('slideLeft');
-   var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
-
-   if (width<$(document).width()) {
-     buttonRight.style.display = "none";
-     buttonLeft.style.display = "none";
-   } else {
-     buttonRight.style.display = "none";
-     buttonLeft.style.display = "block";
-   }
+   window.onresize = function(event) {
+     var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
+     if (width<$(document).width()) {
+       buttonRight.style.display = "none";
+       buttonLeft.style.display = "none";
+     } else {
+       buttonRight.style.display = "none";
+       buttonLeft.style.display = "block";
+     }
+    };
    buttonRight.style.display = "none";
    buttonRight.onclick = function () {
      document.getElementById('top-course-ul').scrollLeft -= ($(document).width()-250);
