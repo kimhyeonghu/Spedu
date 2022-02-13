@@ -8,7 +8,6 @@
 
 <title>Homepage</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/search_page.css') }}">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/store_searchpage.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sports_courses.css') }}">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -50,10 +49,10 @@
   <div class="product-panel" >
           <ul>
             <li>
-              <label for="dropdown" style="font-size:14px;font-weight:bold;">Sort by : </label>
-              <div class="dropdown" >
-                <button class="dropbtn" id="dropbtn">Default</button>
-                <div class="dropdown-content">
+              <label for="product_dropdown" style="font-size:14px;font-weight:bold;">Sort by : </label>
+              <div class="product_dropdown" >
+                <button class="product_dropbtn" id="dropbtn">Default</button>
+                <div class="product_dropdown-content">
                     <a onclick="sort('default')">Default</a>
                     <a onclick="sort('price high to low')">price high to low</a>
                     <a onclick="sort('price low to high')">price low to high</a>
@@ -102,10 +101,10 @@
           {% set product = product_search_results[i] %}
         <a onclick="submit('{{product.productID}}')">
           <div class="products-list-box">
-              <img class="image" src="{{product.image}}" style="width:200px;height:130px;margin-left:100px;" alt="Spedu">
-              <h5 class="name">{{product.name}}</h5>
-              <p class="category">{{product.category}}</p>
-              <p class="price">${{'%0.2f'| format(product.price|float)}}</p>
+              <img class="product_image" src="{{product.image}}" style="width:200px;height:130px;margin-left:100px;" alt="Spedu">
+              <h5 class="product_name">{{product.name}}</h5>
+              <p class="product_category">{{product.category}}</p>
+              <p class="product_price">${{'%0.2f'| format(product.price|float)}}</p>
           </div>
         </a>
           {% endfor %}
@@ -139,7 +138,6 @@
 <div class="view-courses" id="view-courses" style="">
   <div class="course-sort">
     <ul>
-      <br>
       <li>
         <label for="dropdown" style="font-size:14px;font-weight:bold;">Sort by : </label>
         <div class="dropdown" >
@@ -251,7 +249,7 @@
           <li class="name" id="name_{{course.name}}">{{course.name}}</li>
           <li class="description">{{course.short_description}}</li>
           <li class="trainer">{{course.trainer}}</li>
-          <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+          <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
           <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
         </ul>
         <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
@@ -269,7 +267,7 @@
             <li class="name" id="name_{{course.name}}">{{course.name}}</li>
             <li class="description">{{course.short_description}}</li>
             <li class="trainer">{{course.trainer}}</li>
-            <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+            <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
             <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
           </ul>
           <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
@@ -287,7 +285,7 @@
               <li class="name" id="name_{{course.name}}">{{course.name}}</li>
               <li class="description">{{course.short_description}}</li>
               <li class="trainer">{{course.trainer}}</li>
-              <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+              <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
               <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
             </ul>
             <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
@@ -304,7 +302,7 @@
               <li class="name" id="name_{{course.name}}">{{course.name}}</li>
               <li class="description">{{course.short_description}}</li>
               <li class="trainer">{{course.trainer}}</li>
-              <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+              <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
               <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
             </ul>
             <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
@@ -321,7 +319,7 @@
                 <li class="name" id="name_{{course.name}}">{{course.name}}</li>
                 <li class="description">{{course.short_description}}</li>
                 <li class="trainer">{{course.trainer}}</li>
-                <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+                <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
                 <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
               </ul>
               <div class="price">${{'%0.2f'| format(course.price|float)}}</div>
@@ -338,7 +336,7 @@
                 <li class="name" id="name_{{course.name}}">{{course.name}}</li>
                 <li class="description">{{course.short_description}}</li>
                 <li class="trainer">{{course.trainer}}</li>
-                <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total hours | For {{course.level}}</li>
+                <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{course.duration}} total mins | For {{course.level}}</li>
                 <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
               </ul>
               <div class="price">${{'%0.2f'| format(course.price|float)}}</div>

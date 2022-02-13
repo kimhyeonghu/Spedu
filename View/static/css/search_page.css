@@ -3,3 +3,113 @@
   width: 100%;
   padding-top: 90px;
 }
+.products-list {;
+  bottom:-200px;
+  position: fixed;
+  overflow-x: hidden;
+  margin-top: 20px;
+  width:calc(100% - 200px);
+}
+.products-list::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.products-list-box {
+  float: left;
+  width: 33.33%;
+}
+
+.product_name {
+  font-size:15px;
+  margin-left:100px;
+  margin-top:30px;
+}
+
+.product_category {
+  font-size:13px;
+  color:grey;
+  margin-left:100px;
+}
+
+.product_price {
+  font-size:13px;
+  font-weight:480;
+  margin-left:100px;
+  margin-bottom:100px;
+}
+
+.product-panel {
+  height: 170px;
+  width: 100%;
+  padding-top: 110px;
+
+}
+.product-panel li {
+  margin-left: 50px;
+  margin-top: 20px;
+
+}
+.product_dropbtn {
+  background-color: white;
+  color: black;
+  padding: 4px;
+  margin-left: 5px;
+  margin-top: -2px;
+  font-size: 14px;
+  cursor: pointer;
+  border-width: thin;
+}
+
+.product_dropdown {
+  position: absolute;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.product_dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 150px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.product_dropdown-content a {
+  color: black;
+  padding: 5px 10px;
+  text-decoration: none;
+  display: block;
+}
+
+.product_dropdown-content a:hover {
+  background-color: #f1f1f1
+}
+
+.product_dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.product_dropdown:hover .dropbtn {
+  background-color: white;
+}
+
+.view-products {
+  height: 500px;
+  width: 100%;
+  margin-top: 60px;
+
+}
+.product-filter {
+  height: 100%;
+  width:270px;
+  float: left;
+  padding-left: 50px;
+  padding-right: 20px;
+}
+.product-filter h6 {
+  margin-top: 12px;
+  font-weight:700;
+}

@@ -43,8 +43,7 @@
       const radioBtn = document.getElementById(level_input_id);
       radioBtn.checked = true;
     </script>
-    <li style="height:50px;"><p>Video Link</p><textarea name='video_link' type="text" placeholder="">{{selected_course.video_link}}</textarea></li>
-    <li style="height:50px;"><p>Course Duration</p><textarea name='course_duration' type="text" placeholder="">{{selected_course.duration}}</textarea></li>
+
     <li style="height:50px;">
       <p>Course Tag</p>
       <input id="tag_input" type="text" placeholder="">
@@ -113,12 +112,12 @@
         });
       </script>
     </li>
-    <li style="height:50px;margin-top:30px;"><p>Course Image</p><input name='course_image' type="file" placeholder="" value="" onclick="update_img()"></li>
+    <li style="height:50px;margin-top:30px;"><p>Course Image</p><input id="course_image" name='course_image' type="file" placeholder="" value="" onchange="loadFile(event)" onclick="update_img()"></li>
 
-    <br><img id="course_img" src="#">
+    <br><img id="course_img" style="height:240px;" src="#">
     <script type="text/javascript">
     function update_img() {
-        document.querySelector('input[type="file"]').addEventListener('change', function() {
+        document.getElementById('course_image').addEventListener('change', function() {
           if (this.files && this.files[0]) {
             document.getElementById("course_img").src = URL.createObjectURL(this.files[0]);
           }
@@ -130,6 +129,13 @@
             document.getElementById('course_img').src = url;
             document.getElementById('course_image_input').value = url;
         })
+        // var source = document.createElement('source');
+        // var video = document.getElementById('course_vid');
+        // storage.ref().child('courses/video_of'+courseID).getDownloadURL().then(function(url) {
+        //   source.setAttribute('src', url);
+        //   source.setAttribute('type', 'video/mp4');
+        //   video.appendChild(source);
+        // })
       }
 
       window.onload = load_image;

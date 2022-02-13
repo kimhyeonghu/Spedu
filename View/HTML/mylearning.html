@@ -14,7 +14,9 @@
 {% block body %}
 
 
-
+<form action='/mylearning/learn/' id="course_learn_form" method="get">
+<input id="course" type="text" name="course" value="" style="display:none;">
+</form>
 
 <div class="course-panel">
       <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;">My Courses</h2>
@@ -26,7 +28,7 @@
           {% set my_course = my_courses[i] %}
 
           <li class="horizontal" style="margin-right: 5px;margin-top:10px;width:270px;margin-left: 5px;">
-            <a onclick="" class="course-a">
+            <a onclick="submit('{{my_course.courseID}}')" class="course-a">
             <div class="course-short-detail-box">
 
               <img id="img_{{my_course.courseID}}" class="course-image" src="{{my_course.image}}" style="width:230px;height:130px;margin-top:10px;" alt="yoga_image" >
@@ -71,5 +73,11 @@
      buttonLeft.style.display = "none";
      buttonRight.style.display = "block";
    };
+   function submit(id) {
+     document.getElementById('course').value = id;
+
+     document.getElementById('course_learn_form').submit();
+
+   }
 </script>
 {% endblock %}

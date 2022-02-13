@@ -12,4 +12,45 @@
 {% endblock %}
 
 {% block body %}
+
+<div id="course_learn_div">
+  <video id="course_vid" width="320" height="240" controls>
+  </video>
+  <script type="text/javascript">
+
+      function load_video() {
+        var source = document.createElement('source');
+        var video = document.getElementById('course_vid');
+        source.setAttribute('src', '{{course.video_link}}');
+        source.setAttribute('type', 'video/mp4');
+        video.appendChild(source);
+      }
+
+      window.onload = load_video;
+  </script>
+  <div id="course_info">
+    <div style="display:inline-block;">
+      <h4 style="font-weight:bold;">{{course.name}}</h4>
+      <p>{{course.students_count}} students enrolled | For {{course.level}}</p>
+    </div>
+    <ul style="display:inline-block;float:right;margin-top:30px;">
+      <li style="display:inline-block;"><button type="button" name="button" class="download_btn">DOWNLOAD</button></li>
+    </ul>
+    <hr style="background-color: #eee;border:none;color: #D3D3D3;height: 2px;margin-top:5px;margin-bottom:0;width:100%;margin-right:auto;margin-left:auto;">
+    <div id="tutor_info">
+      <ul>
+        <li style="display:inline-block;"><img id="tutor-icon" src="../../static/images/user-icon.png" alt="search"></li>
+        <li style="display:inline-block;">
+          <div class="">
+            <p>{{course.trainer}}</p>
+          </div>
+        </li>
+        <li style="display:inline-block;float:right;"><button type="button" name="button" class="chat_btn">CHAT</button></li>
+      </ul>
+
+    </div>
+
+  </div>
+
+</div>
 {% endblock %}

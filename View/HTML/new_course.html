@@ -5,27 +5,34 @@
 
 {% endblock %}
 {% block body %}
-<div class="new_course">
+<div class="popup">
+  <div class="popuptext" id="uploading">
+    <h3 style="text-align:center;padding-top:10px;font-family: 'STIXGeneral', serif;font-weight: bold; margin-left:10px;">Uploading</h3>
+    <div class="loader"></div>
+  </div>
+</div>
+<div class="new_course" id="new_course">
   <form action="{{ url_for('create_new_course') }}" method="post" enctype="multipart/form-data" id="create_course_form">
     <input type="text" name="course_image_input" value="" id="course_image_input" style="display:none;">
+    <input type="text" name="course_video_input" value="" id="course_video_input" style="display:none;">
+    <input type="text" name="courseID_input" value="" id="courseID_input" style="display:none;">
+    <input name='course_duration' id="course_duration" type="text" style="display:none;">
   <ul>
     <li style="height:40px;"><h2>New Course</h2></li>
-    <li style="height:50px;margin-top:20px;"><p>Course Name</p><textarea name='course_name' type="text" placeholder=""></textarea></li>
-    <li style="height:50px;margin-top:20px;"><p>Course Price</p><textarea name='course_price' type="text" placeholder=""></textarea></li>
-    <li style="height:50px;"><p>Course Trainer</p><textarea name='course_trainer' type="text" placeholder=""></textarea></li>
-    <li style="height:100px;"><p>Course Short Description</p><textarea name='course_short_desc' style="height:80px;" type="text" placeholder=""></textarea></li>
-    <li style="height:180px;"><p>Course Description</p><textarea name='course_desc' style="height:160px;" type="text" placeholder=""></textarea></li>
-    <li style="height:100px;"><p>Learning Outcome</p><textarea name='learning_outcome' style="height:80px;" type="text" placeholder=""></textarea></li>
+    <li style="height:50px;margin-top:20px;"><p>Course Name</p><textarea id="course_name" name='course_name' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;margin-top:20px;"><p>Course Price</p><textarea id='course_price' name='course_price' type="text" placeholder=""></textarea></li>
+    <li style="height:50px;"><p>Course Trainer</p><textarea id='course_trainer' name='course_trainer' type="text" placeholder=""></textarea></li>
+    <li style="height:100px;"><p>Course Short Description</p><textarea id='course_short_desc' name='course_short_desc' style="height:80px;" type="text" placeholder=""></textarea></li>
+    <li style="height:180px;"><p>Course Description</p><textarea id='course_desc' name='course_desc' style="height:160px;" type="text" placeholder=""></textarea></li>
+    <li style="height:100px;"><p>Learning Outcome</p><textarea id='learning_outcome' name='learning_outcome' style="height:80px;" type="text" placeholder=""></textarea></li>
     <li style="height:50px;">
       <p>Course Level</p>
 
-      <label for="All Levels" style="margin-right:10px;"><input type="radio" name="course_level" value="All Levels">All Levels</label>
-      <label for="Beginner" style="margin-right:10px;"><input type="radio" name="course_level" value="Beginner">Beginner</label>
-      <label for="Intermediate" style="margin-right:10px;"><input type="radio" name="course_level" value="Intermediate">Intermediate</label>
-      <label for="Professionals" style="margin-right:10px;"><input type="radio" name="course_level" value="Professionals">Professionals</label>
+      <label for="All Levels" style="margin-right:10px;"><input id="radio1" type="radio" name="course_level" value="All Levels">All Levels</label>
+      <label for="Beginner" style="margin-right:10px;"><input id="radio2"  type="radio" name="course_level" value="Beginner">Beginner</label>
+      <label for="Intermediate" style="margin-right:10px;"><input id="radio3" type="radio" name="course_level" value="Intermediate">Intermediate</label>
+      <label for="Professionals" style="margin-right:10px;"><input id="radio4" type="radio" name="course_level" value="Professionals">Professionals</label>
     </li>
-    <li style="height:50px;"><p>Video Link</p><textarea name='video_link' type="text" placeholder=""></textarea></li>
-    <li style="height:50px;"><p>Course Duration</p><textarea name='course_duration' type="text" placeholder=""></textarea></li>
     <li style="height:50px;">
       <p>Course Tag</p>
       <input id="tag_input" type="text" placeholder="">
@@ -74,23 +81,48 @@
         });
       </script>
     </li>
-    <li style="height:50px;margin-top:30px;"><p>Course Image</p><input name='course_image' type="file" placeholder=""></li>
-    <br><img id="course_img" src="#">
+    <li style="height:50px;"><p>Video</p>
+      <input id="video_input" name='video' type="file" placeholder="" accept="video/mp4,video/x-m4v,video/*" onchange="loadVideo(event)">
+    </li>
+    <br>
+    <video id="course_vid" width="320" height="240" controls>
+    </video>
     <script type="text/javascript">
-      window.addEventListener('load', function() {
-        document.querySelector('input[type="file"]').addEventListener('change', function() {
-          if (this.files && this.files[0]) {
-            var img = document.getElementById("course_img");
+        var loadVideo = function(event) {
+          var source = document.createElement('source');
+          var video = document.getElementById('course_vid');
 
-              img.src = URL.createObjectURL(this.files[0]); // set src to blob url
-
-            }
-          });
-        });
+          source.setAttribute('src', URL.createObjectURL(event.target.files[0]));
+          source.setAttribute('type', 'video/mp4');
+          video.appendChild(source);
+        };
 
     </script>
-    <li style="height:50px;"><button onclick="create()" value="Create" class="new-course-btn" id="create_btn">Create</button></li>
+
+
+    <li style="height:50px;margin-top:30px;"><p>Course Image</p><input accept="image/*" onchange="loadFile(event)" id="course_image" name='course_image' type="file" placeholder=""></li>
+    <br><img id="course_img" style="height:240px;" src="#">
+    <script type="text/javascript">
+
+        var loadFile = function(event) {
+	         var image = document.getElementById('course_img');
+	          image.src = URL.createObjectURL(event.target.files[0]);
+          };
+
+    </script>
+    <li>
+      <a onclick="cancel()">
+        <div class="cancel-btn">
+        Cancel
+        </div>
+      </a>
+    </li>
+    <li style="height:50px;"><a onclick="create()" class="new-course-btn" id="create_btn">Create</a></li>
+
       <script type="text/javascript">
+        function cancel() {
+          window.history.back();
+        }
         function create() {
           var tag_lists = document.getElementsByClassName('tag_li');
           var tags = "";
@@ -102,8 +134,96 @@
             }
 
           }
-          document.getElementById("tag_list").value = tags;
-          document.getElementById("create_course_form").submit();
+
+
+
+          if (isFormValid()) {
+            var video = document.getElementById('course_vid');
+            document.getElementById('course_duration').value = video.duration/60;
+            document.getElementById("tag_list").value = tags;
+            var popup = document.getElementById("uploading");
+            popup.classList.toggle("show");
+            document.getElementById("new_course").classList.add('loading');
+
+            var course_name = document.getElementById('course_name').value;
+            var courseID = 'CR'+course_name.split(' ')[0].charAt(0) + course_name.split(' ')[0].charAt(1) + String(Math.floor(Math.random() * 1000));
+            document.getElementById('courseID_input').value = courseID;
+
+            const storageRef = firebase.storage().ref();
+
+            storageRef.child('/courses/image_of_'+courseID).put(document.getElementById('course_image').files[0]).then((snapshot) => {
+
+              storageRef.child('/courses/image_of_'+courseID).getDownloadURL()
+              .then((url) => {
+                  document.getElementById('course_image_input').value = url;
+
+                  storageRef.child('/courses/video_of'+courseID).put(document.getElementById('video_input').files[0]).then((snapshot) => {
+
+                    storageRef.child('/courses/video_of'+courseID).getDownloadURL()
+                    .then((url) => {
+                        document.getElementById('course_video_input').value = url;
+                        // document.getElementById("new_course").classList.remove('loading');
+                        // var popup = document.getElementById("myPopup");
+                        // popup.classList.toggle("show");
+
+                        document.getElementById("create_course_form").submit();
+                    })
+                    .catch((error) => {
+                        alert(error);
+                    });
+                  }).catch((error) => {
+                      alert(error);
+                  });
+
+
+
+              })
+              .catch((error) => {
+                  alert(error);
+              });
+            })
+          }
+        }
+
+
+
+        function isFormValid() {
+          var course_name = document.getElementById('course_name').value;
+          var course_price = document.getElementById('course_price').value;
+          var course_trainer = document.getElementById('course_trainer').value;
+          var course_short_desc = document.getElementById('course_short_desc').value;
+          var course_desc = document.getElementById('course_desc').value;
+          var learning_outcome = document.getElementById('learning_outcome').value;
+
+          var radio1_checked = document.getElementById('radio1').checked;
+          var radio2_checked = document.getElementById('radio2').checked;
+          var radio3_checked = document.getElementById('radio3').checked;
+          var radio4_checked = document.getElementById('radio4').checked;
+          var image_file = document.getElementById('course_image').files[0];
+          var video_file = document.getElementById('video_input').files[0];
+
+          if (course_name.length<5) {
+            alert("Course name must be greater than 5 characters.");
+            return false;
+          } else if (!((/[\.]/.test(course_price))||(/^-?[0-9]+$/.test(course_price)))) {
+            alert("Price of the course must be a number.");
+            return false;
+          } else if(course_name.length==0||course_price.length==0||course_trainer.length==0||course_short_desc.length==0||course_desc.length==0||learning_outcome.length==0){
+            alert("Fields cannot be empty.");
+            return false;
+          } else if (!(radio1_checked||radio2_checked||radio3_checked||radio4_checked)) {
+            alert("Course level is not chosen.");
+            return false;
+          } else if (image_file==null) {
+            alert("Image is not uploaded.");
+            return false;
+          } else if (video_file==null) {
+            alert("Video is not uploaded.");
+            return false;
+          } else {
+            return true;
+          }
+
         }
       </script>
   </ul>
