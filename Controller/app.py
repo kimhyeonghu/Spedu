@@ -515,9 +515,19 @@ def account():
     return render_template("account.html", user=user, displayinfo=display_info)
 
 
-@app.route("/test")
-def test():
-    return render_template("test.html")
+@app.route("/account/security", methods=['GET', 'POST'])
+def security():
+    change_password_form = ChangePassword(request.form)
+    if request.method == "POST" and change_password_form.validate():
+        if bcrypt.check_password_hash(db.collection("Users").document(str(current_user.get_id())).get().to_dict()["password"], sign_in_form.password.data):
+            hashed_password = bcrypt.generate_password_hash(change_password_form.new_password.data).decode('utf-8')
+            db.collection("Users").document(current_user.get_id()).update({"password": hashed_password})
+            flash("Password changed successfully!", "ChangePassword")
+            return redirect(url_for("account"))
+        else:
+            flash("Old password is incorrect!", "ChangePassword")
+            return redirect(url_for("security"))
+    return render_template("security.html", change_password=change_password_form)
 
 
 @app.route('/sports_courses/', methods=['GET'])
@@ -538,7 +548,7 @@ def sports_courses_sorted():
 
 @app.route('/sports_courses/about_course/', methods=['GET'])
 def view_selected_course():
-    if request.args.get("selected_courseID") == None:
+    if request.args.get("selected_courseID") is None:
         selected_courseID = request.args.get("selected_courseID")
     else:
         selected_courseID = request.args.get("selected_courseID")

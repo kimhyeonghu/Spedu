@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Account Page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="../static/css/base.css">
+  <link rel="stylesheet" type="text/css" href="../static/css/security.css">
+</head>
+<body>
+  {% from "includes/_formHelper.html" import render_field %}
+  {% block navbar %}
+    {% include 'includes/_navbar.html' %}
+  {% endblock %}
+  <div class="row">
+    <div class="col-4 accountLeft vertical-center d-flex justify-content-end">
+      <div class="row">
+        <div class="col-12 userBox justify-content-center">
+          <svg xmlns="http://www.w3.org/2000/svg" width="144.268" height="144.268" viewBox="0 0 144.268 144.268">
+            <path id="Icon_awesome-user-circle" data-name="Icon awesome-user-circle" d="M72.134.562A72.134,72.134,0,1,0,144.268,72.7,72.122,72.122,0,0,0,72.134.562Zm0,27.923a25.6,25.6,0,1,1-25.6,25.6A25.6,25.6,0,0,1,72.134,28.485Zm0,100.057a55.737,55.737,0,0,1-42.611-19.837,32.429,32.429,0,0,1,28.65-17.394,7.117,7.117,0,0,1,2.065.32,38.51,38.51,0,0,0,11.9,2.007,38.364,38.364,0,0,0,11.9-2.007,7.117,7.117,0,0,1,2.065-.32,32.429,32.429,0,0,1,28.65,17.394A55.737,55.737,0,0,1,72.134,128.542Z" transform="translate(0 -0.563)"/>
+          </svg>
+          <p>{{ user["username"] }}</p>
+          <p>User ID: {{ user["id"] }}</p>
+        </div>
+        <p></p>
+        <div class="sideBar col-12">
+          <a href="#">My Account</a><br>
+          <a href="{{ url_for("security") }}">Account Security</a><br>
+          <a href="/order_history/">Order History</a><br>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-8 userInfo">
+      <h1>Account Security</h1>
+      <p>Change your password or security questions below</p>
+      <hr>
+      <h1>Change Password</h1>
+      <p>Your password must be 8 characters long</p>
+      <form class="" method="POST">
+        <div class="form-group">
+            {{ render_field(displayinfo.old_password, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(displayinfo.new_password, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(displayinfo.confirm_password, class="form-control") }}
+        </div>
+        {% with messages = get_flashed_messages(category_filter=["ChangePassword"]) %}
+          {% if messages %}
+            {% for message in messages %}
+              <p id="flash">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <input type="submit" name="displayInfo" value="Discard">
+        <input type="submit" name="displayInfo" value="Update">
+      </form>
+      <hr>
+      <h1>Account</h1>
+      <p>Update & Edit your information</p>
+      <br>
+      <p>Login Email:</p>
+      <p>{{ current_user.get_email() }}</p>
+      <p>Your Login email can't be changed</p>
+      <form class="" method="POST">
+        <div class="form-group">
+            {{ render_field(displayinfo.username, class="form-control") }}
+        </div>
+        <input type="submit" name="account" value="Discard">
+        <input type="submit" name="account" value="Update">
+      </form>
+      <hr>
+      <h1>Delete Account</h1>
+      <p>Deleting your account will remove all your information from our servers</p>
+      <form class="" method="POST">
+        <input type="submit" name="delete" value="Delete Account">
+      </form>
+
+    </div>
+  </div>
+</body>
+</html>
