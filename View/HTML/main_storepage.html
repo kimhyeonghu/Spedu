@@ -10,10 +10,7 @@
 <title>Main Store Page</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main_storepage.css') }}">
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/store_searchpage.css') }}">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -29,7 +26,7 @@
           {% for i in range(products|length) %}
           {% set product = products[i] %}
 
-          <li class="horizontal" style="margin-right: 20px;margin-top:10px;width:270px;;">
+          <li class="horizontal" style="margin-right: 20px;margin-top:10px;width:270px;">
             <a onclick="submit('{{product.productID}}')" class="course-a">
             <div class="course-short-detail-box">
 
@@ -45,11 +42,34 @@
           </li>
           {% endfor %}
         </ul>
-
+        <button class="slide_button" id="slideLeft" type="button" name="button"><img src="../../static/images/right-arrow.png" alt="" style="height:40px;width:auto;"></button>
       </div>
     </form>
 </div>
+<script type="text/javascript">
+  const buttonRight = document.getElementById('slideRight');
+   const buttonLeft = document.getElementById('slideLeft');
+   var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
 
+   if (width<$(document).width()) {
+     buttonRight.style.display = "none";
+     buttonLeft.style.display = "none";
+   } else {
+     buttonRight.style.display = "none";
+     buttonLeft.style.display = "block";
+   }
+   buttonRight.style.display = "none";
+   buttonRight.onclick = function () {
+     document.getElementById('top-course-ul').scrollLeft -= ($(document).width()-250);
+     buttonRight.style.display = "none";
+     buttonLeft.style.display = "block";
+   };
+   buttonLeft.onclick = function () {
+     document.getElementById('top-course-ul').scrollLeft += ($(document).width()-250);
+     buttonLeft.style.display = "none";
+     buttonRight.style.display = "block";
+   };
+</script>
 
 
   <script type="text/javascript">
@@ -58,23 +78,6 @@
               document.getElementById('selected_product_form').submit();
           }
   </script>
-
-
-
-<div id="package-ad-banner">
-  <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:-50px;margin-bottom:40px;width:82.5%;margin-right:auto;margin-left:auto;">
-  <div class="btn-group">
-    <a href="/store_searchpage"><button>Sports Wear</button></a>
-    <a href="/store_searchpage"><button>Game Equipment</button></a>
-    <a href="/store_searchpage"><button>Shoes</button></a>
-    <a href="/store_searchpage"><button>Supplements</button></a>
-    <a href="/store_searchpage"><button>Gym Equipment</button></a>
-    <a href="/store_searchpage"><button>Accessories</button></a>
-  </div>
-</div>
-
-
-<hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:50px;width:80%;margin-right:auto;margin-left:auto;">
 
 
 
@@ -110,7 +113,7 @@
                   <a onclick="sort('price high to low')">price high to low</a>
                   <a onclick="sort('price low to high')">price low to high</a>
               </div>
-              <form action='/store_searchpage/' id="sort_attr_form" method="get">
+              <form action='/spedu_store/' id="sort_attr_form" method="get">
               <input id="sort_attr" type="text" name="sort_attr" value="" style="display:none;">
               </form>
               <script type="text/javascript">
@@ -129,25 +132,30 @@
         <ul>
           <li style="">
             <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
-            <h6>Ratings</h6>
-          </li>
-          <li style="">
-            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
             <h6>Price</h6>
+            <input onclick="sort_filter_courses('{{sort_attribute}}','{{rating_value}}','0','{{level_value}}')" type="radio" id="free" name="price_filter" value="0">
+            <label for="price_filter">
+              Free
+            </label><br>
+            <input onclick="sort_filter_courses('{{sort_attribute}}','{{rating_value}}','20','{{level_value}}')" type="radio" id="20" name="price_filter" value="20">
+            <label for="price_filter">
+              Below S$20
+            </label><br>
+            <input onclick="sort_filter_courses('{{sort_attribute}}','{{rating_value}}','50','{{level_value}}')" type="radio" id="50" name="price_filter" value="50">
+            <label for="price_filter">
+              Below S$50
+            </label><br>
+            <input onclick="sort_filter_courses('{{sort_attribute}}','{{rating_value}}','100','{{level_value}}')" type="radio" id="100" name="price_filter" value="100">
+            <label for="price_filter">
+              Below S$100
+            </label><br>
           </li>
-          <li style="">
-            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
-            <h6>Levels</h6>
-          </li>
-          <li style="">
-            <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;">
-            <h6>Video Duration</h6>
-          </li>
+
         </ul>
       </div>
 
 
-<div class="products-list" id="products-list" style="position:absolute;top:1250px;left:200px;">
+<div class="products-list" id="products-list" style="position:absolute;top:1050px;left:200px;">
   <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
     <input id="input" type="text" name="selected_productID" value="" style="display:none;">
         {% for i in range(products|length) %}
