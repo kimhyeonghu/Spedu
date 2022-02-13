@@ -1,126 +1,11 @@
 
-#package-ad-banner{
-  margin-top: 100px;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  padding-left: 20px;
-  padding-right: 20px;
-  text-align: center;
-
-}
-
-.btn-group button {
-  font-weight: 600;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  color: black;
-  background-color: white;
-  border: 2px solid black;
-  padding: 10px 24px; /* Some padding */
-  cursor: pointer; /* Pointer/hand icon */
-  float: left; /* Float the buttons side by side */
-  margin-left:30px;
-}
-
-/* Add a background color on hover */
-.btn-group button:hover {
-  background-color: black;
-  color: white;
-}
-
-/* Clear floats (clearfix hack) */
-.btn-group:after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.featured-products {
-  top: 1000px;
-  left:100px;
-  bottom:0;
-  padding-right: 150px;
-  position: fixed;
-}
-
-.featured-products::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.featured-products-box {
-  float: left;
-  width: 25%;
-  padding: 5px;
-}
-
-.featured-products-box img {
-  width:150%
-}
-
-.new-product-btn-div{
-  float: right;
-  display: inline-block;
-}
-.new-product-btn {
-  height: 40px;
-  width: 140px;
-
-  text-decoration: none;
-  display: block;
-  margin-top: 40px;
-  margin-right: 20px;
-  font-size: 17px;
-  text-align: center;
-  font-weight: 600;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  color: white;
-  background-color: #1E5D63;
-  border: 2px solid #1E5D63;
-
-}
-.new-product-btn:hover{
-  text-decoration: none;
-  background-color: white;
-  color: #1E5D63;
-}
-
-.view-course-btn {
-  height: 40px;
-  width: 140px;
-
-  text-decoration: none;
-  display: block;
-  margin-top: 40px;
-  margin-right: 20px;
-  font-size: 17px;
-  text-align: center;
-  font-weight: 600;
-  transition-duration: 0.4s;
-  cursor: pointer;
-  color: white;
-  background-color: #1E5D63;
-  border: 2px solid #1E5D63;
-
-}
-.view-course-btn:hover{
-  text-decoration: none;
-  background-color: transparent;
-  color: #1E5D63;
-}
-
-.view-course-btn a{
-  text-decoration: none;
-}
 
 .top-course-ul {
   width: 100%;
   height: 320px;
   display: block;
   position:relative;
-  overflow: auto;
+  overflow: hidden;
   white-space: nowrap;
 }
 
@@ -150,9 +35,10 @@
   display: inline-block;
   overflow-wrap: normal;
   position: relative;
+  cursor: pointer;
 }
 .course-short-detail-box:hover{
-  color: gray;
+  color: grey;
 }
 .course-short-detail-box ul {
   text-align:left;

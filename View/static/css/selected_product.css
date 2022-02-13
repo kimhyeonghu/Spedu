@@ -60,3 +60,113 @@
   padding-bottom: 20px;
   padding-right: 20px;
 }
+
+.popup {
+  position: absolute;
+  display: inline-block;
+
+}
+
+/* The actual popup (appears on top) */
+.popup .popuptext {
+  visibility: hidden;
+  width: 540px;
+  height: 260px;
+  background-color: white;
+  color: black;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: fixed;
+  display: block;
+  z-index: 1000;
+  box-shadow: 0 0 20px 10px rgba(0,0,0,0.3);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.popuptext ul{
+  text-align:left;
+  margin-left: 160px;
+  padding-top: 10px;
+  padding-right: 10px;
+  display:inline-block;
+  width: calc(100% - 260px);
+}
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s
+}
+.popup .hide {
+  visibility: hidden;
+}
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+.name {
+  font-weight: bold;
+}
+
+.price_div {
+  text-align: right;
+  display: inline-block;
+  margin-top: 30px;
+  padding-right: 20px;
+  width: 100px;
+  float: right;
+}
+.go-to-cart-btn {
+
+  height: auto;
+  width: 120px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: 10px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  color: white;
+  background-color: #1E5D63;
+  border: 2px solid #1E5D63;
+
+}
+.go-to-cart-btn:hover{
+  text-decoration: none;
+  background-color: white;
+  color: #1E5D63;
+}
+.cancel-btn {
+
+  height: auto;
+  width: 120px;
+  text-decoration: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: inline-block;
+  margin-top: 10px;
+  margin-right: 10px;
+  font-size: 17px;
+  text-align: center;
+  font-weight: 600;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  color: black;
+  background-color: white;
+  border: 2px solid black;
+
+}
+.cancel-btn:hover{
+  text-decoration: none;
+  background-color: black;
+  color: white;

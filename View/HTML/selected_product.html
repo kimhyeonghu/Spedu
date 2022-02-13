@@ -11,6 +11,41 @@
 {% endblock %}
 
 {% block body %}
+<div class="popup">
+  <div class="popuptext" id="myPopup">
+
+    <h3 style="text-align:center;padding-top:10px;font-family: 'STIXGeneral', serif;font-weight: bold; margin-left:10px;">Successfully added to cart!</h3>
+        <img class="course-image" src="{{selected_product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <ul>
+          <li class="name" id="name_{{selected_product.name}}" style="font-size: 15px;padding-right:10px;">{{selected_product.name}}</li>
+        </ul>
+        <div class="price_div">
+          <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(selected_product.price|float)}}</p>
+        </div>
+          <ul style="text-align:center;">
+            <li style="display:inline-block;">
+              <a onclick="close_popup()">
+                <div class="cancel-btn">
+                Close
+                </div>
+              </a>
+            </li>
+            <li style="display:inline-block;">
+              <a href="/Shopping Cart/">
+                <div class="go-to-cart-btn">
+                Go To Cart
+                </div>
+              </a>
+            </li>
+
+          </ul>
+  </div>
+</div>
+<div class="popup2">
+  <div class="popuptext2" id="myPopup2">
+  </div>
+</div>
+
 <div class="container">
   <div class="image" onload="load_image()">
     <img onload="" id="product_image" src="{{selected_product.image}}" style="width:550px;height:480px;" alt="">
@@ -36,6 +71,15 @@
   </div>
 </div>
 <script type="text/javascript">
+  function close_popup(){
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
+  }
+  function go_to_cart() {
+
+  }
+
+
   function add_to_cart() {
     db.collection("Users").where("username", "==", '{{current_username}}')
     .get()
@@ -51,7 +95,8 @@
               }
             )
             .then(() => {
-              alert("Successfully added to cart!");
+              var popup = document.getElementById("myPopup");
+              popup.classList.toggle("show");
             })
         });
 
