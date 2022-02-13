@@ -43,6 +43,13 @@
         <div class="form-group">
             {{ render_field(displayinfo.username, class="form-control") }}
         </div>
+        {% with messages = get_flashed_messages(category_filter=["DisplayInfo"]) %}
+          {% if messages %}
+            {% for message in messages %}
+              <p id="flash">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
         <input type="submit" name="displayInfo" value="Discard">
         <input type="submit" name="displayInfo" value="Update">
       </form>
@@ -75,6 +82,13 @@
         <div class="form-group">
             {{ render_field(accountinfo.phone, class="form-control") }}
         </div>
+        {% with messages = get_flashed_messages(category_filter=["AccountInfo"]) %}
+          {% if messages %}
+            {% for message in messages %}
+              <p id="flash">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
         <input type="submit" name="account" value="Discard">
         <input type="submit" name="account" value="Update">
       </form>
@@ -84,7 +98,6 @@
       <form class="" method="POST">
         <input type="submit" name="delete" value="Delete Account">
       </form>
-
     </div>
   </div>
 </body>

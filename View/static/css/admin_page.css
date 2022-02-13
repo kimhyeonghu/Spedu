@@ -1,23 +1,77 @@
-body {
+html, body {
+  height: 100%;
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
 }
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
+.menu {
+  height: 100%;
+  width: 225px;
+  margin-top: 50px;
+  float: left;
+  position: fixed;
+  background-color:#297F87;
+}
+.userBox {
+  margin-top: 50px;
+  text-align: center;
+  color: white;
+}
+.userBox p {
+  margin-bottom: 0;
+}
+#crown {
 
 }
-a {
+#menuAccountType {
+
+}
+#menuUsername {
+  font-family: open-sans, sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+}
+.sideBar {
+  margin-top: 20px;
+}
+.menu ul {
+  list-style-type: none;
+  padding: 0;
+}
+.option {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px 20px;
+}
+.menu a {
   text-decoration: none;
 }
-.horizontal{
+.option h4 {
+  display: inline;
+  color: white;
+  font-family: open-sans, sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+}
+#selected {
+  background-color: #1E5D63;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 5px 0px;
+}
+.signout {
+
+}
+#signout {
+  display: inline;
+  color: white;
+  font-family: open-sans, sans-serif;
+  font-weight: 400;
+  font-size: 22px;
+}
+.horizontal {
   display: inline-block;
 }
 .topnav {
   overflow: hidden;
   background-color: #ffffff;
-  height:50px;
+  height: 60px;
   position: fixed;
   width: 100%;
   box-shadow: 0 0 20px 0px rgba(0,0,0,0.1);
@@ -32,7 +86,6 @@ a {
   margin-left: 20px;
   font-size: 17px;
   font-weight:600;
-
 }
 .logo-div {
   width: 100%;
@@ -43,25 +96,5 @@ a {
   display: block;
 }
 #logo {
-  height: 50px;
-
-}
-.menu {
-  height: 100%;
-  width:200px;
-  margin-top: 50px;
-  float: left;
-  position: fixed;
-  background-color:#297F87;
-}
-.option {
-  font-weight:700;
-  height: 55px;
-  padding-top: 1px;
-
-}
-.option h4 {
-  padding-left: 20px;
-  color: white;
-
+  height: 60px;
 }

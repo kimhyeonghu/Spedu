@@ -612,6 +612,7 @@ def view_selected_product():
 
 
 @app.route('/admin_page/products/about_product/', methods=['POST'])
+@login_required
 def update_delete_product():
     current_productID = request.form['current_product']
     action_input_value = request.form['action_input_product']
@@ -828,26 +829,37 @@ def Checkout():
 
 
 @app.route('/admin_page/')
+@login_required
 def admin_page():
     return render_template('admin_page.html')
 
 
+@app.route('/admin_page/users')
+@login_required
+def admin_page_users():
+    return render_template('adminPageUsers.html')
+
+
 @app.route('/admin_page/courses/')
+@login_required
 def admin_page_courses():
     return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
 
 
 @app.route('/admin_page/products/')
+@login_required
 def admin_page_products():
     return render_template('admin_page_products.html', products=load_products())
 
 
 @app.route('/admin_page/courses/new_course')
+@login_required
 def new_course():
     return render_template('new_course.html')
 
 
 @app.route('/admin_page/courses/about_course/', methods=['GET'])
+@login_required
 def view_admin_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
@@ -856,6 +868,7 @@ def view_admin_selected_course():
 
 
 @app.route('/admin_page/products/about_product/', methods=['GET'])
+@login_required
 def view_admin_selected_product():
     selected_productID = request.args.get("selected_productID")
     print(selected_productID)
@@ -864,6 +877,7 @@ def view_admin_selected_product():
 
 
 @app.route('/admin_page/courses/', methods=['POST'])
+@login_required
 def create_new_course():
     course_name = request.form['course_name']
     courseID = request.form['courseID_input']
@@ -880,11 +894,11 @@ def create_new_course():
     user1 = auth.current_user
 
     course_img_link=request.form["course_image_input"]
-    #course_img_link = storage.child('/courses/image_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
+    # course_img_link = storage.child('/courses/image_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
 
-    #storage.child('/courses/video_of_{}'.format(courseID)).put(video)
+    # storage.child('/courses/video_of_{}'.format(courseID)).put(video)
     video_link =request.form["course_video_input"]
-    #video_link = storage.child('/courses/video_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
+    # video_link = storage.child('/courses/video_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
 
     course_rating = 0
     course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
@@ -895,6 +909,7 @@ def create_new_course():
 
 
 @app.route('/admin_page/courses/about_course/', methods=['POST'])
+@login_required
 def update_delete_course():
     current_courseID = request.form['current_course']
     action_input_value = request.form['action_input']
@@ -906,6 +921,7 @@ def update_delete_course():
 
 
 @app.route('/admin_page/courses/about_course/update/<current_courseID>')
+@login_required
 def update_page(current_courseID):
     current_course = db.collection('Courses').where("courseID", "==", current_courseID).get()[0].to_dict()
     print(current_course)
@@ -913,6 +929,7 @@ def update_page(current_courseID):
 
 
 @app.route('/admin_page/courses/about_course/update/', methods=['POST'])
+@login_required
 def update_course():
     course_name = ""
     courseID = request.form['courseID']
@@ -939,7 +956,10 @@ def update_course():
     course = Course(courseID, course_desc, course_short_desc, course_duration,course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link,tag)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
+
+
 @app.route('/admin_page/all_orders')
+@login_required
 def all_orders():
     docs = db.collection('Users').get()
     all_courses_bought = []
@@ -1005,18 +1025,22 @@ def all_orders():
     print(all_courses_admin)
     return render_template('all_orders.html', all_courses = all_courses_admin, all_products = all_products_admin, courses_cart = courses, products_cart=products, current_username=current_user.get_username())
 
+
 @app.route('/admin_page/products/new_product')
+@login_required
 def new_product():
     return render_template('new_product.html')
 
 
 @app.route('/admin_page/Promo code/')
+@login_required
 def admin_page_promo_codes():
     promo_code_dict = db.collection('Promo codes').get()
     return render_template('Promo code.html', promo_code_dict=promo_code_dict)
 
 
 @app.route('/admin_page/promo_code_form/', methods=["POST","GET"])
+@login_required
 def promo_code_form():
     promo_code_info = promo_code_information(request.form)
     if request.method == 'POST':
@@ -1041,6 +1065,7 @@ def promo_code_form():
 
 
 @app.route('/order_history/', methods=["POST","GET"])
+@login_required
 def order_history():
     all_items_bought = []
     user = db.collection("Users").document(str(current_user.get_id())).get().to_dict()
@@ -1113,6 +1138,7 @@ def order_history():
 @app.route('/teach_on_spedu/')
 def teach_on_spedu():
     return render_template('teach_on_spedu.html')
+
 
 @app.route('/mylearning')
 def load_my_courses():
@@ -1242,6 +1268,7 @@ def checkout_instant():
         print("done")
         return redirect(url_for('homepage'))
     return render_template('Checkout_instant.html', instant_buys=buy_now, form=personal_details, courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products, current_username=current_user.get_username())
+
 
 def filter_courses(courses, rating_value, price_value, level_value):
     filtered_list=[]

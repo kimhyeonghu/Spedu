@@ -1,0 +1,33 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+.basicnav {
+    background-color: rgb(255, 255, 255);
+    height: 60px;
+    position: absolute;
+    width: 100%;
+    box-shadow: 0 0 20px 0px rgba(0,0,0,0.1);
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+}
+.backtohome {
+    display: inline-block;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-left: 10px;
+}
+.basicnav span {
+  font-family: open-sans, sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  vertical-align: -2.5px;
+  color: black;
+}
+.basicnav img {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%)
+}
