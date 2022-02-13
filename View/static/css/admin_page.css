@@ -4,11 +4,14 @@ html, body {
 }
 .menu {
   height: 100%;
-  width: 225px;
+  width: 200px;
   margin-top: 50px;
   float: left;
   position: fixed;
   background-color:#297F87;
+}
+ul {
+  list-style-type: none;
 }
 .userBox {
   margin-top: 50px;
