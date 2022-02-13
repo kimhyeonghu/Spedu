@@ -3,9 +3,9 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from flask_bcrypt import Bcrypt
 from django_jinja import library
 import pyrebase
-import shelve
+# import shelve
 import firebase_admin
-from firebase_admin import credentials, firestore
+from firebase_admin import credentials, firestore, auth
 from firebase_admin import storage as storage_firbase_admin
 import random
 import sys
@@ -146,6 +146,7 @@ def load_top_courses(courses):
 
     return top_course_list
 
+
 def get_courses_from_search(search_value):
     search_value = search_value.lower()
     courses = course_CRUD(course="search", method='load')
@@ -265,7 +266,6 @@ def create_new_product():
 
 @app.route('/search/', methods=['GET'])
 def search_result():
-
     sort_attr = ''
     rating_value=None
     price_value=None
@@ -500,7 +500,6 @@ def account():
     user = db.collection("Users").document(current_user.get_id()).get().to_dict()
     display_info = DisplayInfo(request.form)
     account_info = AccountInfo(request.form)
-    print(request.method == "GET")
     if request.method == "GET":
         try:
             display_info.username.data = user["username"]
@@ -514,24 +513,39 @@ def account():
         except:
             # user info does not exist
             pass
+    print(request.method == "POST")
     if request.method == "POST":
-        if display_info.validate():
+        if request.form["form_checker"] == "form1":
             if request.form["displayInfo"] == "Discard":
                 display_info.username.data = user["username"]
                 return redirect(url_for("account"))
             elif request.form["displayInfo"] == "Update":
-                db.collection("Users").document(current_user.get_id()).update({"username": display_info.username.data})
-                flash("Display Informaion updated!", "DisplayInfo")
+                if display_info.validate():
+                    db.collection("Users").document(current_user.get_id()).update({"username": display_info.username.data})
+                    flash("Display Informaiton updated!", "DisplayInfo")
+                    return redirect(url_for("account"))
+        if request.form["form_checker"] == "form2":
+            if request.form["accountInfo"] == "Discard":
+                account_info.first_name.data = user["user_info"]["first_name"]
+                account_info.last_name.data = user["user_info"]["last_name"]
+                account_info.address.data = user["user_info"]["address"]
+                account_info.unit_no.data = user["user_info"]["unit_no"]
+                account_info.postal.data = user["user_info"]["postal"]
+                account_info.country.data = user["user_info"]["country"]
+                account_info.phone.data = user["user_info"]["phone"]
                 return redirect(url_for("account"))
-        if account_info.validate():
-            user_info = {"first_name": account_info.first_name.data, "last_name": account_info.last_name.data, "address": account_info.address.data, "unit_no": account_info.unit_no.data, "postal": account_info.postal.data, "country": account_info.country.data, "phone": account_info.phone.data}
-            db.collection("Users").document(current_user.get_id()).update({"user_info": user_info})
-            flash("Account information updated!", "AccountInfo")
-            return redirect(url_for("account"))
-    if request.method == "POST" and request.form["delete"] == "Delete Account":
-        db.collection("Users").document(current_user.get_id()).delete()
-        logout_user()
-        redirect(url_for("homepage"))
+            if request.form["accountInfo"] == "Update":
+                if account_info.validate():
+                    user_info = {"first_name": account_info.first_name.data, "last_name": account_info.last_name.data, "address": account_info.address.data, "unit_no": account_info.unit_no.data, "postal": account_info.postal.data, "country": account_info.country.data, "phone": account_info.phone.data}
+                    db.collection("Users").document(current_user.get_id()).update({"user_info": user_info})
+                    flash("Account information updated!", "AccountInfo")
+                    return redirect(url_for("account"))
+        if request.form["form_checker"] == "form3":
+            if request.form["delete"] == "Delete Account":
+                db.collection("Users").document(current_user.get_id()).delete()
+                # auth.delete_user(current_user.get_email())
+                logout_user()
+                return redirect(url_for("homepage"))
     return render_template("account.html", user=user, displayinfo=display_info, accountinfo=account_info)
 
 
@@ -550,22 +564,30 @@ def security():
         change_security_qns_form.qns3.data = user["security_qns"]["qns3"]
         change_security_qns_form.ans3.data = "********"
     if request.method == "POST":
-        if change_password_form.validate():
-            if bcrypt.check_password_hash(db.collection("Users").document(str(current_user.get_id())).get().to_dict()["password"], change_password_form.old_password.data):
-                hashed_password = bcrypt.generate_password_hash(change_password_form.new_password.data).decode('utf-8')
-                db.collection("Users").document(current_user.get_id()).update({"password": hashed_password})
-                flash("Password changed successfully!", "ChangePassword")
+        if request.form["form_checker"] == "form1":
+            if request.form["displayInfo"] == "Discard":
                 return redirect(url_for("security"))
-            else:
-                flash("Old password is incorrect!", "ChangePassword")
+            elif request.form["displayInfo"] == "Update":
+                if change_password_form.validate():
+                    if bcrypt.check_password_hash(db.collection("Users").document(str(current_user.get_id())).get().to_dict()["password"], change_password_form.old_password.data):
+                        hashed_password = bcrypt.generate_password_hash(change_password_form.new_password.data).decode('utf-8')
+                        db.collection("Users").document(current_user.get_id()).update({"password": hashed_password})
+                        flash("Password changed successfully!", "ChangePassword")
+                        return redirect(url_for("security"))
+                    else:
+                        flash("Old password is incorrect!", "ChangePassword")
+                        return redirect(url_for("security"))
+        if request.form["form_checker"] == "form1":
+            if request.form["displayInfo"] == "Discard":
                 return redirect(url_for("security"))
-        if change_security_qns_form.validate():
-            hashed_ans1 = bcrypt.generate_password_hash(change_security_qns_form.ans1.data).decode('utf-8')
-            hashed_ans2 = bcrypt.generate_password_hash(change_security_qns_form.ans2.data).decode('utf-8')
-            hashed_ans3 = bcrypt.generate_password_hash(change_security_qns_form.ans3.data).decode('utf-8')
-            db.collection("Users").document(current_user.get_id()).update({"security_qns": {"qns1": schange_security_qns_form.qns1.data, "ans1": hashed_ans1, "qns2": change_security_qns_form.qns2.data, "ans2": hashed_ans2, "qns3": change_security_qns_form.qns3.data, "ans3": hashed_ans3}})
-            flash("Security Questions changed successfully!", "ChangeSecurityQuestions")
-            return redirect(url_for("security"))
+            elif request.form["displayInfo"] == "Update":
+                if change_security_qns_form.validate():
+                    hashed_ans1 = bcrypt.generate_password_hash(change_security_qns_form.ans1.data).decode('utf-8')
+                    hashed_ans2 = bcrypt.generate_password_hash(change_security_qns_form.ans2.data).decode('utf-8')
+                    hashed_ans3 = bcrypt.generate_password_hash(change_security_qns_form.ans3.data).decode('utf-8')
+                    db.collection("Users").document(current_user.get_id()).update({"security_qns": {"qns1": schange_security_qns_form.qns1.data, "ans1": hashed_ans1, "qns2": change_security_qns_form.qns2.data, "ans2": hashed_ans2, "qns3": change_security_qns_form.qns3.data, "ans3": hashed_ans3}})
+                    flash("Security Questions changed successfully!", "ChangeSecurityQuestions")
+                    return redirect(url_for("security"))
     return render_template("security.html", user=user, change_password=change_password_form, change_security_questions=change_security_qns_form, qns=qns)
 
 
@@ -830,6 +852,30 @@ def Checkout():
     return render_template('Checkout.html', form=personal_details, courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products, current_username=current_user.get_username(), promo_code=promo_code)
 
 
+@app.route('/trainer_page/')
+@login_required
+def trainer_page():
+    return render_template('trainer_page_dashboard.html')
+
+
+@app.route('/trainer_page/courses/')
+@login_required
+def trainer_page_courses():
+    return render_template('trainer_page_courses.html')
+
+
+@app.route('/trainer_page/products/')
+@login_required
+def trainer_page_products():
+    return render_template('trainer_page_products.html')
+
+
+@app.route('/trainer_page/orders/')
+@login_required
+def trainer_page_orders():
+    return render_template('trainer_page_orders.html')
+
+
 @app.route('/admin_page/')
 @login_required
 def admin_page():
@@ -843,10 +889,16 @@ def admin_page_users():
     return render_template('adminPageUsers.html', users=users)
 
 
-@app.route('/admin_page/users/<id>')
+@app.route('/admin_page/users/<id>', methods=['GET', 'POST'])
 @login_required
 def update_user(id):
-    return render_template('updateUser.html')
+    user = db.collection('Users').document(id).get().to_dict()
+    if request.method == "POST" and request.form["updateUser"] == "Discard":
+        return redirect(url_for('admin_page_users'))
+    elif request.method == "POST" and request.form["updateUser"] == "Update":
+        db.collection('Users').document(id).update({"account_type": request.form["account_type"]})
+        return redirect(url_for('admin_page_users'))
+    return render_template('updateUser.html', user=user)
 
 
 @app.route("/admin_page/users/delete/<id>")
@@ -854,6 +906,7 @@ def update_user(id):
 def delete_user(id):
     db.collection('Users').document(str(id)).delete()
     return redirect(url_for('admin_page_users'))
+
 
 @app.route('/admin_page/courses/')
 @login_required
@@ -908,7 +961,7 @@ def create_new_course():
     tag = request.form['tag'].split(",")
     user1 = auth.current_user
 
-    course_img_link=request.form["course_image_input"]
+    course_img_link = request.form["course_image_input"]
     # course_img_link = storage.child('/courses/image_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
 
     # storage.child('/courses/video_of_{}'.format(courseID)).put(video)
