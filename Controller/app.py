@@ -839,10 +839,21 @@ def admin_page():
 @app.route('/admin_page/users')
 @login_required
 def admin_page_users():
-
     users = db.collection('Users').get()
     return render_template('adminPageUsers.html', users=users)
 
+
+@app.route('/admin_page/users/<id>')
+@login_required
+def update_user(id):
+    return render_template('updateUser.html')
+
+
+@app.route("/admin_page/users/delete/<id>")
+@login_required
+def delete_user(id):
+    db.collection('Users').document(str(id)).delete()
+    return redirect(url_for('admin_page_users'))
 
 @app.route('/admin_page/courses/')
 @login_required
