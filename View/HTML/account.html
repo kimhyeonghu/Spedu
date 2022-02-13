@@ -27,11 +27,10 @@
         </div>
         <p></p>
         <div class="sideBar col-12">
-          <a href="#">My Account</a><br>
+          <a href="{{ url_for("account") }}">My Account</a><br>
           <a href="{{ url_for("security") }}">Account Security</a><br>
-          <a href="/order_history/">Order History</a><br>
+          <a href="{{ url_for("order_history") }}">Order History</a><br>
         </div>
-
       </div>
     </div>
     <div class="col-8 userInfo">
@@ -56,7 +55,25 @@
       <p>Your Login email can't be changed</p>
       <form class="" method="POST">
         <div class="form-group">
-            {{ render_field(displayinfo.username, class="form-control") }}
+            {{ render_field(accountinfo.first_name, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.last_name, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.address, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.unit_no, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.postal, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.country, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.phone, class="form-control") }}
         </div>
         <input type="submit" name="account" value="Discard">
         <input type="submit" name="account" value="Update">

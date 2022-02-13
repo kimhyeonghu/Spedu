@@ -410,6 +410,7 @@ def signup3():
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
     if current_user.is_authenticated:
+        next_page = request.args.get('next')
         return redirect(next_page) if next_page else redirect(url_for("homepage"))
     sign_in_form = SignInForm(request.form)
     if request.method == "POST" and sign_in_form.validate():
@@ -498,36 +499,74 @@ def reset3():
 def account():
     user = db.collection("Users").document(current_user.get_id()).get().to_dict()
     display_info = DisplayInfo(request.form)
+    account_info = AccountInfo(request.form)
     print(request.method == "GET")
     if request.method == "GET":
-        display_info.username.data = user["username"]
-    if request.method == "POST" and display_info.validate():
-        if request.form["displayInfo"] == "Discard":
+        try:
             display_info.username.data = user["username"]
-            return redirect(url_for("account"))
-        elif request.form["displayInfo"] == "Update":
-            db.collection("Users").document(current_user.get_id()).update({"username": display_info.username.data})
+            account_info.first_name.data = user["user_info"]["first_name"]
+            account_info.last_name.data = user["user_info"]["last_name"]
+            account_info.address.data = user["user_info"]["address"]
+            account_info.unit_no.data = user["user_info"]["unit_no"]
+            account_info.postal.data = user["user_info"]["postal"]
+            account_info.country.data = user["user_info"]["country"]
+            account_info.phone.data = user["user_info"]["phone"]
+        except:
+            # user info does not exist
+            pass
+    if request.method == "POST":
+        if display_info.validate():
+            if request.form["displayInfo"] == "Discard":
+                display_info.username.data = user["username"]
+                return redirect(url_for("account"))
+            elif request.form["displayInfo"] == "Update":
+                db.collection("Users").document(current_user.get_id()).update({"username": display_info.username.data})
+                flash("Display Informaion updated!", "DisplayInfo")
+                return redirect(url_for("account"))
+        if account_info.validate():
+            user_info = {"first_name": account_info.first_name.data, "last_name": account_info.last_name.data, "address": account_info.address.data, "unit_no": account_info.unit_no.data, "postal": account_info.postal.data, "country": account_info.country.data, "phone": account_info.phone.data}
+            db.collection("Users").document(current_user.get_id()).update({"user_info": user_info})
+            flash("Account information updated!", "AccountInfo")
             return redirect(url_for("account"))
     if request.method == "POST" and request.form["delete"] == "Delete Account":
         db.collection("Users").document(current_user.get_id()).delete()
         logout_user()
         redirect(url_for("homepage"))
-    return render_template("account.html", user=user, displayinfo=display_info)
+    return render_template("account.html", user=user, displayinfo=display_info, accountinfo=account_info)
 
 
 @app.route("/account/security", methods=['GET', 'POST'])
+@login_required
 def security():
+    user = db.collection("Users").document(current_user.get_id()).get().to_dict()
+    qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
     change_password_form = ChangePassword(request.form)
-    if request.method == "POST" and change_password_form.validate():
-        if bcrypt.check_password_hash(db.collection("Users").document(str(current_user.get_id())).get().to_dict()["password"], sign_in_form.password.data):
-            hashed_password = bcrypt.generate_password_hash(change_password_form.new_password.data).decode('utf-8')
-            db.collection("Users").document(current_user.get_id()).update({"password": hashed_password})
-            flash("Password changed successfully!", "ChangePassword")
-            return redirect(url_for("account"))
-        else:
-            flash("Old password is incorrect!", "ChangePassword")
+    change_security_qns_form = ChangeSecurityQuestions(request.form)
+    if request.method == "GET":
+        change_security_qns_form.qns1.data = user["security_qns"]["qns1"]
+        change_security_qns_form.ans1.data = "********"
+        change_security_qns_form.qns2.data = user["security_qns"]["qns2"]
+        change_security_qns_form.ans2.data = "********"
+        change_security_qns_form.qns3.data = user["security_qns"]["qns3"]
+        change_security_qns_form.ans3.data = "********"
+    if request.method == "POST":
+        if change_password_form.validate():
+            if bcrypt.check_password_hash(db.collection("Users").document(str(current_user.get_id())).get().to_dict()["password"], change_password_form.old_password.data):
+                hashed_password = bcrypt.generate_password_hash(change_password_form.new_password.data).decode('utf-8')
+                db.collection("Users").document(current_user.get_id()).update({"password": hashed_password})
+                flash("Password changed successfully!", "ChangePassword")
+                return redirect(url_for("security"))
+            else:
+                flash("Old password is incorrect!", "ChangePassword")
+                return redirect(url_for("security"))
+        if change_security_qns_form.validate():
+            hashed_ans1 = bcrypt.generate_password_hash(change_security_qns_form.ans1.data).decode('utf-8')
+            hashed_ans2 = bcrypt.generate_password_hash(change_security_qns_form.ans2.data).decode('utf-8')
+            hashed_ans3 = bcrypt.generate_password_hash(change_security_qns_form.ans3.data).decode('utf-8')
+            db.collection("Users").document(current_user.get_id()).update({"security_qns": {"qns1": schange_security_qns_form.qns1.data, "ans1": hashed_ans1, "qns2": change_security_qns_form.qns2.data, "ans2": hashed_ans2, "qns3": change_security_qns_form.qns3.data, "ans3": hashed_ans3}})
+            flash("Security Questions changed successfully!", "ChangeSecurityQuestions")
             return redirect(url_for("security"))
-    return render_template("security.html", change_password=change_password_form)
+    return render_template("security.html", user=user, change_password=change_password_form, change_security_questions=change_security_qns_form, qns=qns)
 
 
 @app.route('/sports_courses/', methods=['GET'])

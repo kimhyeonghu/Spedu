@@ -89,6 +89,9 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
   font-style: normal;
   font-size: 20px;
 }
+.text-danger {
+  text-align: center;
+}
 #flash {
   position: absolute;
   bottom: 65px;

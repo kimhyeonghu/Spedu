@@ -84,8 +84,11 @@ input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
 }
 .svg-container{
   position: absolute;
-  bottom: 0px;
+  top: 33px;
   right: 10px;
+}
+.text-danger {
+  text-align: center;
 }
 input[type=submit] {
   background-color: #2E384D;
