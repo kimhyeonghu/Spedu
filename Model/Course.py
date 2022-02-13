@@ -16,6 +16,7 @@ class Course:
         self.video_link = video_link
         self.tag = tag
         
+
 class Course_For_Search(Course):
     def __init__(self, courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer, video_link,tag, search_points):
         Course.__init__(self, courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer, video_link,tag)
