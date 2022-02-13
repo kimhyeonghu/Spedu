@@ -1,9 +1,9 @@
 @font-face {
-  font-family: Avenir Next;
+  font-family: Avenir;
   src: url('../assets/AvenirLTStd-Book.otf');
 }
 body {
-  font-family: Avenir Next, sans-serif;
+  font-family: Avenir, sans-serif;
 }
 .background {
   position: relative;
@@ -40,7 +40,7 @@ body {
 h1 {
   font-weight: 400;
   text-align: left;
-  font-size: 50px;
+  font-size: 46px;
   padding-top: 25px;
   padding-bottom: 25px;
 }
@@ -55,6 +55,7 @@ h1 {
 h3 {
   font-family: Avenir, sans-serif;
   font-size: 25px;
+  color: #2E384D;
 }
 label, input {
   max-width: 650px;
@@ -70,12 +71,16 @@ label {
 .svg-container{
   position: absolute;
   bottom: 0px;
-  right: 20px;
+  right: 10px;
 }
 input[type=text], input[type=email], input[type=password]{
   height: 50px;
   font-size: 20px;
   font-family: open-sans, sans-serif;
+  font-weight: 400;
+}
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
+  color: #2E384D;
 }
 ::placeholder {
   color: #8C98A9;
@@ -83,14 +88,6 @@ input[type=text], input[type=email], input[type=password]{
   font-weight: 300;
   font-style: normal;
   font-size: 20px;
-}
-.pass-group {
-  position: relative;
-}
-.svg-container{
-  position: absolute;
-  bottom: 0px;
-  right: 20px;
 }
 #flash {
   position: absolute;

@@ -1,5 +1,9 @@
+@font-face {
+  font-family: Avenir;
+  src: url('../assets/AvenirLTStd-Book.otf');
+}
 body {
-  font-family: "AvenirNextLTPro", sans-serif;
+  font-family: Avenir, sans-serif;
 }
 .background {
   position: relative;
@@ -34,7 +38,7 @@ body {
 }
 h1 {
   text-align: left;
-  font-size: 50px;
+  font-size: 46px;
   padding-top: 25px;
   padding-bottom: 25px;
 }
@@ -47,8 +51,9 @@ h1 {
   width: 100%;
 }
 h3 {
-  font-family: "AvenirNextLTPro-Regular", sans-serif;
+  font-family: Avenir, sans-serif;
   font-size: 25px;
+  color: #2E384D;
 }
 label, input {
   max-width: 650px;
@@ -60,24 +65,30 @@ label {
 }
 form {
   margin-top: 15px;
+  position: relative;
 }
 input[type=text], input[type=email], input[type=password]{
   height: 50px;
   font-size: 20px;
-  font-family: "Open Sans", sans-serif;
+  font-family: open-sans, sans-serif;
+  font-weight: 400;
+}
+input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
+  color: #2E384D;
 }
 ::placeholder {
   color: #8C98A9;
   font-size: 20px;
-  font-family: "Open Sans Light", sans-serif;
+  font-family: open-sans, sans-serif;
+  font-weight: 300;
 }
-.pass-group {
-  position: relative;
-}
-.svg-container{
+#flash {
   position: absolute;
-  bottom: 0px;
-  right: 20px;
+  color: red;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 input[type=submit] {
   background-color: #2E384D;

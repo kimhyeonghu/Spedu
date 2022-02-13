@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
-  <meta charset="UTF-8">
-  {% block head %}{% endblock %}
-</head>
-<body>
+{% if current_user.is_authenticated %}
   <div class="topnav">
     <div class="logo-search">
       <ul>
@@ -70,35 +59,45 @@
       </ul>
     </div>
   </div>
-
-{% block body %}{% endblock %}
-<footer class="footer-bar">
-<div id="footer_details">
-    <div id="word">
-    <table id="part1">
-        <tr><td id="header">Train the world online</td></tr>
-        <tr><td id="desc">Create an online video courses on sports of your expertise, reach students across the globe, and earn money</td><td id="click"><a href="/teach_on_spedu/"><button id="button">Teach on Spedu</button></a></td></tr>
-    </table>
+{% else %}
+  <div class="topnav">
+    <div class="logo-search">
+      <ul>
+        <li class="horizontal">
+            <a href="/"><img id="logo" src="../../static/images/spedu_logo.png" alt="Spedu"></a>
+        </li>
+        <li class="horizontal">
+          <form class="search_bar" action='/search/' id="search" method="get">
+            <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
+              <input type="text" id="search_input" name="search_input" placeholder="Search for anything">
+              <button id="search_btn" onclick="submit()" style="display:none;"></button>
+              <script>
+                var search_input = document.getElementById("search_input");
+                search_input.addEventListener("keyup", function(event) {
+                  if (event.keyCode == 13) {
+                    event.preventDefault();
+                    if (search_input.value.length > 0) {
+                      document.getElementById("search_btn").click();
+                    }
+                  }
+                });
+                function submit() {
+                  alert(search_input.value);
+                  var search_form = document.getElementById("search");
+                  search_form.submit();
+                };
+              </script>
+          </form>
+        </li>
+        <li class="horizontal option-list"><a class="option" href="/spedu_store/">Spedu Store</a></li>
+        <li class="horizontal option-list"><a class="option" href="/sports_courses/">Sports Courses</a></li>
+      </ul>
     </div>
-    <hr id="line">
-    <div id="links">
-    <table id="part2">
-        <tr><td>Sports Courses</td><td>Teach on Spedu</td></tr>
-        <tr><td>Spedu Store</td><td>Promotions</td></tr>
-        <tr><td>About Us</td></tr>
-    </table>
+    <div class="login-signup mypage">
+      <ul>
+        <li class="horizontal"><a href="/signin"><button id="login-button">Log In</button></a></li>
+        <li class="horizontal"><a href="/signup"><button id="signup-button">Sign Up</button></a></li>
+      </ul>
     </div>
-    <div id="part3">
-        <img src = "../../static/images/Mask Group 5.png">
-    <p>Copyright © 2019-2022 Spedu. All Rights Reserved.</p>
-    </div>
-</div>
-</footer>
-</body>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
-<script src="{{ url_for('static', filename='Javascript/firestore.js') }}" charset="utf-8"></script>
-</html>
+  </div>
+{% endif %}

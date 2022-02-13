@@ -1,11 +1,9 @@
-
 body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
-
 }
 .topnav {
-  overflow: hidden;
+  /* overflow: hidden; */
   background-color: #ffffff;
   height:60px;
   position: fixed;
@@ -13,16 +11,12 @@ body {
   top: 0px;
   width: 100%;
   box-shadow: 0 0 20px 0px rgba(0,0,0,0.1);
-
 }
-
 ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-
 }
-
 .logo-search {
   display: inline-block;
   text-align: center;
@@ -35,14 +29,12 @@ ul {
   text-align: center;
   margin-left: 5px;
   margin-right: 5px;
-
 }
 .mypage li {
   display: inline-block;
   text-align: center;
   margin-left: 10px;
   margin-right: 10px;
-
 }
 .login-signup li{
   display: inline-block;
@@ -55,8 +47,6 @@ ul {
   text-align: center;
   margin-right: 15px;
   margin-top: 8px;
-
-
 }
 .mypage a:hover {
   text-decoration: none;
@@ -70,13 +60,10 @@ ul {
   background-color: white;
   border: 1px solid #919191;
 }
-
 .topnav .option:hover {
   color: rgb(34, 187, 187);
   text-decoration: none;
-
 }
-
 .topnav .option {
   color: black;
   font-weight:normal;
@@ -91,14 +78,11 @@ ul {
 .topnav input:focus {
   outline:none;
 }
-
 @media screen and (max-width: 600px) {
 
 }
-
 #logo {
   height: 50px
-
 }
 #magnifying_glass {
   height: 15px;
@@ -118,7 +102,7 @@ ul {
   background-color: white;
   border: 2px solid black;
 }
-#login-button{
+#login-button {
   text-align: center;
   text-decoration: none;
   display: block;
@@ -133,7 +117,7 @@ ul {
   background-color: white;
   border: 2px solid black;
 }
-#signup-button{
+#signup-button {
   text-align: center;
   text-decoration: none;
   display: block;
@@ -149,17 +133,17 @@ ul {
   border: 2px solid rgb(31, 31, 31);
   color:white;
 }
-#mylearning-button:hover{
+#mylearning-button:hover {
   text-decoration: none;
   background-color: #000000;
   color: white;
 }
-#login-button:hover{
+#login-button:hover {
   text-decoration: none;
   background-color: #f1f1f1;
   color: black;
 }
-#signup-button:hover{
+#signup-button:hover {
   text-decoration: none;
   background-color: black;
   color: white;
@@ -173,7 +157,18 @@ ul {
 #user-icon {
   height: 30px;
 }
-.horizontal{
+.dropdown-menu-navbar {
+  border-radius: 10px;
+  margin-top: 10px;
+  padding: 0;
+}
+.dropdown-item-navbar {
+  padding: 10px 10px;
+}
+#dropdown-hr {
+  margin: 0;
+}
+.horizontal {
   display: inline-block;
 }
 .footer-bar {
@@ -187,19 +182,13 @@ ul {
   padding-top:10px;
   z-index: 3000;
 }
-
-
-
-#part1{
+#part1 {
 width: calc(100% - 20px);
 color:white;
 padding-left: 10px;
 margin-top:20px;
 }
-
-
-
-#button{
+#button {
 background-color: #081E21;
 color: white;
 border-color: white;
@@ -207,22 +196,19 @@ padding: 10px 24px;
 text-decoration: none;
 float:right;
 }
-
-#header{
+#header {
 font-size: 20px;
 font-weight: bold;
 }
-
-#desc{
+#desc {
 font-size: 12px;
 }
-
-#word{
+#word {
 padding-left: 50px;
 padding-right:20px;
 }
 
-#line{
+#line {
 border: 1px solid white;
 }
 

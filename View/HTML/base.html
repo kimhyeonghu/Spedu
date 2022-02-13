@@ -1,28 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
     {% block head %}{% endblock %}
-</head>
-<body>
-<div class="topnav">
-    <div class="logo-search">
+  </head>
+  <body>
+    <div class="topnav">
+      <div class="logo-search">
         <ul>
-            <li class="horizontal">
-                <a href="/"><img id="logo" src="../../static/images/spedu_logo.png" alt="Spedu"></a>
-            </li>
-            <li class="horizontal">
-                <form class="search_bar" action='/search/' id="search" method="get">
-                  <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
-
-                    <input type="text" id="search_input" name="search_input" placeholder="Search for anything">
-                    <button id="search_btn" onclick="submit()" style="display:none;"></button>
-
-
-
-                  <script>
+          <li class="horizontal">
+              <a href="/"><img id="logo" src="../../static/images/spedu_logo.png" alt="Spedu"></a>
+          </li>
+          <li class="horizontal">
+            <form class="search_bar" action='/search/' id="search" method="get">
+              <img id="magnifying_glass" src="../../static/images/magnifying-glass.png" alt="search">
+                <input type="text" id="search_input" name="search_input" placeholder="Search for anything">
+                <button id="search_btn" onclick="submit()" style="display:none;"></button>
+                <script>
                   var search_input = document.getElementById("search_input");
                   search_input.addEventListener("keyup", function(event) {
                     if (event.keyCode == 13) {
@@ -37,52 +32,48 @@
                     var search_form = document.getElementById("search");
                     search_form.submit();
                   };
-                  </script>
-                </form>
-            </li>
-            <li class="horizontal option-list"><a class="option" href="/spedu_store/">Spedu Store</a></li>
-            <li class="horizontal option-list"><a class="option" href="/sports_courses/">Sports Courses</a></li>
-
+                </script>
+            </form>
+          </li>
+          <li class="horizontal option-list"><a class="option" href="/spedu_store/">Spedu Store</a></li>
+          <li class="horizontal option-list"><a class="option" href="/sports_courses/">Sports Courses</a></li>
         </ul>
-    </div>
-    <div class="login-signup mypage">
+      </div>
+      <div class="login-signup mypage">
         <ul>
-            <li class="horizontal"><a href="/signin"><button id="login-button">Log In</button></a></li>
-            <li class="horizontal"><a href="/signup"><button id="signup-button">Sign Up</button></a></li>
+          <li class="horizontal"><a href="/signin"><button id="login-button">Log In</button></a></li>
+          <li class="horizontal"><a href="/signup"><button id="signup-button">Sign Up</button></a></li>
         </ul>
+      </div>
     </div>
-
-</div>
-
-{% block body %}{% endblock %}
-<footer class="footer-bar" >
-<div id="footer_details">
-    <div id="word">
-    <table id="part1">
-        <tr><td id="header">Train the world online</td></tr>
-        <tr><td id="desc">Create an online video courses on sports of your expertise, reach students across the globe, and earn money</td><td id="click"><a href="/teach_on_spedu/"><button id="button">Teach on Spedu</button></a></td></tr>
-    </table>
-    </div>
-    <hr id="line">
-    <div id="links">
-    <table id="part2">
-        <tr><td>Sports Courses</td><td>Teach on Spedu</td></tr>
-        <tr><td>Spedu Store</td><td>Promotions</td></tr>
-        <tr><td>About Us</td></tr>
-    </table>
-    </div>
-    <div id="part3">
-        <img src = "../../static/images/Mask Group 5.png">
-    <p>Copyright © 2019-2022 Spedu. All Rights Reserved.</p>
-    </div>
-</div>
-
-</footer>
-</body>
-<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
-<script src="{{ url_for('static', filename='Javascript/firestore.js') }}" charset="utf-8"></script>
+    {% block body %}{% endblock %}
+    <footer class="footer-bar" >
+      <div id="footer_details">
+        <div id="word">
+        <table id="part1">
+            <tr><td id="header">Train the world online</td></tr>
+            <tr><td id="desc">Create an online video courses on sports of your expertise, reach students across the globe, and earn money</td><td id="click"><a href="/teach_on_spedu/"><button id="button">Teach on Spedu</button></a></td></tr>
+        </table>
+        </div>
+        <hr id="line">
+        <div id="links">
+        <table id="part2">
+            <tr><td>Sports Courses</td><td>Teach on Spedu</td></tr>
+            <tr><td>Spedu Store</td><td>Promotions</td></tr>
+            <tr><td>About Us</td></tr>
+        </table>
+        </div>
+        <div id="part3">
+            <img src = "../../static/images/Mask Group 5.png">
+        <p>Copyright © 2019-2022 Spedu. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
+  <script src="{{ url_for('static', filename='Javascript/firestore.js') }}" charset="utf-8"></script>
 </html>
