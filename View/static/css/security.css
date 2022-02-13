@@ -1,0 +1,40 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+  display: flex;
+  align-items: center;
+}
+.accountLeft {
+  padding-right: 5%;
+}
+.userBox {
+  border-style: solid;
+  border-color: #37A9B4;
+  border-width: 1px;
+  max-width: 300px;
+  max-height: 300px;
+  margin-left: auto;
+  margin-right: 0;
+  text-align: center;
+  margin-bottom: 100px;
+}
+.sideBar {
+  border-style: solid;
+  border-color: #37A9B4;
+  border-width: 1px;
+  max-width: 300px;
+  max-height: 300px;
+  margin-left: auto;
+  margin-right: 0;
+
+}
+.userInfo {
+  margin-top: 250px;
+  margin-left: 0;
+  margin-right: auto;
+  max-width: 900px;
+}

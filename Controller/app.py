@@ -314,7 +314,7 @@ def load_update(productID):
         print(product_img_link)
         product_price = request.form['update_price']
         product_description = request.form['update_description']
-        product_tag = request.form['update_tag'].split(",")
+        product_tag = request.form['tag'].split(",")
         product_stock = int(request.form['update_stock'])
 
         for doc in docs:
@@ -451,7 +451,7 @@ def reset1():
                 reset_user_id = user[0].to_dict()["id"]
                 return redirect(url_for("reset2"))
             else:
-                flash("Email does not exist.")
+                flash("Account does not exist.")
                 return render_template('reset.html', form=reset_form1)
         else:
             flash("Account does not exist!")
@@ -461,22 +461,28 @@ def reset1():
 
 @app.route("/forget/2", methods=['GET', 'POST'])
 def reset2():
-    if reset_user_id:
+    try:
         user = db.collection("Users").document(str(reset_user_id)).get().to_dict()
         qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
         if request.method == "POST":
             if bcrypt.check_password_hash(user["security_qns"]["ans1"], request.form["ans1"]) and bcrypt.check_password_hash(user["security_qns"]["ans2"], request.form["ans2"]) and bcrypt.check_password_hash(user["security_qns"]["ans3"], request.form["ans3"]):
-                return redirect(url_for("reset3", id=user["id"]))
+                return redirect(url_for("reset3"))
             else:
                 flash("Incorrect answer(s)! Please try again.")
                 return render_template("reset2.html", qns=qns)
-    else:
+    except:
+        # reset_user_id does not exist
         return redirect(url_for("reset1"))
     return render_template("reset2.html", qns=qns)
 
 
 @app.route("/forget/3", methods=['GET', 'POST'])
 def reset3():
+    try:
+        id = reset_user_id
+    except:
+        # reset_user_id does not exist
+        return redirect(url_for("reset1"))
     reset_form3 = ForgetPassword3(request.form)
     if request.method == "POST" and reset_form3.validate():
         hashed_password = bcrypt.generate_password_hash(reset_form3.password.data).decode('utf-8')
@@ -509,6 +515,21 @@ def account():
     return render_template("account.html", user=user, displayinfo=display_info)
 
 
+@app.route("/account/security", methods=['GET', 'POST'])
+def security():
+    change_password_form = ChangePassword(request.form)
+    if request.method == "POST" and change_password_form.validate():
+        if bcrypt.check_password_hash(db.collection("Users").document(str(current_user.get_id())).get().to_dict()["password"], sign_in_form.password.data):
+            hashed_password = bcrypt.generate_password_hash(change_password_form.new_password.data).decode('utf-8')
+            db.collection("Users").document(current_user.get_id()).update({"password": hashed_password})
+            flash("Password changed successfully!", "ChangePassword")
+            return redirect(url_for("account"))
+        else:
+            flash("Old password is incorrect!", "ChangePassword")
+            return redirect(url_for("security"))
+    return render_template("security.html", change_password=change_password_form)
+
+
 @app.route('/sports_courses/', methods=['GET'])
 def sports_courses_sorted():
     sort_attr = ''
@@ -527,8 +548,7 @@ def sports_courses_sorted():
 
 @app.route('/sports_courses/about_course/', methods=['GET'])
 def view_selected_course():
-
-    if request.args.get("selected_courseID") == None:
+    if request.args.get("selected_courseID") is None:
         selected_courseID = request.args.get("selected_courseID")
     else:
         selected_courseID = request.args.get("selected_courseID")
@@ -802,7 +822,7 @@ def view_admin_selected_product():
     selected_productID = request.args.get("selected_productID")
     print(selected_productID)
     selected_product = db.collection('Products').where("productID", "==", selected_productID).get()[0].to_dict()
-    return render_template('admin_selected_products.html', selected_product=selected_product)
+    return render_template('admin_selected_products.html', selected_product=selected_product, selected_product_tag = json.dumps(selected_product['tag']))
 
 
 @app.route('/admin_page/courses/', methods=['POST'])
@@ -885,9 +905,6 @@ def update_course():
 @app.route('/admin_page/products/new_product')
 def new_product():
     return render_template('new_product.html')
-
-
-
 
 
 @app.route('/admin_page/Promo code/')
