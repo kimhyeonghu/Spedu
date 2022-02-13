@@ -35,7 +35,23 @@
               <img id="img_{{top_course.courseID}}" class="course-image" src="{{top_course.image}}" style="width:230px;height:130px;margin-top:10px;" alt="yoga_image" >
               <ul>
                 <li class="name" id="name_{{top_course.name}}" style="font-size: 15px;padding-right:10px;">{{top_course.name}}</li>
-                <li class="trainer" style="font-size: 11px;">{{top_course.trainer}}</li>
+                <script type="text/javascript">
+                  var trainerID = '{{top_course.trainer}}';
+                  db.collection("Users").where("id", "==", trainerID)
+                  .get()
+                  .then((querySnapshot) => {
+                      querySnapshot.forEach((doc) => {
+                          var trainer = doc.data().username;
+                          document.getElementById('trainer'+trainerID).innerHTML = trainer;
+                      });
+
+                  })
+                  .catch((error) => {
+                      alert(error);
+                  });
+                </script>
+                <li id="trainer_{{top_course.trainer}}" class="trainer" style="font-size: 11px;"></li>
+
                 <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(top_course.rating|float)}}</li>
                 <li style="font-size: 13px;">${{'%0.2f'| format(top_course.price|float)}}</li>
               </ul>
@@ -47,6 +63,7 @@
         </ul>
         <button class="slide_button" id="slideLeft" type="button" name="button"><img src="../../static/images/right-arrow.png" alt="" style="height:40px;width:auto;"></button>
       </div>
+
 </div>
 <script type="text/javascript">
   const buttonRight = document.getElementById('slideRight');
