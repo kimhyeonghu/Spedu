@@ -1,0 +1,39 @@
+.content {
+  position: fixed;
+  border-radius: 20px;
+  top: 90px;
+  left: 250px;
+  height: 87%;
+  width: 83%;
+  box-shadow: 0 0 20px 0px rgba(0,0,0,0.1);
+}
+.listHeader {
+  display: inline;
+}
+.searchHeader {
+  margin-bottom: 2px;
+  margin-right: 5px;
+}
+.searchBar {
+  position: relative;
+  border-style: solid;
+  border-radius: 20px;
+  border-width: 1px;
+  width: 330px;
+  height: 35px;
+}
+#magnifying {
+  position: absolute;
+  left: 5px;
+  top: 7px;
+}
+input[type="text"] {
+  position: absolute;
+  border: none;
+  width: 88%;
+  right: 11px;
+  top: 4px;
+}
+input[type="text"]:focus {
+  outline: none;
+}
