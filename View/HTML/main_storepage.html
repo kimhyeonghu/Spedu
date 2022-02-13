@@ -15,18 +15,16 @@
 
 {% block body %}
 <div class="course-panel">
-    <form action='/spedu_store/about_product/' id="selected_product_form" method="get">
-    <input id="input" type="text" name="selected_productID" value="" style="display:none;">
-      <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Sports Products</h2>
+      <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Sports Product</h2>
       <br>
-      <div class="top-course-div">
-        <h4 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Top Products</h4>
-        <ul class="top-course-ul">
-
+      <div class="top-course-div" id="top-course-div">
+        <h4 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Top Courses</h4>
+        <button class="slide_button" id="slideRight" type="button" name="button"><img src="../../static/images/left-arrow.png" alt="" style="height:40px;width:auto;"></button>
+        <ul class="top-course-ul" id="top-course-ul">
           {% for i in range(products|length) %}
           {% set product = products[i] %}
 
-          <li class="horizontal" style="margin-right: 20px;margin-top:10px;width:270px;">
+          <li class="horizontal" style="margin-right: 5px;margin-top:10px;width:270px;margin-left: 5px;">
             <a onclick="submit('{{product.productID}}')" class="course-a">
             <div class="course-short-detail-box">
 
@@ -44,20 +42,20 @@
         </ul>
         <button class="slide_button" id="slideLeft" type="button" name="button"><img src="../../static/images/right-arrow.png" alt="" style="height:40px;width:auto;"></button>
       </div>
-    </form>
 </div>
 <script type="text/javascript">
   const buttonRight = document.getElementById('slideRight');
    const buttonLeft = document.getElementById('slideLeft');
-   var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
-
-   if (width<$(document).width()) {
-     buttonRight.style.display = "none";
-     buttonLeft.style.display = "none";
-   } else {
-     buttonRight.style.display = "none";
-     buttonLeft.style.display = "block";
-   }
+   window.onresize = function(event) {
+     var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
+     if (width<$(document).width()) {
+       buttonRight.style.display = "none";
+       buttonLeft.style.display = "none";
+     } else {
+       buttonRight.style.display = "none";
+       buttonLeft.style.display = "block";
+     }
+    };
    buttonRight.style.display = "none";
    buttonRight.onclick = function () {
      document.getElementById('top-course-ul').scrollLeft -= ($(document).width()-250);
@@ -70,7 +68,6 @@
      buttonRight.style.display = "block";
    };
 </script>
-
 
   <script type="text/javascript">
           function submit(id) {
