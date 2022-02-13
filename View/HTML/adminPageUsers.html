@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://use.typekit.net/ktl0fuq.css">
     <link rel="stylesheet" href="../static/css/basicnavbaradmin.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_page.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_page_users.css') }}">
+
   </head>
   <body>
     <div class="menu">
@@ -96,7 +98,87 @@
     {% block navbar %}
       {% include 'includes/_basicnavbar.html' %}
     {% endblock %}
+    <div class="content">
+      <div class="userList">
+        <div class="listHeader d-flex">
+          <div class="mr-auto p-2">
+            <h2>User List</h2>
+          </div>
+          <div class="p-2">
+            <div class="d-flex justify-content-end">
+              <h2 class="searchHeader">Search For Users</h2>
+              <div class="searchBar">
+                <div class="container">
+                  <input type="text" name="" value="" placeholder="Username">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20.85" height="18.473" viewBox="0 0 20.85 18.473" id="magnifying">
+                    <path id="Icon_open-magnifying-glass" data-name="Icon open-magnifying-glass" d="M9.04-.022C4.055-.022,0,3.571,0,7.987S4.055,16,9.04,16a9.866,9.866,0,0,0,4.287-.938,2.458,2.458,0,0,0,.336.3l2.583,2.288a2.85,2.85,0,0,0,2.6.715,2.5,2.5,0,0,0,1.926-1.706,2.176,2.176,0,0,0-.808-2.3L17.382,12.06a2.549,2.549,0,0,0-.413-.3,7.218,7.218,0,0,0,1.136-3.8c0-4.417-4.055-8.009-9.04-8.009Zm0,2.288c3.59,0,6.457,2.54,6.457,5.721a5.391,5.391,0,0,1-1.7,3.936l-.077.069a2.458,2.458,0,0,0-.336.3,6.964,6.964,0,0,1-4.365,1.442c-3.59,0-6.457-2.54-6.457-5.721S5.424,2.289,9.014,2.289Z" transform="translate(0 0.045)"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="">
+          <table class="table">
+              <thead>
+                <tr>
+                  <th>User</th>
+                  <th>Account Type</th>
+                  <th>Join Date(DD/MM/YY)</th>
+                  <th>Account ID</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for user in users %}
+                  <tr>
+                    <td>{{ user.to_dict()["username"] }}</td>
+                    <td>{{ user.to_dict()["account_type"] }}</td>
+                    <td>{{ user.to_dict()["creation_date_time"]["date"] }}</td>
+                    <td>{{ user.to_dict()["id"] }}</td>
+                    <td><a href="admin_page/users/updateUser/{{ user.to_dict()["id"] }}" class="btn btn-warning">Update</a></td>
+                    <td>
+                       <form action="{{ url_for('delete_user', id=user.to_dict()["id"]) }}" method="POST">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal_{{ user.to_dict()["id"] }}">
+                        Delete
+                        </button>
 
+                        <!-- The Modal -->
+                        <div class="modal" id="myModal_{{ user.to_dict()["id"] }}">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+
+                              <!-- Modal Header -->
+                              <div class="modal-header">
+                                <h4 class="modal-title">Delete Confirmation</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                              </div>
+
+                              <!-- Modal body -->
+                              <div class="modal-body">
+                                Are you sure you want to delete {{ user.to_dict()["username"] }} ?
+                              </div>
+
+                              <!-- Modal footer -->
+                              <div class="modal-footer">
+                                <input type="submit" value="Delete" class="btn btn-danger">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+
+
+      </div>
+    </div>
 
   </body>
 </html>
