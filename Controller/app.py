@@ -656,6 +656,7 @@ def spedu_searchpage():
 @app.route('/Checkout/', methods=["POST","GET"])
 def Checkout():
     personal_details = PersonalInfo(request.form)
+    promo_code = db.collection('Promo codes').get()
     docs = db.collection('Users').where("username", "==", current_user.get_username()).get()
     for doc in docs:
         shopping_cart = doc.to_dict()['shopping_cart']
@@ -784,7 +785,7 @@ def Checkout():
                     db.collection('Products').document(productID_array[index]).update({"stock": stock})
                 count += 1
         return redirect(url_for('homepage'))
-    return render_template('Checkout.html', form=personal_details, courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products, current_username=current_user.get_username())
+    return render_template('Checkout.html', form=personal_details, courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products, current_username=current_user.get_username(), promo_code=promo_code)
 
 
 @app.route('/admin_page/')
@@ -899,7 +900,71 @@ def update_course():
     course = Course(courseID, course_desc, course_short_desc, course_duration,course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link,tag)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
-
+@app.route('/admin_page/all_orders')
+def all_orders():
+    docs = db.collection('Users').get()
+    all_courses_bought = []
+    for doc in docs:
+        all_courses_bought_individual = doc.to_dict()['Courses_Purchased']
+        all_courses_bought = all_courses_bought+all_courses_bought_individual
+    all_products_bought =[]
+    for doc in docs:
+        all_products_bought_individual = doc.to_dict()['Products_Purchased']
+        all_products_bought = all_products_bought + all_products_bought_individual
+    print(all_courses_bought)
+    print(all_products_bought)
+    all_items_bought_admin = all_courses_bought + all_products_bought
+    print(all_items_bought_admin)
+    index = 0
+    courses = []
+    all_courses_admin = []
+    products = []
+    all_products_admin = []
+    while index < len(all_items_bought_admin):
+        if all_items_bought_admin[index][0:2] == "CR":
+            courses_docs = db.collection("Courses").where("courseID", "==", all_items_bought_admin[index]).get()
+            for doc in courses_docs:
+                courseID = doc.to_dict()['courseID']
+                description = doc.to_dict()['description']
+                short_description = doc.to_dict()['short_description']
+                duration = doc.to_dict()['duration']
+                image = doc.to_dict()['image']
+                learning_outcome = doc.to_dict()['learning_outcome']
+                level = doc.to_dict()['level']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                students_count = doc.to_dict()['students_count']
+                trainer = doc.to_dict()['trainer']
+                video_link = doc.to_dict()['video_link']
+                tag = doc.to_dict()['tag']
+                course = Course(courseID, description, short_description, duration, image, learning_outcome, level,
+                                name,price, rating, reviews, students_count, trainer, video_link, tag)
+                courses.append(course)
+                all_courses_admin.append(course.courseID)
+        elif all_items_bought_admin[index][0:2] == "PR":
+            products_docs = db.collection('Products').where("productID", "==", all_items_bought_admin[index]).get()
+            for doc in products_docs:
+                productID = doc.to_dict()['productID']
+                category = doc.to_dict()['category']
+                image = doc.to_dict()['image']
+                name = doc.to_dict()['name']
+                price = doc.to_dict()['price']
+                description = doc.to_dict()['description']
+                rating = doc.to_dict()['rating']
+                reviews = doc.to_dict()['reviews']
+                tag = doc.to_dict()['tag']
+                stock = doc.to_dict()['stock']
+                product = Product(productID, category, image, name, price, description, rating, reviews, tag, stock)
+                products.append(product)
+                all_products_bought.append(product.productID)
+        else:
+            pass
+        index += 1
+    print(all_products_admin)
+    print(all_courses_admin)
+    return render_template('all_orders.html', all_courses = all_courses_admin, all_products = all_products_admin, courses_cart = courses, products_cart=products, current_username=current_user.get_username())
 
 @app.route('/admin_page/products/new_product')
 def new_product():
