@@ -13,34 +13,9 @@
 {% from "includes/_formHelper.html" import render_field %}
 <script type="text/javascript">
 	window.addEventListener('load', function() {
-    var courses_cart = JSON.parse({{courseID_array|tojson}});
-    var products_cart = JSON.parse({{productID_array|tojson}});
-    var shopping_cart = courses_cart.concat(products_cart);
-    var total_price = 0
-    for (var i = 0; i < shopping_cart.length; i++) {
-      if (true) {
-      }
-      var id = shopping_cart[i];
-      if (id.substring(0,2)=="CR") {
-        db.collection("Courses").where("courseID", "==", id).get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              total_price += parseFloat(doc.data()['price']);
-              document.getElementById('total_cost').innerHTML = "S$"+String(total_price.toFixed(2));
-            });
-        })
-      } else {
-        db.collection("Products").where("productID", "==", id).get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              total_price += parseFloat(doc.data()['price']);
-              document.getElementById('total_cost').innerHTML = "S$"+String(total_price.toFixed(2));
-            });
-        })
-      }
-
-    }
-
+    var price = "{{'%0.2f'| format(course.price|float)}}";
+    document.getElementById('total_cost').innerHTML = "$"+String(price);
+    document.getElementById('courseID').value = '{{course.courseID}}';
   })
 
 </script>
@@ -49,9 +24,6 @@
   <h1 style="font-family: 'STIXGeneral', serif;font-weight: bold;margin-top:70px;text-align:left;">Checkout</h1>
     <br>
     <div class="courses_cart_div" id="courses_cart_div">
-
-      {% for i in range(courses_cart|length) %}
-      {% set course = courses_cart[i] %}
       <div class="course_overview_div">
           <img class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
           <ul>
@@ -66,9 +38,7 @@
           </div>
 
       </div>
-      {% endfor %}
     </div>
-
   <div style="text-align:right;">
     <p style="font-size:19px;font-weight:300;margin-bottom:0px;right:20px;">Total:</p>
     <h3 id="total_cost"></h3>
@@ -93,100 +63,11 @@
   	        </div>
   	        <br>
   	        <input type="submit" value="Submit" class="btn btn-primary"/>
+            <input style="display:none;" type="text" id="courseID" name="courseID" value="">
           </form>
+
+
   </div>
-<!--
-  {% if (products_cart|length) == 0 %}
-  <br>
-  <hr>
-  <br>
-  <div id="payment">
-      <h3 style="margin-bottom:20px;">Credit/Debit Card details</h3>
-          <form method="POST">
-  	        <div class="form-group">
-  		        {{ render_field(form.Name_on_card, class="form-control") }}
-  	        </div>
-  	        <div class="form-group">
-  		        {{ render_field(form.exp_date, class="form-control") }}
-  	        </div>
-              <div class="form-group">
-  		        {{ render_field(form.cvv_code, class="form-control") }}
-  	        </div>
-              <div class="form-group">
-  		        {{ render_field(form.card_number, class="form-control") }}
-  	        </div>
-  	        <br>
-  	        <input type="submit" value="Submit" class="btn btn-primary"/>
-          </form>
-  </div>
-  {% else %}
-  <br>
-  <hr>
-  <br>
-  <div id="address">
-      <h3 style="margin-bottom:20px;">Shipping Information</h3>
 
-          <form method="POST">
-            <ul>
-              <li class="form-group" style="display:inline-block;width:49%;margin-right:10px;">
-
-      		        {{ render_field(form.first_name, class="form-control") }}
-
-              </li>
-              <li class="form-group" style="display:inline-block;width:49%;">
-
-    		        {{ render_field(form.last_name, class="form-control") }}
-              </li>
-            </ul>
-
-
-              <div class="form-group">
-  		        {{ render_field(form.phone, class="form-control") }}
-  	        </div>
-              <div class="form-group">
-  		        {{ render_field(form.address, class="form-control") }}
-  	        </div>
-              <div class="form-group">
-  		        {{ render_field(form.Unit_no, class="form-control") }}
-  	        </div>
-              <div class="form-group">
-  		        {{ render_field(form.Postal_code, class="form-control") }}
-  	        </div>
-              <div class="form-group">
-                  {{ render_field(form.country, class="form-control") }}
-              </div>
-  	        <br>
-
-        <hr>
-        <br>
-    <div id="payment">
-          <h3 style="margin-bottom:20px;">Credit/Debit Card details</h3>
-  	        <div class="form-group">
-  		        {{ render_field(form.Name_on_card, class="form-control") }}
-  	        </div>
-  	        <div class="form-group">
-  		        {{ render_field(form.exp_date, class="form-control") }}
-  	        </div>
-              <div class="form-group">
-  		        {{ render_field(form.cvv_code, class="form-control") }}
-  	        </div>
-              <div class="form-group">
-  		        {{ render_field(form.card_number, class="form-control") }}
-  	        </div>
-  	        <br>
-            <input type="submit" value="Submit" class="pay_btn"/>
-
-            <button class="pay_btn" type="button" name="button" onclick="submit()">Make Payment</button>
-
-            <br>
-    </div>
-          </form>
-    </div>
-</div>
-
-
-
-{% endif %}
-    -->
 </div>
 {% endblock %}
