@@ -27,11 +27,10 @@
         </div>
         <p></p>
         <div class="sideBar col-12">
-          <a href="#">My Account</a><br>
+          <a href="{{ url_for("account") }}">My Account</a><br>
           <a href="{{ url_for("security") }}">Account Security</a><br>
-          <a href="/order_history/">Order History</a><br>
+          <a href="{{ url_for("order_history") }}">Order History</a><br>
         </div>
-
       </div>
     </div>
     <div class="col-8 userInfo">
@@ -44,6 +43,13 @@
         <div class="form-group">
             {{ render_field(displayinfo.username, class="form-control") }}
         </div>
+        {% with messages = get_flashed_messages(category_filter=["DisplayInfo"]) %}
+          {% if messages %}
+            {% for message in messages %}
+              <p id="flash">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
         <input type="submit" name="displayInfo" value="Discard">
         <input type="submit" name="displayInfo" value="Update">
       </form>
@@ -56,8 +62,33 @@
       <p>Your Login email can't be changed</p>
       <form class="" method="POST">
         <div class="form-group">
-            {{ render_field(displayinfo.username, class="form-control") }}
+            {{ render_field(accountinfo.first_name, class="form-control") }}
         </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.last_name, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.address, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.unit_no, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.postal, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.country, class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ render_field(accountinfo.phone, class="form-control") }}
+        </div>
+        {% with messages = get_flashed_messages(category_filter=["AccountInfo"]) %}
+          {% if messages %}
+            {% for message in messages %}
+              <p id="flash">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
         <input type="submit" name="account" value="Discard">
         <input type="submit" name="account" value="Update">
       </form>
@@ -67,7 +98,6 @@
       <form class="" method="POST">
         <input type="submit" name="delete" value="Delete Account">
       </form>
-
     </div>
   </div>
 </body>

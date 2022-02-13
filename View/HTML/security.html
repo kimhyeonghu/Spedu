@@ -7,6 +7,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/SVG-Morpheus/0.3.2/svg-morpheus.js"></script>
   <link rel="stylesheet" type="text/css" href="../static/css/base.css">
   <link rel="stylesheet" type="text/css" href="../static/css/security.css">
 </head>
@@ -27,9 +28,9 @@
         </div>
         <p></p>
         <div class="sideBar col-12">
-          <a href="#">My Account</a><br>
+          <a href="{{ url_for("account") }}">My Account</a><br>
           <a href="{{ url_for("security") }}">Account Security</a><br>
-          <a href="/order_history/">Order History</a><br>
+          <a href="{{ url_for("order_history") }}">Order History</a><br>
         </div>
 
       </div>
@@ -41,14 +42,44 @@
       <h1>Change Password</h1>
       <p>Your password must be 8 characters long</p>
       <form class="" method="POST">
-        <div class="form-group">
-            {{ render_field(displayinfo.old_password, class="form-control") }}
+        <div class="form-group pass-group">
+            {{ render_field(change_password.old_password, class="form-control") }}
+            <div class="svg-container">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph1" onclick="showPass()">
+                <g display="none" id="show1">
+                  <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
+                </g>
+                <g display="none" id="hide1">
+                  <path id="hide_pass" data-name="hide pass" d="M29.224,2.562,24.236,7.238A19.7,19.7,0,0,0,17.911,6.2C6.628,6.2,0,15.962,0,15.962a30.843,30.843,0,0,0,7.671,7.659L3.332,27.958,5.44,30.066,31.333,4.671,29.224,2.562Zm-8.968,8.615a5.943,5.943,0,0,0-7.849,7.761L9.834,21.482a27.092,27.092,0,0,1-6.052-5.456c2.226-2.457,7.181-6.848,14.129-6.848a16.548,16.548,0,0,1,3.891.47Zm-4.3,11.078,7.588-7.443A5.948,5.948,0,0,1,15.958,22.254Zm19.819-6.292s-6.339,11.1-17.866,11.1a16.251,16.251,0,0,1-5.741-1.1l2.406-2.36a12.734,12.734,0,0,0,3.335.477c7.142,0,12.081-5.258,14.168-8a22.821,22.821,0,0,0-5.347-4.4l2.22-2.176a24.773,24.773,0,0,1,6.826,6.45Z" transform="translate(0 -2.562)"/>
+                </g>
+              </svg>
+            </div>
         </div>
-        <div class="form-group">
-            {{ render_field(displayinfo.new_password, class="form-control") }}
+        <div class="form-group pass-group">
+            {{ render_field(change_password.new_password, class="form-control") }}
+            <div class="svg-container">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph2" onclick="showPass2()">
+                <g display="none" id="show1">
+                  <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
+                </g>
+                <g display="none" id="hide1">
+                  <path id="hide_pass" data-name="hide pass" d="M29.224,2.562,24.236,7.238A19.7,19.7,0,0,0,17.911,6.2C6.628,6.2,0,15.962,0,15.962a30.843,30.843,0,0,0,7.671,7.659L3.332,27.958,5.44,30.066,31.333,4.671,29.224,2.562Zm-8.968,8.615a5.943,5.943,0,0,0-7.849,7.761L9.834,21.482a27.092,27.092,0,0,1-6.052-5.456c2.226-2.457,7.181-6.848,14.129-6.848a16.548,16.548,0,0,1,3.891.47Zm-4.3,11.078,7.588-7.443A5.948,5.948,0,0,1,15.958,22.254Zm19.819-6.292s-6.339,11.1-17.866,11.1a16.251,16.251,0,0,1-5.741-1.1l2.406-2.36a12.734,12.734,0,0,0,3.335.477c7.142,0,12.081-5.258,14.168-8a22.821,22.821,0,0,0-5.347-4.4l2.22-2.176a24.773,24.773,0,0,1,6.826,6.45Z" transform="translate(0 -2.562)"/>
+                </g>
+              </svg>
+            </div>
         </div>
-        <div class="form-group">
-            {{ render_field(displayinfo.confirm_password, class="form-control") }}
+        <div class="form-group pass-group">
+            {{ render_field(change_password.confirm_password, class="form-control") }}
+            <div class="svg-container">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph3" onclick="showPass3()">
+                <g display="none" id="show1">
+                  <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
+                </g>
+                <g display="none" id="hide1">
+                  <path id="hide_pass" data-name="hide pass" d="M29.224,2.562,24.236,7.238A19.7,19.7,0,0,0,17.911,6.2C6.628,6.2,0,15.962,0,15.962a30.843,30.843,0,0,0,7.671,7.659L3.332,27.958,5.44,30.066,31.333,4.671,29.224,2.562Zm-8.968,8.615a5.943,5.943,0,0,0-7.849,7.761L9.834,21.482a27.092,27.092,0,0,1-6.052-5.456c2.226-2.457,7.181-6.848,14.129-6.848a16.548,16.548,0,0,1,3.891.47Zm-4.3,11.078,7.588-7.443A5.948,5.948,0,0,1,15.958,22.254Zm19.819-6.292s-6.339,11.1-17.866,11.1a16.251,16.251,0,0,1-5.741-1.1l2.406-2.36a12.734,12.734,0,0,0,3.335.477c7.142,0,12.081-5.258,14.168-8a22.821,22.821,0,0,0-5.347-4.4l2.22-2.176a24.773,24.773,0,0,1,6.826,6.45Z" transform="translate(0 -2.562)"/>
+                </g>
+              </svg>
+            </div>
         </div>
         {% with messages = get_flashed_messages(category_filter=["ChangePassword"]) %}
           {% if messages %}
@@ -61,27 +92,282 @@
         <input type="submit" name="displayInfo" value="Update">
       </form>
       <hr>
-      <h1>Account</h1>
-      <p>Update & Edit your information</p>
-      <br>
-      <p>Login Email:</p>
-      <p>{{ current_user.get_email() }}</p>
-      <p>Your Login email can't be changed</p>
+      <h1>Security Questions</h1>
+      <p>Edit security questions for your account</p>
+      <p>This is used for recovering your account in an event you forget your password</p>
       <form class="" method="POST">
         <div class="form-group">
-            {{ render_field(displayinfo.username, class="form-control") }}
+          {{ render_field(change_security_questions.qns1, class="form-control") }}
         </div>
+        <div class="form-group ans-group">
+          {{ render_field(change_security_questions.ans1, class="form-control") }}
+          <div class="svg-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph4" onclick="showPass4()">
+              <g display="none" id="show1">
+                <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
+              </g>
+              <g display="none" id="hide1">
+                <path id="hide_pass" data-name="hide pass" d="M29.224,2.562,24.236,7.238A19.7,19.7,0,0,0,17.911,6.2C6.628,6.2,0,15.962,0,15.962a30.843,30.843,0,0,0,7.671,7.659L3.332,27.958,5.44,30.066,31.333,4.671,29.224,2.562Zm-8.968,8.615a5.943,5.943,0,0,0-7.849,7.761L9.834,21.482a27.092,27.092,0,0,1-6.052-5.456c2.226-2.457,7.181-6.848,14.129-6.848a16.548,16.548,0,0,1,3.891.47Zm-4.3,11.078,7.588-7.443A5.948,5.948,0,0,1,15.958,22.254Zm19.819-6.292s-6.339,11.1-17.866,11.1a16.251,16.251,0,0,1-5.741-1.1l2.406-2.36a12.734,12.734,0,0,0,3.335.477c7.142,0,12.081-5.258,14.168-8a22.821,22.821,0,0,0-5.347-4.4l2.22-2.176a24.773,24.773,0,0,1,6.826,6.45Z" transform="translate(0 -2.562)"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div class="form-group">
+          {{ render_field(change_security_questions.qns2, class="form-control") }}
+        </div>
+        <div class="form-group ans-group">
+          {{ render_field(change_security_questions.ans2, class="form-control") }}
+          <div class="svg-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph5" onclick="showPass5()">
+              <g display="none" id="show1">
+                <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
+              </g>
+              <g display="none" id="hide1">
+                <path id="hide_pass" data-name="hide pass" d="M29.224,2.562,24.236,7.238A19.7,19.7,0,0,0,17.911,6.2C6.628,6.2,0,15.962,0,15.962a30.843,30.843,0,0,0,7.671,7.659L3.332,27.958,5.44,30.066,31.333,4.671,29.224,2.562Zm-8.968,8.615a5.943,5.943,0,0,0-7.849,7.761L9.834,21.482a27.092,27.092,0,0,1-6.052-5.456c2.226-2.457,7.181-6.848,14.129-6.848a16.548,16.548,0,0,1,3.891.47Zm-4.3,11.078,7.588-7.443A5.948,5.948,0,0,1,15.958,22.254Zm19.819-6.292s-6.339,11.1-17.866,11.1a16.251,16.251,0,0,1-5.741-1.1l2.406-2.36a12.734,12.734,0,0,0,3.335.477c7.142,0,12.081-5.258,14.168-8a22.821,22.821,0,0,0-5.347-4.4l2.22-2.176a24.773,24.773,0,0,1,6.826,6.45Z" transform="translate(0 -2.562)"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div class="form-group">
+          {{ render_field(change_security_questions.qns3, class="form-control") }}
+        </div>
+        <div class="form-group ans-group">
+          {{ render_field(change_security_questions.ans3, class="form-control") }}
+          <div class="svg-container">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 38.432 40" id="morph6" onclick="showPass6()">
+              <g display="none" id="show1">
+                <path id="show_pass" data-name="show pass" d="M19.24,8.2c7.608,0,12.912,4.823,15.219,7.424-2.243,2.942-7.547,8.59-15.219,8.59-7.078,0-12.7-5.662-15.177-8.658C6.453,12.92,11.776,8.2,19.24,8.2Zm0-3.2C7.12,5,0,15.49,0,15.49S7.742,27.419,19.24,27.419c12.383,0,19.192-11.928,19.192-11.928S31.561,5,19.24,5Zm-.024,8.007a3.2,3.2,0,1,1-3.2,3.2A3.206,3.206,0,0,1,19.216,13.007Zm0-3.2a6.405,6.405,0,1,0,6.405,6.405A6.407,6.407,0,0,0,19.216,9.8Z" transform="translate(0 -5)"/>
+              </g>
+              <g display="none" id="hide1">
+                <path id="hide_pass" data-name="hide pass" d="M29.224,2.562,24.236,7.238A19.7,19.7,0,0,0,17.911,6.2C6.628,6.2,0,15.962,0,15.962a30.843,30.843,0,0,0,7.671,7.659L3.332,27.958,5.44,30.066,31.333,4.671,29.224,2.562Zm-8.968,8.615a5.943,5.943,0,0,0-7.849,7.761L9.834,21.482a27.092,27.092,0,0,1-6.052-5.456c2.226-2.457,7.181-6.848,14.129-6.848a16.548,16.548,0,0,1,3.891.47Zm-4.3,11.078,7.588-7.443A5.948,5.948,0,0,1,15.958,22.254Zm19.819-6.292s-6.339,11.1-17.866,11.1a16.251,16.251,0,0,1-5.741-1.1l2.406-2.36a12.734,12.734,0,0,0,3.335.477c7.142,0,12.081-5.258,14.168-8a22.821,22.821,0,0,0-5.347-4.4l2.22-2.176a24.773,24.773,0,0,1,6.826,6.45Z" transform="translate(0 -2.562)"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+        {% with messages = get_flashed_messages(category_filter=["ChangeSecurityQuestions"]) %}
+          {% if messages %}
+            {% for message in messages %}
+              <p id="flash">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
         <input type="submit" name="account" value="Discard">
         <input type="submit" name="account" value="Update">
       </form>
-      <hr>
-      <h1>Delete Account</h1>
-      <p>Deleting your account will remove all your information from our servers</p>
-      <form class="" method="POST">
-        <input type="submit" name="delete" value="Delete Account">
-      </form>
-
     </div>
   </div>
+  <script type="text/javascript">
+    var qns1_select = document.getElementById('qns1');
+    var qns2_select = document.getElementById('qns2');
+    var qns3_select = document.getElementById('qns3');
+    window.onload = function() {
+      var qns1 = qns1_select.value;
+      var qns2 = qns2_select.value;
+      var qns3 = qns3_select.value;
+      var newoptions = {'In what city were you born?': 'In what city were you born?', 'What is the name of your favourite pet?': 'What is the name of your favourite pet?', "What is your mother's maiden name?": "What is your mother's maiden name?", 'What high school did you attend?': 'What high school did you attend?', 'What is the name of your first school?': 'What is the name of your first school?', 'What was the make of your first car?': 'What was the make of your first car?', 'What was your favourite food as a child?': 'What was your favourite food as a child?', 'Where did you meet your spouse?': 'Where did you meet your spouse?'};
+      delete newoptions[qns1];
+      delete newoptions[qns2];
+      delete newoptions[qns3];
+      var optionHTML = "";
+      // var optionHTML = ['<option selected="" value="">Select</option>'];
+      for (var i in newoptions) {
+        optionHTML += '<option value="' + i + '">' + newoptions[i] + '</option>';
+      }
+      if (qns1 == "") {
+        qns1 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns1 = '<option value="' + qns1 + '">' + qns1 + '</option>'
+      }
+      if (qns2 == "") {
+        qns2 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns2 = '<option value="' + qns2 + '">' + qns2 + '</option>'
+      }
+      if (qns3 == "") {
+        qns3 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns3 = '<option value="' + qns3 + '">' + qns3 + '</option>'
+      }
+      qns1_select.innerHTML = (qns1 + optionHTML);
+      qns2_select.innerHTML = (qns2 + optionHTML);
+      qns3_select.innerHTML = (qns3 + optionHTML);
+    }
+    qns1_select.onchange = function() {
+      var qns1 = qns1_select.value;
+      var qns2 = qns2_select.value;
+      var qns3 = qns3_select.value;
+      var newoptions = {'In what city were you born?': 'In what city were you born?', 'What is the name of your favourite pet?': 'What is the name of your favourite pet?', "What is your mother's maiden name?": "What is your mother's maiden name?", 'What high school did you attend?': 'What high school did you attend?', 'What is the name of your first school?': 'What is the name of your first school?', 'What was the make of your first car?': 'What was the make of your first car?', 'What was your favourite food as a child?': 'What was your favourite food as a child?', 'Where did you meet your spouse?': 'Where did you meet your spouse?'};
+      delete newoptions[qns1];
+      delete newoptions[qns2];
+      delete newoptions[qns3];
+      var optionHTML = "";
+      // var optionHTML = ['<option selected="" value="">Select</option>'];
+      for (var i in newoptions) {
+        optionHTML += '<option value="' + i + '">' + newoptions[i] + '</option>';
+      }
+      if (qns1 == "") {
+        qns1 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns1 = '<option value="' + qns1 + '">' + qns1 + '</option>'
+      }
+      if (qns2 == "") {
+        qns2 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns2 = '<option value="' + qns2 + '">' + qns2 + '</option>'
+      }
+      if (qns3 == "") {
+        qns3 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns3 = '<option value="' + qns3 + '">' + qns3 + '</option>'
+      }
+      qns1_select.innerHTML = (qns1 + optionHTML);
+      qns2_select.innerHTML = (qns2 + optionHTML);
+      qns3_select.innerHTML = (qns3 + optionHTML);
+    }
+    qns2_select.onchange = function() {
+      var qns1 = qns1_select.value;
+      var qns2 = qns2_select.value;
+      var qns3 = qns3_select.value;
+      var newoptions = {'In what city were you born?': 'In what city were you born?', 'What is the name of your favourite pet?': 'What is the name of your favourite pet?', "What is your mother's maiden name?": "What is your mother's maiden name?", 'What high school did you attend?': 'What high school did you attend?', 'What is the name of your first school?': 'What is the name of your first school?', 'What was the make of your first car?': 'What was the make of your first car?', 'What was your favourite food as a child?': 'What was your favourite food as a child?', 'Where did you meet your spouse?': 'Where did you meet your spouse?'};
+      delete newoptions[qns1];
+      delete newoptions[qns2];
+      delete newoptions[qns3];
+      var optionHTML = "";
+      // var optionHTML = ['<option selected="" value="">Select</option>'];
+      for (var i in newoptions) {
+        optionHTML += '<option value="' + i + '">' + newoptions[i] + '</option>';
+      }
+      if (qns1 == "") {
+        qns1 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns1 = '<option value="' + qns1 + '">' + qns1 + '</option>'
+      }
+      if (qns2 == "") {
+        qns2 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns2 = '<option value="' + qns2 + '">' + qns2 + '</option>'
+      }
+      if (qns3 == "") {
+        qns3 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns3 = '<option value="' + qns3 + '">' + qns3 + '</option>'
+      }
+      qns1_select.innerHTML = (qns1 + optionHTML);
+      qns2_select.innerHTML = (qns2 + optionHTML);
+      qns3_select.innerHTML = (qns3 + optionHTML);
+    }
+    qns3_select.onchange = function() {
+      var qns1 = qns1_select.value;
+      var qns2 = qns2_select.value;
+      var qns3 = qns3_select.value;
+      var newoptions = {'In what city were you born?': 'In what city were you born?', 'What is the name of your favourite pet?': 'What is the name of your favourite pet?', "What is your mother's maiden name?": "What is your mother's maiden name?", 'What high school did you attend?': 'What high school did you attend?', 'What is the name of your first school?': 'What is the name of your first school?', 'What was the make of your first car?': 'What was the make of your first car?', 'What was your favourite food as a child?': 'What was your favourite food as a child?', 'Where did you meet your spouse?': 'Where did you meet your spouse?'};
+      delete newoptions[qns1];
+      delete newoptions[qns2];
+      delete newoptions[qns3];
+      var optionHTML = "";
+      // var optionHTML = ['<option selected="" value="">Select</option>'];
+      for (var i in newoptions) {
+        optionHTML += '<option value="' + i + '">' + newoptions[i] + '</option>';
+      }
+      if (qns1 == "") {
+        qns1 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns1 = '<option value="' + qns1 + '">' + qns1 + '</option>'
+      }
+      if (qns2 == "") {
+        qns2 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns2 = '<option value="' + qns2 + '">' + qns2 + '</option>'
+      }
+      if (qns3 == "") {
+        qns3 = '<option selected="" value="">Select</option>'
+      }
+      else {
+        qns3 = '<option value="' + qns3 + '">' + qns3 + '</option>'
+      }
+      qns1_select.innerHTML = (qns1 + optionHTML);
+      qns2_select.innerHTML = (qns2 + optionHTML);
+      qns3_select.innerHTML = (qns3 + optionHTML);
+    }
+    var icons = ['show1', 'hide1'];
+    var svgMorpheus = new SVGMorpheus("#morph1");
+    var count = 0;
+    function showPass() {
+      svgMorpheus.to(icons[count++ % 2], {duration: 500});
+      var x = document.getElementById("old_password")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    var svgMorpheus2 = new SVGMorpheus("#morph2");
+    var count2 = 0;
+    function showPass2() {
+      svgMorpheus2.to(icons[count2++ % 2], {duration: 500});
+      var x = document.getElementById("new_password")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    var svgMorpheus3 = new SVGMorpheus("#morph3");
+    var count3 = 0;
+    function showPass3() {
+      svgMorpheus3.to(icons[count3++ % 2], {duration: 500});
+      var x = document.getElementById("confirm_password")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    var svgMorpheus4 = new SVGMorpheus("#morph4");
+    var count4 = 0;
+    function showPass4() {
+      svgMorpheus4.to(icons[count3++ % 2], {duration: 500});
+      var x = document.getElementById("ans1")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    var svgMorpheus5 = new SVGMorpheus("#morph5");
+    var count5 = 0;
+    function showPass5() {
+      svgMorpheus5.to(icons[count3++ % 2], {duration: 500});
+      var x = document.getElementById("ans2")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+    var svgMorpheus6 = new SVGMorpheus("#morph6");
+    var count6 = 0;
+    function showPass6() {
+      svgMorpheus6.to(icons[count3++ % 2], {duration: 500});
+      var x = document.getElementById("ans3")
+      if (x.type === "password") {
+        x.type = "text";
+      } else {
+        x.type = "password";
+      }
+    }
+
+  </script>
 </body>
 </html>

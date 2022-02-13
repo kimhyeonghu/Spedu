@@ -24,57 +24,54 @@
         </div>
         <p></p>
         <div class="sideBar col-12">
-          <a href="#">My Account</a><br>
-          <a href="#">Account Security</a><br>
-          <a href="/order_history/">Order History</a><br>
+          <a href="{{ url_for("account") }}">My Account</a><br>
+          <a href="{{ url_for("security") }}">Account Security</a><br>
+          <a href="{{ url_for("order_history") }}">Order History</a><br>
         </div>
         </div>
     </div>
- <div class="col-8 userInfo">
+    <div class="col-8 userInfo">
       <h1>Order History</h1>
       <p>View all the Courses and Products you have bought</p>
       <hr>
-  <div class="products_cart_div">
-    <h1 style="font-size:19px;font-weight: bold">You've bought A Total Of {{all_items_bought|length}} Item(s)</h1>
-    <p>There are {{products_cart|length}} Products</p>
-    {% for i in range(products_cart|length) %}
-    {% set product = products_cart[i] %}
-    <div class="course_overview_div" style="padding-bottom:7px;">
-        <img class="course-image" src="{{product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
-        <ul style="padding-left: 180px;">
-          <li class="name" id="name_{{product.name}}" style="font-size: 15px;padding-right:10px;">{{product.name}}</li>
-          <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(product.rating|float)}}</li>
-          <li style="font-size: 13px;color: #767676;"></li>
-        </ul>
-        <div class="price_div">
-          <p style="font-size: 18px;font-weight: bold;padding-left:180px;">${{'%0.2f'| format(product.price|float)}}</p>
+      <div class="products_cart_div">
+        <h1 style="font-size:19px;font-weight: bold">You've bought A Total Of {{all_items_bought|length}} Item(s)</h1>
+        <p>There are {{products_cart|length}} Products</p>
+        {% for i in range(products_cart|length) %}
+          {% set product = products_cart[i] %}
+          <div class="course_overview_div" style="padding-bottom:7px;">
+            <img class="course-image" src="{{product.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+            <ul style="padding-left: 180px;">
+              <li class="name" id="name_{{product.name}}" style="font-size: 15px;padding-right:10px;">{{product.name}}</li>
+              <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(product.rating|float)}}</li>
+              <li style="font-size: 13px;color: #767676;"></li>
+            </ul>
+            <div class="price_div">
+              <p style="font-size: 18px;font-weight: bold;padding-left:180px;">${{'%0.2f'| format(product.price|float)}}</p>
+            </div>
+          </div>
+          <hr>
+        {% endfor %}
+          <div class="courses_cart_div" id="courses_cart_div">
+            <p>There are {{courses_cart|length}} Courses</p>
+            {% for i in range(courses_cart|length) %}
+              {% set course = courses_cart[i] %}
+              <div class="course_overview_div" style="padding-bottom:7px;">
+                <img class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+                <ul style="padding-left:180px;">
+                  <li class="name" id="name_{{course.name}}">{{course.name}}</li>
+                  <li class="trainer">{{course.trainer}}</li>
+                  <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
+                  <li style="font-size: 13px;color: #767676;">{{course.duration}} total hours | For {{course.level}}</li>
+                </ul>
+                <div class="price_div">
+                  <p style="font-size: 18px;font-weight: bold;padding-left:180px;">Price: ${{'%0.2f'| format(course.price|float)}}</p>
+                </div>
+                <hr>
+              </div>
+            {% endfor %}
+          </div>
         </div>
-
-    </div>
-      <hr>
-    {% endfor %}
-        <div class="courses_cart_div" id="courses_cart_div">
-        <p>There are {{courses_cart|length}} Courses</p>
-    {% for i in range(courses_cart|length) %}
-    {% set course = courses_cart[i] %}
-    <div class="course_overview_div" style="padding-bottom:7px;">
-        <img class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
-        <ul style="padding-left:180px;">
-          <li class="name" id="name_{{course.name}}">{{course.name}}</li>
-          <li class="trainer">{{course.trainer}}</li>
-          <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
-          <li style="font-size: 13px;color: #767676;">{{course.duration}} total hours | For {{course.level}}</li>
-        </ul>
-        <div class="price_div">
-          <p style="font-size: 18px;font-weight: bold;padding-left:180px;">Price: ${{'%0.2f'| format(course.price|float)}}</p>
-        </div>
-        <hr>
-    </div>
-    {% endfor %}
-  </div>
-  </div>
-
-
     </div>
   </div>
 </body>

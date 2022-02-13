@@ -2,23 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <title>Spedu Admin Page Users</title>
     <link rel="stylesheet" href="https://use.typekit.net/ktl0fuq.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.typekit.net/ktl0fuq.css">
+    <link rel="stylesheet" href="../static/css/basicnavbaradmin.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/admin_page.css') }}">
-    {% block head %}{% endblock %}
   </head>
   <body>
-    <div class="topnav">
-      <div class="horizontal back-to-homepage">
-        <a href="/" style="color:black;">
-          <img class="horizontal" style="width:14px;" src="../../../../static/images/arrow-left.png" alt="arrow-left">
-          Back to homepage
-        </a>
-      </div>
-      <div class="horizontal logo-div">
-        <img id="logo" src="../../../../static/images/spedu_logo.png" alt="Spedu">
-      </div>
-    </div>
     <div class="menu">
       <div class="userBox">
         <svg xmlns="http://www.w3.org/2000/svg" width="105.262" height="105.262" viewBox="0 0 105.262 105.262">
@@ -34,7 +25,7 @@
         <p id="menuUsername">{{ current_user.get_username() }}</p>
       </div>
       <ul class="sideBar">
-        <li class="option" id="selected">
+        <li class="option">
           <a href="/admin_page/">
             <svg xmlns="http://www.w3.org/2000/svg" width="38.263" height="36.509" viewBox="0 0 38.263 36.509">
               <path id="Path_292" data-name="Path 292" d="M37.91,27.614,19.9,11.512a.505.505,0,0,0-.1-.079,1.065,1.065,0,0,0-1.44-.024L.355,27.511A1.065,1.065,0,0,0,1.772,29.1l3.242-2.9V44.974A2.679,2.679,0,0,0,7.69,47.65h5.682a2.512,2.512,0,0,0,2.51-2.51V35.594a.386.386,0,0,1,.386-.386H22a.386.386,0,0,1,.386.386V45.14a2.512,2.512,0,0,0,2.51,2.51h5.682c1.5,0,2.676-1.472,2.676-3.353v-18L36.5,29.2a1.07,1.07,0,0,0,1.5-.087A1.083,1.083,0,0,0,37.91,27.614Zm-6.784,5.249V44.282c0,.763-.378,1.228-.551,1.228H24.893a.386.386,0,0,1-.386-.386v-9.53A2.512,2.512,0,0,0,22,33.083H16.26a2.512,2.512,0,0,0-2.51,2.51V45.14a.386.386,0,0,1-.386.386H7.682a.552.552,0,0,1-.551-.551V24.293L19.077,13.621,31.126,24.395v8.468Z" transform="translate(0 -11.141)" fill="#fff"/>
@@ -68,7 +59,7 @@
             <h4 class="align-middle">Orders</h4>
           </a>
         </li>
-        <li class="option">
+        <li class="option" id="selected">
           <a href="/admin_page/users">
             <svg xmlns="http://www.w3.org/2000/svg" width="35.878" height="43.003" viewBox="0 0 35.878 43.003">
               <g id="user" transform="translate(0 0)">
@@ -88,24 +79,24 @@
           </a>
         </li>
       </ul>
-      <div class="signout">
-        <a href="{{ url_for("signout") }}">
-          <svg xmlns="http://www.w3.org/2000/svg" width="29.47" height="31.793" viewBox="0 0 29.47 31.793">
-            <g id="Group_15996" data-name="Group 15996" transform="translate(29.47 31.793) rotate(180)">
-              <path id="Path_40" data-name="Path 40" d="M31.415,29.971H23.123a4.088,4.088,0,0,1-4.082-4.082V5.9a4.088,4.088,0,0,1,4.082-4.082H31.55A.911.911,0,1,0,31.55,0H23.123a5.91,5.91,0,0,0-5.9,5.9V25.889a5.91,5.91,0,0,0,5.9,5.9h8.292a.911.911,0,1,0,0-1.822Z" transform="translate(-17.219)" fill="#fff"/>
-              <path id="Path_41" data-name="Path 41" d="M142.751,142.382l-5.789-5.789a.911.911,0,0,0-1.289,1.289l4.237,4.237H121.43a.911.911,0,0,0,0,1.822h18.481l-4.237,4.237a.914.914,0,0,0,.641,1.559.889.889,0,0,0,.641-.27l5.789-5.789A.91.91,0,0,0,142.751,142.382Z" transform="translate(-113.549 -127.127)" fill="#fff"/>
-            </g>
-          </svg>
-          <p id="signout" class="align-middle">Sign Out</p>
-        </a>
+      <div class="">
+        <div class="signout">
+          <a href="{{ url_for("signout") }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="29.47" height="31.793" viewBox="0 0 29.47 31.793">
+              <g id="Group_15996" data-name="Group 15996" transform="translate(29.47 31.793) rotate(180)">
+                <path id="Path_40" data-name="Path 40" d="M31.415,29.971H23.123a4.088,4.088,0,0,1-4.082-4.082V5.9a4.088,4.088,0,0,1,4.082-4.082H31.55A.911.911,0,1,0,31.55,0H23.123a5.91,5.91,0,0,0-5.9,5.9V25.889a5.91,5.91,0,0,0,5.9,5.9h8.292a.911.911,0,1,0,0-1.822Z" transform="translate(-17.219)" fill="#fff"/>
+                <path id="Path_41" data-name="Path 41" d="M142.751,142.382l-5.789-5.789a.911.911,0,0,0-1.289,1.289l4.237,4.237H121.43a.911.911,0,0,0,0,1.822h18.481l-4.237,4.237a.914.914,0,0,0,.641,1.559.889.889,0,0,0,.641-.27l5.789-5.789A.91.91,0,0,0,142.751,142.382Z" transform="translate(-113.549 -127.127)" fill="#fff"/>
+              </g>
+            </svg>
+            <p id="signout" class="align-middle">Sign Out</p>
+          </a>
+        </div>
       </div>
     </div>
-    {% block body %}{% endblock %}
+    {% block navbar %}
+      {% include 'includes/_basicnavbar.html' %}
+    {% endblock %}
+
+
   </body>
-  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-storage.js"></script>
-  <script src="{{ url_for('static', filename='Javascript/firestore.js') }}" charset="utf-8"></script>
 </html>

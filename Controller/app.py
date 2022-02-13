@@ -410,6 +410,7 @@ def signup3():
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
     if current_user.is_authenticated:
+        next_page = request.args.get('next')
         return redirect(next_page) if next_page else redirect(url_for("homepage"))
     sign_in_form = SignInForm(request.form)
     if request.method == "POST" and sign_in_form.validate():
@@ -498,36 +499,74 @@ def reset3():
 def account():
     user = db.collection("Users").document(current_user.get_id()).get().to_dict()
     display_info = DisplayInfo(request.form)
+    account_info = AccountInfo(request.form)
     print(request.method == "GET")
     if request.method == "GET":
-        display_info.username.data = user["username"]
-    if request.method == "POST" and display_info.validate():
-        if request.form["displayInfo"] == "Discard":
+        try:
             display_info.username.data = user["username"]
-            return redirect(url_for("account"))
-        elif request.form["displayInfo"] == "Update":
-            db.collection("Users").document(current_user.get_id()).update({"username": display_info.username.data})
+            account_info.first_name.data = user["user_info"]["first_name"]
+            account_info.last_name.data = user["user_info"]["last_name"]
+            account_info.address.data = user["user_info"]["address"]
+            account_info.unit_no.data = user["user_info"]["unit_no"]
+            account_info.postal.data = user["user_info"]["postal"]
+            account_info.country.data = user["user_info"]["country"]
+            account_info.phone.data = user["user_info"]["phone"]
+        except:
+            # user info does not exist
+            pass
+    if request.method == "POST":
+        if display_info.validate():
+            if request.form["displayInfo"] == "Discard":
+                display_info.username.data = user["username"]
+                return redirect(url_for("account"))
+            elif request.form["displayInfo"] == "Update":
+                db.collection("Users").document(current_user.get_id()).update({"username": display_info.username.data})
+                flash("Display Informaion updated!", "DisplayInfo")
+                return redirect(url_for("account"))
+        if account_info.validate():
+            user_info = {"first_name": account_info.first_name.data, "last_name": account_info.last_name.data, "address": account_info.address.data, "unit_no": account_info.unit_no.data, "postal": account_info.postal.data, "country": account_info.country.data, "phone": account_info.phone.data}
+            db.collection("Users").document(current_user.get_id()).update({"user_info": user_info})
+            flash("Account information updated!", "AccountInfo")
             return redirect(url_for("account"))
     if request.method == "POST" and request.form["delete"] == "Delete Account":
         db.collection("Users").document(current_user.get_id()).delete()
         logout_user()
         redirect(url_for("homepage"))
-    return render_template("account.html", user=user, displayinfo=display_info)
+    return render_template("account.html", user=user, displayinfo=display_info, accountinfo=account_info)
 
 
 @app.route("/account/security", methods=['GET', 'POST'])
+@login_required
 def security():
+    user = db.collection("Users").document(current_user.get_id()).get().to_dict()
+    qns = [user["security_qns"]["qns1"], user["security_qns"]["qns2"], user["security_qns"]["qns3"]]
     change_password_form = ChangePassword(request.form)
-    if request.method == "POST" and change_password_form.validate():
-        if bcrypt.check_password_hash(db.collection("Users").document(str(current_user.get_id())).get().to_dict()["password"], sign_in_form.password.data):
-            hashed_password = bcrypt.generate_password_hash(change_password_form.new_password.data).decode('utf-8')
-            db.collection("Users").document(current_user.get_id()).update({"password": hashed_password})
-            flash("Password changed successfully!", "ChangePassword")
-            return redirect(url_for("account"))
-        else:
-            flash("Old password is incorrect!", "ChangePassword")
+    change_security_qns_form = ChangeSecurityQuestions(request.form)
+    if request.method == "GET":
+        change_security_qns_form.qns1.data = user["security_qns"]["qns1"]
+        change_security_qns_form.ans1.data = "********"
+        change_security_qns_form.qns2.data = user["security_qns"]["qns2"]
+        change_security_qns_form.ans2.data = "********"
+        change_security_qns_form.qns3.data = user["security_qns"]["qns3"]
+        change_security_qns_form.ans3.data = "********"
+    if request.method == "POST":
+        if change_password_form.validate():
+            if bcrypt.check_password_hash(db.collection("Users").document(str(current_user.get_id())).get().to_dict()["password"], change_password_form.old_password.data):
+                hashed_password = bcrypt.generate_password_hash(change_password_form.new_password.data).decode('utf-8')
+                db.collection("Users").document(current_user.get_id()).update({"password": hashed_password})
+                flash("Password changed successfully!", "ChangePassword")
+                return redirect(url_for("security"))
+            else:
+                flash("Old password is incorrect!", "ChangePassword")
+                return redirect(url_for("security"))
+        if change_security_qns_form.validate():
+            hashed_ans1 = bcrypt.generate_password_hash(change_security_qns_form.ans1.data).decode('utf-8')
+            hashed_ans2 = bcrypt.generate_password_hash(change_security_qns_form.ans2.data).decode('utf-8')
+            hashed_ans3 = bcrypt.generate_password_hash(change_security_qns_form.ans3.data).decode('utf-8')
+            db.collection("Users").document(current_user.get_id()).update({"security_qns": {"qns1": schange_security_qns_form.qns1.data, "ans1": hashed_ans1, "qns2": change_security_qns_form.qns2.data, "ans2": hashed_ans2, "qns3": change_security_qns_form.qns3.data, "ans3": hashed_ans3}})
+            flash("Security Questions changed successfully!", "ChangeSecurityQuestions")
             return redirect(url_for("security"))
-    return render_template("security.html", change_password=change_password_form)
+    return render_template("security.html", user=user, change_password=change_password_form, change_security_questions=change_security_qns_form, qns=qns)
 
 
 @app.route('/sports_courses/', methods=['GET'])
@@ -575,6 +614,7 @@ def view_selected_product():
 
 
 @app.route('/admin_page/products/about_product/', methods=['POST'])
+@login_required
 def update_delete_product():
     current_productID = request.form['current_product']
     action_input_value = request.form['action_input_product']
@@ -791,26 +831,39 @@ def Checkout():
 
 
 @app.route('/admin_page/')
+@login_required
 def admin_page():
     return render_template('admin_page.html')
 
 
+@app.route('/admin_page/users')
+@login_required
+def admin_page_users():
+
+    users = db.collection('Users').get()
+    return render_template('adminPageUsers.html', users=users)
+
+
 @app.route('/admin_page/courses/')
+@login_required
 def admin_page_courses():
     return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'))
 
 
 @app.route('/admin_page/products/')
+@login_required
 def admin_page_products():
     return render_template('admin_page_products.html', products=load_products())
 
 
 @app.route('/admin_page/courses/new_course')
+@login_required
 def new_course():
     return render_template('new_course.html')
 
 
 @app.route('/admin_page/courses/about_course/', methods=['GET'])
+@login_required
 def view_admin_selected_course():
     selected_courseID = request.args.get("selected_courseID")
     print(selected_courseID)
@@ -819,6 +872,7 @@ def view_admin_selected_course():
 
 
 @app.route('/admin_page/products/about_product/', methods=['GET'])
+@login_required
 def view_admin_selected_product():
     selected_productID = request.args.get("selected_productID")
     print(selected_productID)
@@ -827,6 +881,7 @@ def view_admin_selected_product():
 
 
 @app.route('/admin_page/courses/', methods=['POST'])
+@login_required
 def create_new_course():
     course_name = request.form['course_name']
     courseID = request.form['courseID_input']
@@ -843,11 +898,11 @@ def create_new_course():
     user1 = auth.current_user
 
     course_img_link=request.form["course_image_input"]
-    #course_img_link = storage.child('/courses/image_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
+    # course_img_link = storage.child('/courses/image_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
 
-    #storage.child('/courses/video_of_{}'.format(courseID)).put(video)
+    # storage.child('/courses/video_of_{}'.format(courseID)).put(video)
     video_link =request.form["course_video_input"]
-    #video_link = storage.child('/courses/video_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
+    # video_link = storage.child('/courses/video_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
 
     course_rating = 0
     course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
@@ -858,6 +913,7 @@ def create_new_course():
 
 
 @app.route('/admin_page/courses/about_course/', methods=['POST'])
+@login_required
 def update_delete_course():
     current_courseID = request.form['current_course']
     action_input_value = request.form['action_input']
@@ -869,6 +925,7 @@ def update_delete_course():
 
 
 @app.route('/admin_page/courses/about_course/update/<current_courseID>')
+@login_required
 def update_page(current_courseID):
     current_course = db.collection('Courses').where("courseID", "==", current_courseID).get()[0].to_dict()
     print(current_course)
@@ -876,6 +933,7 @@ def update_page(current_courseID):
 
 
 @app.route('/admin_page/courses/about_course/update/', methods=['POST'])
+@login_required
 def update_course():
     course_name = ""
     courseID = request.form['courseID']
@@ -894,7 +952,7 @@ def update_course():
             print('No selected file')
     if course_image:
         storage.child('/courses/image_of_{}'.format(courseID)).put(course_image)
-    course_img_link=request.form["course_image_input"]
+    course_img_link = request.form["course_image_input"]
     print(course_img_link)
     course_rating = ""
     course_reviews = []
@@ -902,7 +960,10 @@ def update_course():
     course = Course(courseID, course_desc, course_short_desc, course_duration,course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link,tag)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
+
+
 @app.route('/admin_page/all_orders')
+@login_required
 def all_orders():
     docs = db.collection('Users').get()
     all_courses_bought = []
@@ -966,20 +1027,24 @@ def all_orders():
         index += 1
     print(all_products_admin)
     print(all_courses_admin)
-    return render_template('all_orders.html', all_courses = all_courses_admin, all_products = all_products_admin, courses_cart = courses, products_cart=products, current_username=current_user.get_username())
+    return render_template('all_orders.html', all_courses=all_courses_admin, all_products=all_products_admin, courses_cart=courses, products_cart=products, current_username=current_user.get_username())
+
 
 @app.route('/admin_page/products/new_product')
+@login_required
 def new_product():
     return render_template('new_product.html')
 
 
 @app.route('/admin_page/Promo code/')
+@login_required
 def admin_page_promo_codes():
     promo_code_dict = db.collection('Promo codes').get()
     return render_template('Promo code.html', promo_code_dict=promo_code_dict)
 
 
 @app.route('/admin_page/promo_code_form/', methods=["POST","GET"])
+@login_required
 def promo_code_form():
     promo_code_info = promo_code_information(request.form)
     if request.method == 'POST':
@@ -992,8 +1057,8 @@ def promo_code_form():
         # pc_data = Promo_code_data(promo_code_info.name_of_code.data, promo_code_info.value.data)
         # pc_data.set_code_name(promo_code_info.name_of_code.data)
         # pc_data.set_code_value(promo_code_info.value.data)
-        #Promo_code_data.set_code_name(promo_code_info.name_of_code.data)
-        #Promo_code_data.set_code_value(promo_code_info.value.data)
+        # Promo_code_data.set_code_name(promo_code_info.name_of_code.data)
+        # Promo_code_data.set_code_value(promo_code_info.value.data)
         try:
             id = db.collection("Promo codes").order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()[0].to_dict()["id"] + 1
         except:
@@ -1004,6 +1069,7 @@ def promo_code_form():
 
 
 @app.route('/order_history/', methods=["POST","GET"])
+@login_required
 def order_history():
     all_items_bought = []
     user = db.collection("Users").document(str(current_user.get_id())).get().to_dict()
@@ -1015,12 +1081,12 @@ def order_history():
     for doc in docs:
         courses_bought = doc.to_dict()['Courses_Purchased']
         all_items_bought.append(courses_bought)
-    #print(courses_bought)
+    # print(courses_bought)
     for item in docs:
         products_bought = item.to_dict()['Products_Purchased']
-    #print(products_bought)
+    # print(products_bought)
     all_items_bought = courses_bought+products_bought
-    #print(all_items_bought)
+    # print(all_items_bought)
 
     index = 0
     courses = []
@@ -1077,6 +1143,7 @@ def order_history():
 def teach_on_spedu():
     return render_template('teach_on_spedu.html')
 
+
 @app.route('/mylearning')
 def load_my_courses():
     my_courses=[]
@@ -1108,6 +1175,7 @@ def load_my_courses():
             my_courses.append(course)
     return render_template('mylearning.html',my_courses=my_courses)
 
+
 @app.route('/mylearning/learn/', methods=['GET'])
 def load_learn_page():
     courseID = request.args.get('course')
@@ -1137,6 +1205,7 @@ def load_learn_page():
         students_count = doc.to_dict()['students_count']
         trainer = doc.to_dict()['trainer']
     return render_template('course_learn.html',course=course)
+
 
 @app.route('/Checkout_instant/',methods=["POST","GET"])
 def checkout_instant():
@@ -1210,6 +1279,7 @@ def checkout_instant():
         print("done")
         return redirect(url_for('homepage'))
     return render_template('Checkout_instant.html', instant_buys=buy_now, form=personal_details, courseID_array = json.dumps(courseID_array), productID_array = json.dumps(productID_array), courses_cart = courses, products_cart=products, current_username=current_user.get_username())
+
 
 def filter_courses(courses, rating_value, price_value, level_value):
     filtered_list=[]
