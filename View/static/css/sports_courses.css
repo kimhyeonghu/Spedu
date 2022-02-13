@@ -1,11 +1,13 @@
 .horizontal {
   display: inline-block;
 }
+a { color: black; } 
 .course-panel {
   height: 500px;
   width: 100%;
   padding-top: 90px;
   padding-left: 50px;
+
 
 }
 
@@ -21,6 +23,7 @@
 .course-short-detail-box {
   text-align: center;
   border-width: thin;
+  color:black!important;
   border-style: solid;
   border-color: black;
   height: 270px;
