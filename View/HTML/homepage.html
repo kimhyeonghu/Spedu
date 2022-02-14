@@ -79,7 +79,7 @@
 </div>
 
 
-{% if current_user.is_authenticated %}
+{% if current_user.is_authenticated and my_courses|length > 0 %}
 
 <form action='/mylearning/learn/' id="course_learn_form" method="get">
 <input id="course" type="text" name="course" value="" style="display:none;">
