@@ -12,6 +12,20 @@
 
 {% block body %}
 <script type="text/javascript">
+  function get_trainer_cart(trainerID,courseName) {
+    db.collection("Users").where("id", "==", trainerID).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            db.collection("Users").doc(doc.id).get().then(function(doc) {
+              trainer_name=doc.data().username;
+              document.getElementById("trainer_"+courseName).innerText = trainer_name;
+              document.getElementById("trainer_"+courseName).style.color = "#767676";
+              document.getElementById("trainer_"+courseName).style.fontSize = "13px";
+            });
+        });
+    });
+  }
+</script>
+<script type="text/javascript">
   function remove_course(courseID){
     var currentUser = '{{current_username}}';
     db.collection("Users").where("username", "==", currentUser)
@@ -110,12 +124,12 @@
     {% for i in range(courses_cart|length) %}
     {% set course = courses_cart[i] %}
     <div class="course_overview_div">
-        <img class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <img onload="get_trainer_cart('{{course.trainer}}','{{course.name}}')" class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
         <ul>
           <li class="name" id="name_{{course.name}}" style="font-size: 15px;padding-right:10px;">{{course.name}}</li>
-          <li class="trainer" style="font-size: 11px;">{{course.trainer}}</li>
+          <li id="trainer_{{course.trainer}}" class="trainer"></li>
           <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(course.rating|float)}}</li>
-          <li style="font-size: 13px;color: #767676;">{{course.duration}} total hours | For {{course.level}}</li>
+          <li style="font-size: 13px;color: #767676;">{{'%0.1f'| format(course.duration|float)}} total hours | For {{course.level}}</li>
         </ul>
         <div class="price_div">
           <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(course.price|float)}}</p>
@@ -142,12 +156,12 @@
     {% for i in range(courses_cart|length) %}
     {% set course = courses_cart[i] %}
     <div class="course_overview_div">
-        <img class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
+        <img onload="get_trainer_cart('{{course.trainer}}','{{course.name}}')" class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
         <ul>
           <li class="name" id="name_{{course.name}}" style="font-size: 15px;padding-right:10px;">{{course.name}}</li>
-          <li class="trainer" style="font-size: 11px;">{{course.trainer}}</li>
+          <li id="trainer_{{course.trainer}}" class="trainer"></li>
           <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(course.rating|float)}}</li>
-          <li style="font-size: 13px;color: #767676;">{{course.duration}} total hours | For {{course.level}}</li>
+          <li style="font-size: 13px;color: #767676;">{{'%0.1f'| format(course.duration|float)}}  total hours | For {{course.level}}</li>
         </ul>
         <div class="price_div">
           <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(course.price|float)}}</p>

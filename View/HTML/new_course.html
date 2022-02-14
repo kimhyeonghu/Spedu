@@ -98,6 +98,7 @@
     <input type="text" name="course_image_input" value="" id="course_image_input" style="display:none;">
     <input type="text" name="course_video_input" value="" id="course_video_input" style="display:none;">
     <input type="text" name="courseID_input" value="" id="courseID_input" style="display:none;">
+
     <input name='course_duration' id="course_duration" type="text" style="display:none;">
   <ul>
     <li style="height:40px;"><h2>New Course</h2></li>
@@ -115,6 +116,16 @@
       <label for="Intermediate" style="margin-right:10px;"><input id="radio3" type="radio" name="course_level" value="Intermediate">Intermediate</label>
       <label for="Professionals" style="margin-right:10px;"><input id="radio4" type="radio" name="course_level" value="Professionals">Professionals</label>
     </li>
+    <li>
+      <p>Course Related Products</p>
+      <input style="width:300px;" id="search_products_input" type="text" placeholder="">
+      <input id="productIDs" name="productIDs_name" value="" type="text" style="display:none;">
+      <button id="search_products_button" type="button" name="button" onclick=search_products()>Search</button>
+      <div style="display:inline-block;width:calc(100% - 200px);margin-left:200px;overflow-x:auto;overflow-y:hidden;white-space: nowrap;" id="productDiv">
+      </div>
+      <div style="display:inline-block;width:calc(100% - 200px);margin-left:200px;overflow: auto;white-space: nowrap;" id="productID_div">
+      </div>
+    </li>
     <li style="height:50px;">
       <p>Course Tag</p>
       <input id="tag_input" type="text" placeholder="">
@@ -123,6 +134,118 @@
       <div style="display:inline-block;width:calc(100% - 200px);margin-left:200px;overflow: auto;white-space: nowrap;" id="tag_div">
       </div>
       <script type="text/javascript">
+        var productConverter = {
+            toFirestore: function(product) {
+                return {
+
+                    category: product.category,
+                    description: product.description,
+                    image: product.image,
+                    name: product.name,
+                    price: product.price,
+                    productID:product.productID,
+                    rating: product.rating,
+                    tag: product.tag
+                    };
+            },
+            fromFirestore: function(snapshot, options){
+                const data = snapshot.data(options);
+                return new Course(data.category, data.description, data.image, data.name, data.price,product.productID, data.rating,product.tag);
+            }
+        };
+        var search_products_input = document.getElementById("search_products_input");
+        search_products_input.addEventListener("keyup", function(event) {
+          if (event.keyCode == 13) {
+            event.preventDefault();
+            if (search_products_input.value.length > 0) {
+              document.getElementById("search_products_button").click();
+            }
+          }
+        });
+        function search_products() {
+          if (search_products_input.value.length > 0) {
+            document.getElementById('productDiv').innerHTML = "";
+            var search_value = search_products_input.value;
+             load_products(search_value);
+
+
+          };
+
+        };
+        function load_products(search_value) {
+          var products=[];
+          db.collection("Products").get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                  db.collection("Products").doc(doc.id).get().then(function(doc) {
+                    var product = {
+                      product_name:doc.data().name,
+                      product_image:doc.data().image,
+                      product_tag:doc.data().tag,
+                      productID:doc.data().productID,
+                      search_points:0
+                    };
+
+                    if (product.product_name.toLowerCase().split(" ").includes(search_value)) {
+                      product.search_points+=2
+                    }
+                    if ((product.product_name.toLowerCase().includes(search_value))&&(search_value.length>2)) {
+                      product.search_points+=2
+                    }
+                    if (product.product_tag.includes(search_value)) {
+                      product.search_points+=1
+                    }
+
+                    if (product.search_points>=2) {
+                      products.push(product);
+
+                      const li1 = document.createElement("li")
+                      const li2 = document.createElement("li")
+                      const ul = document.createElement("ul")
+                      ul.className = "product_li";
+                      var div = document.getElementById('productDiv');
+                      const img = document.createElement("img");
+                      img.src = product.product_image;
+                      img.style.height = "50px";
+                      img.style.width = 'auto';
+                      img.style.marginLeft = "5px";
+                      const name = document.createTextNode(product.product_name);
+
+                      li1.appendChild(name);
+                      li2.appendChild(img);
+                      ul.appendChild(li1);
+                      ul.appendChild(li2);
+                      ul.onclick = function(){
+                        var div = document.getElementById('productID_div');
+                        const list = document.createElement("LI");
+                        list.className = "productID_li";
+                        var colors = ['#FBF8F1', '#FDEBF7', '#EFDAD7', '#C0D8C0', '#FFE162', '#D9D7F1', '#E7FBBE', '#F5F5F5', '#FDF5CA'];
+                        list.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+
+                        const list_text = document.createTextNode(product.product_name+", "+product.productID);
+
+                        const remove_tag_btn = document.createElement('button');
+                        remove_tag_btn.style.border = "none";
+                        remove_tag_btn.style["background-color"] = "transparent";
+                        remove_tag_btn.innerHTML = '<img src="../../../../static/images/remove_button.png" style="width:10px;height:10px;"/>';
+                        remove_tag_btn.onclick =  function(){
+                          list.parentNode.removeChild(list);
+                        };
+                        list.appendChild(list_text);
+                        list.appendChild(remove_tag_btn);
+                        div.appendChild(list);
+                      };
+                      div.appendChild(ul);
+                    }
+
+
+                  });
+              });
+
+          });
+
+        }
+
         var tag_input = document.getElementById("tag_input");
         tag_input.addEventListener("keyup", function(event) {
           if (event.keyCode == 13) {
@@ -163,11 +286,12 @@
         });
       </script>
     </li>
+    <br>
     <li style="height:50px;"><p>Video</p>
       <input id="video_input" name='video' type="file" placeholder="" accept="video/mp4,video/x-m4v,video/*" onchange="loadVideo(event)">
     </li>
     <br>
-    <video id="course_vid" width="320" height="240" controls>
+    <video id="course_vid" width="320" height="240" style="margin-left:210px;" controls>
     </video>
     <script type="text/javascript">
         var loadVideo = function(event) {
@@ -183,7 +307,7 @@
 
 
     <li style="height:50px;margin-top:30px;"><p>Course Image</p><input accept="image/*" onchange="loadFile(event)" id="course_image" name='course_image' type="file" placeholder=""></li>
-    <br><img id="course_img" style="height:240px;" src="#">
+    <br><img id="course_img" style="height:240px;margin-left:210px;" src="#">
     <script type="text/javascript">
 
         var loadFile = function(event) {
@@ -216,13 +340,22 @@
             }
 
           }
+          var product_lists = document.getElementsByClassName('productID_li');
+          var productIDs = "";
+          for (var i = 0; i < product_lists.length; i++) {
+            var productID = product_lists[i].innerText.split(", ")[1];
+            if (productIDs.length == 0) {
+              productIDs=productID;
+            } else {
+              productIDs = productIDs + "," +productID;
+            }
 
-
-
+          }
           if (isFormValid()) {
             var video = document.getElementById('course_vid');
             document.getElementById('course_duration').value = video.duration/60;
             document.getElementById("tag_list").value = tags;
+            document.getElementById("productIDs").value = productIDs;
             var popup = document.getElementById("uploading");
             popup.classList.toggle("show");
             document.getElementById("new_course").classList.add('loading');

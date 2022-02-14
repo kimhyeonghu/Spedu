@@ -11,6 +11,54 @@
 {% endblock %}
 
 {% block body %}
+<script type="text/javascript">
+  function disable_button() {
+
+    var username = '{{current_username}}';
+    var courseID = '{{selected_course.courseID}}';
+
+    var purchased_courses = [];
+    document.getElementById("add_to_cart_btn").disabled = true;
+    document.getElementById("buy_now_btn").disabled = true;
+    db.collection("Users").where("username", "==", username)
+    .get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            db.collection("Users").doc(doc.id).get().then(function(doc) {
+              purchased_courses=doc.data().Courses_Purchased;
+              if (purchased_courses.includes(courseID)) {
+                document.getElementById("add_to_cart_btn").disabled = true;
+                document.getElementById("buy_now_btn").disabled = true;
+                document.getElementById("add_to_cart_btn").style.display = "none";
+                document.getElementById("buy_now_btn").style.display = "none";
+                document.getElementById("alert").style.display = "block";
+
+              } else {
+                document.getElementById("add_to_cart_btn").disabled = false;
+                document.getElementById("buy_now_btn").disabled = false;
+                document.getElementById("alert").style.display = "none";
+              }
+            });
+        });
+
+    })
+    .catch((error) => {
+        alert(error);
+    });
+    db.collection("Users").where("id", "==", "2").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            db.collection("Users").doc(doc.id).get().then(function(doc) {
+              trainer=doc.data().username;
+              document.getElementById("trainer").innerText = trainer;
+              document.getElementById("trainer2").innerText = trainer;
+              document.getElementById("trainer2").style.color = "#D1D1D1";
+              document.getElementById("trainer2").style.fontSize = "14px";
+            });
+        });
+    });
+  }
+
+</script>
 <div class="popup">
   <div class="popuptext" id="myPopup">
 
@@ -18,9 +66,9 @@
         <img class="course-image" src="{{selected_course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
         <ul>
           <li class="name" id="name_{{selected_course.name}}" style="font-size: 15px;padding-right:10px;">{{selected_course.name}}</li>
-          <li class="trainer" style="font-size: 11px;">{{selected_course.trainer}}</li>
+          <li onload="get_trainer()" id="trainer" class="trainer" style="font-size: 11px;"></li>
           <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(selected_course.rating|float)}}</li>
-          <li style="font-size: 13px;color: #767676;">{{selected_course.duration}} total hours | For {{selected_course.level}}</li>
+          <li style="font-size: 13px;color: #767676;">{{'%0.1f'| format(selected_course.duration|float)}} total hours | For {{selected_course.level}}</li>
         </ul>
         <div class="price_div">
           <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(selected_course.price|float)}}</p>
@@ -53,18 +101,19 @@
   <br>
   <ul>
     <li class="short_description">{{selected_course.short_description}}</li>
-    <li class="trainer" style="color:white;">{{selected_course.trainer}}</li>
-    <li class="trainer" style="font-weight:light;color:#AFADAD;">{{selected_course.duration}} total mins | For {{selected_course.level}}</li>
+    <li onload="get_trainer()" id="trainer2" class="trainer" style="font-size: 11px;"></li>
+    <li class="trainer" style="font-weight:light;color:#AFADAD;">{{'%0.1f'| format(selected_course.duration|float)}} total mins | For {{selected_course.level}}</li>
     <li class="rating">★{{'%0.1f'| format(selected_course.rating|float)}} <p style="color:#AFADAD;display:inline-block;font-size:14px;">| {{selected_course.students_count}} students are enrolled</p></li>
   </ul>
 </div>
-<div class="course_purchase_div" onload="load_image()">
+<div class="course_purchase_div" onload="disable_button()">
 
-  <img onload="" id="course_image" src="{{selected_course.image}}" style="width:280px;height:180px;" alt="">
+  <img onload="disable_button()" id="course_image" src="{{selected_course.image}}" style="width:280px;height:180px;" alt="">
   <h4 style="font-weight:bold;">${{'%0.2f'| format(selected_course.price|float)}}</h4>
   <form class="" action="" method="post">
-    <button class="add_to_cart_btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
-    <button class="buy_now_btn" type="button" name="button" onclick="buy_now()">Buy now</button>
+    <button class="add_to_cart_btn" id="add_to_cart_btn" type="button" name="button" onclick="add_to_cart()">Add to cart</button>
+    <button class="buy_now_btn" id="buy_now_btn" type="button" name="button" onclick="buy_now()">Buy now</button>
+    <div id="alert" style=""><p>You have already purchased this course</p></div>
     <!--<button class="buy_now_btn" type="button" name="button" onclick="load_image()">Buy now</button>-->
 
   </form>
@@ -81,9 +130,63 @@
 <p>{{selected_course.description}}</p>
 <br>
 <h4>Review</h4>
-{% for review in selected_course.reviews %}
 <div id="review_div">
   <script type="text/javascript">
+    window.addEventListener('load', (event) => {
+      loadReview()
+    });
+    function loadReview() {
+      var courseID = '{{selected_course.courseID}}'
+      db.collection('Courses Reviews').doc(courseID).get().then(function(doc) {
+        var review = {
+          review:doc.data().review
+        };
+        for (var i = 0; i < review.review.length; i++) {
+          var reviewer = review.review[i].reviewer;
+          var rating = review.review[i].rating;
+          var review_text = review.review[i].review;
+          var div = document.createElement('div');
+          div.className = 'review_div';
+
+          var ul = document.createElement('ul');
+          var li1 = document.createElement('li');
+          var li2 = document.createElement('li');
+          var img = document.createElement('img');
+          const reviewer_node = document.createTextNode(reviewer);
+          const review_text_node = document.createTextNode(review_text);
+
+
+          if (parseFloat(rating)==0.0) {
+            li2.innerHTML = 'No Ratings';
+          } else if (parseFloat(rating)>=4.5) {
+            li2.innerHTML = rating.toFixed(1)+'<img src="../../static/images/4.5.png">';
+          } else if (parseFloat(rating)>=4.0) {
+            li2.innerHTML = rating.toFixed(1)+'<img src="../../static/images/4.0.png">';
+          } else if (parseFloat(rating)>=3.5) {
+            li2.innerHTML = rating.toFixed(1)+'<img src="../../static/images/3.5.png">';
+          } else if (parseFloat(rating)>=3.0) {
+            li2.innerHTML = rating.toFixed(1)+'<img src="../../static/images/3.0.png">';
+          } else if (parseFloat(rating)<3.0) {
+            li2.innerHTML = 'No Ratings';
+          }
+
+          li1.style.fontWeight = "700";
+
+          li1.appendChild(reviewer_node);
+          li1.className = 'horizontal';
+          li2.className = 'horizontal';
+          ul.appendChild(li1);
+          ul.appendChild(li2);
+          div.appendChild(ul);
+          div.appendChild(review_text_node);
+
+          document.getElementById('review_div').appendChild(div)
+        }
+
+
+
+      })
+    }
     function close_popup(){
       var popup = document.getElementById("myPopup");
       popup.classList.toggle("show");
@@ -92,8 +195,6 @@
 
     }
 
-    const review_json = JSON.parse('{{review|tojson}}');
-    document.getElementById('review_div').innerHTML = "<p>"+review_json.reviewer+"</p>" + "<p>"+review_json.rating+"</p>" +"<p>"+review_json.review+"</p>"
 
     function add_to_cart() {
       var username = '{{current_username}}';
@@ -126,21 +227,10 @@
       document.getElementById('courseID_form').submit();
     }
   </script>
-  <p id="reviewer"></p>
-</div>
-
-{% endfor %}
 
 </div>
-<script type="text/javascript">
-  function load_image() {
-    var courseID = '{{selected_course.courseID}}';
-    storage.ref().child('courses/image_of_'+courseID).getDownloadURL().then(function(url) {
-            document.getElementById('course_image').src = url;
-         }).catch(function(error) {
 
-         });
-  }
-  //window.onload = load_image;
-</script>
+
+</div>
+
 {% endblock %}

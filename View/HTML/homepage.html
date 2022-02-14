@@ -8,6 +8,7 @@
 
 <title>Homepage</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/homepage.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/sports_courses.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -78,8 +79,152 @@
 </div>
 
 
-{% if current_user.is_authenticated %}
+{% if current_user.is_authenticated and my_courses|length > 0 %}
 
+<form action='/mylearning/learn/' id="course_learn_form" method="get">
+<input id="course" type="text" name="course" value="" style="display:none;">
+</form>
+
+<div class="course-panel">
+      <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;">My Courses</h2>
+      <br>
+      <div class="top-course-div" id="top-course-div">
+        <button class="slide_button" id="slideRight" type="button" name="button"><img src="../../static/images/left-arrow.png" alt="" style="height:40px;width:auto;"></button>
+        <ul class="top-course-ul" id="top-course-ul">
+          {% for i in range(my_courses|length) %}
+          {% set my_course = my_courses[i] %}
+
+          <li class="horizontal" style="margin-right: 5px;margin-top:10px;width:270px;margin-left: 5px;">
+            <a onclick="submit('{{my_course.courseID}}')" class="course-a">
+            <div class="course-short-detail-box">
+
+              <img id="img_{{my_course.courseID}}" class="course-image" src="{{my_course.image}}" style="width:230px;height:130px;margin-top:10px;" alt="yoga_image" >
+              <ul>
+                <li class="name" id="name_{{my_course.name}}" style="font-size: 15px;padding-right:10px;">{{my_course.name}}</li>
+                <li class="trainer" style="font-size: 11px;">{{my_course.trainer}}</li>
+                <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(my_course.rating|float)}}</li>
+                <li style="font-size: 13px;">${{'%0.2f'| format(my_course.price|float)}}</li>
+              </ul>
+
+            </div>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+        <button class="slide_button" id="slideLeft" type="button" name="button"><img src="../../static/images/right-arrow.png" alt="" style="height:40px;width:auto;"></button>
+      </div>
+</div>
+<script type="text/javascript">
+  const buttonRight = document.getElementById('slideRight');
+   const buttonLeft = document.getElementById('slideLeft');
+   buttonRight.style.display = "none";
+   buttonLeft.style.display = "none";
+   window.onresize = function(event) {
+     var width = ((document.getElementById("top-course-ul").getElementsByTagName("li").length)/5)*290;
+     if (width<$(document).width()) {
+       buttonRight.style.display = "none";
+       buttonLeft.style.display = "none";
+     } else {
+       buttonRight.style.display = "none";
+       buttonLeft.style.display = "block";
+     }
+    };
+
+   buttonRight.onclick = function () {
+     document.getElementById('top-course-ul').scrollLeft -= ($(document).width()-250);
+     buttonRight.style.display = "none";
+     buttonLeft.style.display = "block";
+   };
+   buttonLeft.onclick = function () {
+     document.getElementById('top-course-ul').scrollLeft += ($(document).width()-250);
+     buttonLeft.style.display = "none";
+     buttonRight.style.display = "block";
+   };
+   function submit(id) {
+     document.getElementById('course').value = id;
+
+     document.getElementById('course_learn_form').submit();
+
+   }
+</script>
+
+<hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;width:80%;margin-right:auto;margin-left:auto;">
+<div id="coding-ad-banner">
+  <ul>
+    <li><h3 style="font-family:Garamond;font-weight:bold;">Our sports courses are top of the class</h3></li>
+    <ul style="display:inline-block;padding-bottom:10px;">
+      <li style="display:inline-block;">
+        <img src="../../static/images/steph_curry.png" style="height:400px;width:auto;margin-top:30px;">
+      </li>
+      <li style="display:inline-block;">
+        <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;width:300px;margin-right:auto;margin-left:auto;">
+        <p style="font-family:Georgia;font-size:16px;"><i>Spedu has been one of the best platform for <br> athletes
+to reach thousands of students <br>  and teach them. I have also been using Spedu<br> to upload my basketball tutorials and teach many students<br> There are also thousands of brilliant courses <br>available, taught by a
+group of amazing <br>trainers all around the world.</i></p>
+        <hr style="background-color: #eee;border:none;color: #eee;height: 2px;margin-top:5px;margin-bottom:0;width:300px;margin-right:auto;margin-left:auto;">
+      </li>
+    </ul>
+  </ul>
+
+</div>
+<div id="reviews-banner">
+  <h3 style="font-family:Garamond;padding-bottom:20px;font-weight:bold;">What our students tell about Spedu</h3>
+  <table id="reviews-table">
+    <tbody style="">
+      <tr>
+        <td class="reviews-table-td">
+          <div class="reviews-table-div">
+            <ul>
+              <li style="float:left;"><h5>JackLim_0402</h5></li>
+              <li>
+              <li style="float:left;color:#EBC805;">★★★★★</li>
+              <li><p>From the course ‘Learn the Basics of Soccer</p></li>
+
+            </ul>
+            <p class="reviews-paragraph">I highly recommend this course to anyone who is about to take SAT Math. Content is very elaborate and easy to understand, and I was able to grasp certain context that I couldn't in school.</p>
+          </div>
+
+        </td>
+        <td class="reviews-table-td">
+          <div class="reviews-table-div">
+            <ul >
+              <li  style="float:left;"><h5>hyeonghuuu</h5></li>
+              <li style="float:left;color:#EBC805;">★★★★★</li>
+              <li><p>From the course ‘Learn the Basics of Soccer’</p></li>
+
+            </ul>
+            <p class="reviews-paragraph">Amazing course. Course was very easy to understand and follow, and now I am about to take PamaSchool's intermediate python course.</p>
+          </div>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="reviews-table-td">
+          <div class="reviews-table-div">
+            <ul>
+              <li style="float:left;"><h5>yuheng_rekt</h5></li>
+              <li style="float:left;color:#EBC805;">★★★★★</li>
+              <li><p>From the course ‘Learn the Basics of Soccer’</p></li>
+
+            </ul>
+            <p class="reviews-paragraph">Physics never felt so interesting until I took this physics course. Amazing teachers and resources. Without this course, I would not have secured A for physics exams. Thank you PamaSchool!</p>
+          </div>
+        </td>
+        <td class="reviews-table-td">
+          <div class="reviews-table-div">
+            <ul >
+              <li style="float:left;"><h5>Vincent_hahaha</h5></li>
+              <li style="float:left;color:#EBC805;">★★★★★</li>
+              <li><p>From the course ‘Learn the Basics of Soccer’</p></li>
+
+            </ul>
+            <p class="reviews-paragraph">I was always afraid of public speaking and had a habit of being frozen in front of audience. But now, because of this course, I am extremely confident in public speaking, and now I am hired as a client instruction team leader.</p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 {% else %}
 

@@ -100,7 +100,7 @@
     <ul>
       <li class="short_description">{{selected_course.short_description}}</li>
       <li class="trainer" style="color:#AFADAD;">{{selected_course.trainer}}</li>
-      <li class="trainer" style="font-weight:light;">{{selected_course.duration}} total mins | For {{selected_course.level}}</li>
+      <li class="trainer" style="font-weight:light;">{{'%0.1f'| format(selected_course.duration|float)}} total mins | For {{selected_course.level}}</li>
       <li class="rating">★{{'%0.1f'| format(selected_course.rating|float)}} <p style="color:#AFADAD;display:inline-block;">| {{selected_course.students_count}} students are enrolled</p></li>
     </ul>
   </div>
@@ -130,21 +130,69 @@
     <p>{{selected_course.learning_outcome}}</p>
   </div>
   <div class="course_description_div">
-  <h3>Description</h3>
+  <h4>Description</h4>
   <p>{{selected_course.description}}</p>
   <br>
-  <h3>Review</h3>
-  {% for review in selected_course.reviews %}
-  <div id="review_div">
+  <h4>Review</h4>
+<div id="review_div">
     <script type="text/javascript">
-      const review_json = JSON.parse('{{review|tojson}}');
-      document.getElementById('review_div').innerHTML = "<p>"+review_json.reviewer+"</p>" + "<p>"+review_json.rating+"</p>" +"<p>"+review_json.review+"</p>"
+      window.addEventListener('load', (event) => {
+        loadReview()
+      });
+      function loadReview() {
+        var courseID = '{{selected_course.courseID}}'
+        db.collection('Courses Reviews').doc(courseID).get().then(function(doc) {
+          var review = {
+            review:doc.data().review
+          };
+          for (var i = 0; i < review.review.length; i++) {
+            var reviewer = review.review[i].reviewer;
+            var rating = review.review[i].rating;
+            var review_text = review.review[i].review;
+            var div = document.createElement('div');
+            div.className = 'review_div';
 
+            var ul = document.createElement('ul');
+            var li1 = document.createElement('li');
+            var li2 = document.createElement('li');
+            var img = document.createElement('img');
+            const reviewer_node = document.createTextNode(reviewer);
+            const review_text_node = document.createTextNode(review_text);
+
+
+            if (parseFloat(rating)==0.0) {
+              li2.innerHTML = 'No Ratings';
+            } else if (parseFloat(rating)>=4.5) {
+              li2.innerHTML = rating.toFixed(1)+'<img src="../../../static/images/4.5.png">';
+            } else if (parseFloat(rating)>=4.0) {
+              li2.innerHTML = rating.toFixed(1)+'<img src="../../../static/images/4.0.png">';
+            } else if (parseFloat(rating)>=3.5) {
+              li2.innerHTML = rating.toFixed(1)+'<img src="../../../static/images/3.5.png">';
+            } else if (parseFloat(rating)>=3.0) {
+              li2.innerHTML = rating.toFixed(1)+'<img src="../../../static/images/3.0.png">';
+            } else if (parseFloat(rating)<3.0) {
+              li2.innerHTML = 'No Ratings';
+            }
+
+            li1.style.fontWeight = "700";
+
+            li1.appendChild(reviewer_node);
+            li1.className = 'horizontal';
+            li2.className = 'horizontal';
+            ul.appendChild(li1);
+            ul.appendChild(li2);
+            div.appendChild(ul);
+            div.appendChild(review_text_node);
+
+            document.getElementById('review_div').appendChild(div)
+          }
+
+
+
+        })
+      }
     </script>
-    <p id="reviewer"></p>
   </div>
-
-  {% endfor %}
 
   </div>
 </div>
