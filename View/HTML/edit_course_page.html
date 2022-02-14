@@ -124,7 +124,166 @@
       const radioBtn = document.getElementById(level_input_id);
       radioBtn.checked = true;
     </script>
+    <li style="height:50px;">
+      <p>Course Tag</p>
+      <input id="tag_input" type="text" placeholder="">
+      <input id="tag_list" name="tag" type="text" style="display:none;">
+      <button id="enter_tag_button" type="button" name="button" onclick=enter_tag()>Add</button>
+      <div style="display:inline-block;width:calc(100% - 200px);margin-left:200px;overflow: auto;white-space: nowrap;" id="tag_div">
+      </div>
+      <script type="text/javascript">
+        var productConverter = {
+            toFirestore: function(product) {
+                return {
 
+                    category: product.category,
+                    description: product.description,
+                    image: product.image,
+                    name: product.name,
+                    price: product.price,
+                    productID:product.productID,
+                    rating: product.rating,
+                    tag: product.tag
+                    };
+            },
+            fromFirestore: function(snapshot, options){
+                const data = snapshot.data(options);
+                return new Course(data.category, data.description, data.image, data.name, data.price,product.productID, data.rating,product.tag);
+            }
+        };
+        var search_products_input = document.getElementById("search_products_input");
+        search_products_input.addEventListener("keyup", function(event) {
+          if (event.keyCode == 13) {
+            event.preventDefault();
+            if (search_products_input.value.length > 0) {
+              document.getElementById("search_products_button").click();
+            }
+          }
+        });
+        function search_products() {
+          if (search_products_input.value.length > 0) {
+            document.getElementById('productDiv').innerHTML = "";
+            var search_value = search_products_input.value;
+             load_products(search_value);
+
+
+          };
+
+        };
+        function load_products(search_value) {
+          var products=[];
+          db.collection("Products").get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                  db.collection("Products").doc(doc.id).get().then(function(doc) {
+                    var product = {
+                      product_name:doc.data().name,
+                      product_image:doc.data().image,
+                      product_tag:doc.data().tag,
+                      productID:doc.data().productID,
+                      search_points:0
+                    };
+
+                    if (product.product_name.toLowerCase().split(" ").includes(search_value)) {
+                      product.search_points+=2
+                    }
+                    if ((product.product_name.toLowerCase().includes(search_value))&&(search_value.length>2)) {
+                      product.search_points+=2
+                    }
+                    if (product.product_tag.includes(search_value)) {
+                      product.search_points+=1
+                    }
+
+                    if (product.search_points>=2) {
+                      products.push(product);
+
+                      const li1 = document.createElement("li")
+                      const li2 = document.createElement("li")
+                      const ul = document.createElement("ul")
+                      ul.className = "product_li";
+                      var div = document.getElementById('productDiv');
+                      const img = document.createElement("img");
+                      img.src = product.product_image;
+                      img.style.height = "50px";
+                      img.style.width = 'auto';
+                      img.style.marginLeft = "5px";
+                      const name = document.createTextNode(product.product_name);
+
+                      li1.appendChild(name);
+                      li2.appendChild(img);
+                      ul.appendChild(li1);
+                      ul.appendChild(li2);
+                      ul.onclick = function(){
+                        var div = document.getElementById('productID_div');
+                        const list = document.createElement("LI");
+                        list.className = "productID_li";
+                        var colors = ['#FBF8F1', '#FDEBF7', '#EFDAD7', '#C0D8C0', '#FFE162', '#D9D7F1', '#E7FBBE', '#F5F5F5', '#FDF5CA'];
+                        list.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+
+                        const list_text = document.createTextNode(product.product_name+", "+product.productID);
+
+                        const remove_tag_btn = document.createElement('button');
+                        remove_tag_btn.style.border = "none";
+                        remove_tag_btn.style["background-color"] = "transparent";
+                        remove_tag_btn.innerHTML = '<img src="../../../../static/images/remove_button.png" style="width:10px;height:10px;"/>';
+                        remove_tag_btn.onclick =  function(){
+                          list.parentNode.removeChild(list);
+                        };
+                        list.appendChild(list_text);
+                        list.appendChild(remove_tag_btn);
+                        div.appendChild(list);
+                      };
+                      div.appendChild(ul);
+                    }
+
+
+                  });
+              });
+
+          });
+
+        }
+
+        var tag_input = document.getElementById("tag_input");
+        tag_input.addEventListener("keyup", function(event) {
+          if (event.keyCode == 13) {
+            event.preventDefault();
+            if (tag_input.value.length > 0) {
+              document.getElementById("enter_tag_button").click();
+            }
+          }
+        });
+        function enter_tag() {
+          if (tag_input.value.length > 0) {
+              var div = document.getElementById('tag_div');
+              const list = document.createElement("LI");
+              list.className = "tag_li"
+              var colors = ['#FBF8F1', '#FDEBF7', '#EFDAD7', '#C0D8C0', '#FFE162', '#D9D7F1', '#E7FBBE', '#F5F5F5', '#FDF5CA'];
+              list.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+              const list_text = document.createTextNode(tag_input.value);
+              const remove_tag_btn = document.createElement('button');
+              remove_tag_btn.style.border = "none";
+              remove_tag_btn.style["background-color"] = "transparent";
+              remove_tag_btn.innerHTML = '<img src="../../../../static/images/remove_button.png" style="width:10px;height:10px;" />';
+              remove_tag_btn.onclick =  function(){
+                list.parentNode.removeChild(list);
+              };
+              list.appendChild(list_text);
+              list.appendChild(remove_tag_btn);
+              div.appendChild(list);
+
+          }
+
+        }
+        document.addEventListener('keypress', function (e) {
+            if (e.keyCode === 13 || e.which === 13) {
+                e.preventDefault();
+                return false;
+            }
+
+        });
+      </script>
+    </li>
     <li style="height:50px;">
       <p>Course Tag</p>
       <input id="tag_input" type="text" placeholder="">

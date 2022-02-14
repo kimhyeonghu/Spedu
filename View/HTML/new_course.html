@@ -286,11 +286,12 @@
         });
       </script>
     </li>
+    <br>
     <li style="height:50px;"><p>Video</p>
       <input id="video_input" name='video' type="file" placeholder="" accept="video/mp4,video/x-m4v,video/*" onchange="loadVideo(event)">
     </li>
     <br>
-    <video id="course_vid" width="320" height="240" controls>
+    <video id="course_vid" width="320" height="240" style="margin-left:210px;" controls>
     </video>
     <script type="text/javascript">
         var loadVideo = function(event) {
@@ -306,7 +307,7 @@
 
 
     <li style="height:50px;margin-top:30px;"><p>Course Image</p><input accept="image/*" onchange="loadFile(event)" id="course_image" name='course_image' type="file" placeholder=""></li>
-    <br><img id="course_img" style="height:240px;" src="#">
+    <br><img id="course_img" style="height:240px;margin-left:210px;" src="#">
     <script type="text/javascript">
 
         var loadFile = function(event) {
