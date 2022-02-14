@@ -335,7 +335,34 @@ def load_update(productID):
 
 @app.route('/')
 def homepage():
-    return render_template('homepage.html')
+    my_courses=[]
+    my_coursesID=[]
+    docs = db.collection('Users').where("username", "==", current_user.get_username()).get()
+    for doc in docs:
+        courseIDs = doc.to_dict()['Courses_Purchased']
+        my_coursesID = courseIDs
+    for courseID in my_coursesID:
+        courses_docs = db.collection('Courses').where("courseID", "==", courseID).get()
+        for doc in courses_docs:
+            courseID = doc.to_dict()['courseID']
+            description = doc.to_dict()['description']
+            short_description = doc.to_dict()['short_description']
+            duration = doc.to_dict()['duration']
+            image = doc.to_dict()['image']
+            learning_outcome = doc.to_dict()['learning_outcome']
+            level = doc.to_dict()['level']
+            name = doc.to_dict()['name']
+            price = doc.to_dict()['price']
+            rating = doc.to_dict()['rating']
+            related_products = doc.to_dict()['related_products']
+            students_count = doc.to_dict()['students_count']
+            trainer = doc.to_dict()['trainer']
+            video_link = doc.to_dict()['video_link']
+            tag = doc.to_dict()['tag']
+            course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
+                        price, rating, related_products, students_count, trainer, video_link,tag)
+            my_courses.append(course)
+    return render_template('homepage.html',my_courses=my_courses)
 
 
 @app.route('/signup', methods=['GET', 'POST'])
