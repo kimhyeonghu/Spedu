@@ -16,7 +16,7 @@ body p {
 .course_purchase_div{
   position: absolute;
   background-color: white;
-  height: 500px;
+  height: auto;
   width: 300px;
   margin-left: 50px;
   margin-top: 50px;
@@ -103,9 +103,9 @@ body p {
   font-size: 14px;
   color:#EBC805;
 }
-#review_div {
+.review_div {
   width: calc(80%-400px);
-  height: 150px;
+  height: auto;
   margin-top: 15px;
   background-color: white;
   border-radius:20px;
@@ -115,7 +115,10 @@ body p {
   padding-bottom: 20px;
   padding-right: 20px;
 }
-
+#review_div {
+  height: auto;
+  width:  calc(80%-400px);
+}
 
 .popup {
   position: absolute;
@@ -242,4 +245,8 @@ body p {
   color: #B33030;
   border-width: thin;
   padding-top: 20px;
+}
+.horizontal{
+  display: inline-block;
+  margin-right: 20px;
 }
