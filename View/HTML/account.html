@@ -50,6 +50,7 @@
             {% endfor %}
           {% endif %}
         {% endwith %}
+        <input type="hidden" name="form_checker" value="form1">
         <input type="submit" name="displayInfo" value="Discard">
         <input type="submit" name="displayInfo" value="Update">
       </form>
@@ -89,13 +90,15 @@
             {% endfor %}
           {% endif %}
         {% endwith %}
-        <input type="submit" name="account" value="Discard">
-        <input type="submit" name="account" value="Update">
+        <input type="hidden" name="form_checker" value="form2">
+        <input type="submit" name="accountInfo" value="Discard">
+        <input type="submit" name="accountInfo" value="Update">
       </form>
       <hr>
       <h1>Delete Account</h1>
       <p>Deleting your account will remove all your information from our servers</p>
       <form class="" method="POST">
+        <input type="hidden" name="form_checker" value="form3">
         <input type="submit" name="delete" value="Delete Account">
       </form>
     </div>

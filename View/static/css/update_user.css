@@ -1,0 +1,28 @@
+.content {
+  position: fixed;
+  border-radius: 20px;
+  top: 90px;
+  left: 250px;
+  height: 87%;
+  width: 83%;
+  box-shadow: 0 0 20px 0px rgba(0,0,0,0.1);
+}
+.listHeader {
+  display: inline;
+}
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+  display: flex;
+  align-items: center;
+}
+.userInfoContent {
+
+}
+.userLeft {
+  text-align: center;
+  margin-top: 200px;
+}
+.userRight {
+  margin-top: 200px;
+}
