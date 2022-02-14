@@ -113,7 +113,7 @@ button:focus {outline:0;}
 
 .products-list {
   top: 1030px;
-  bottom:-1100px;
+  bottom:-970px;
   position:fixed;
   overflow-x: hidden;
   overflow-y: scroll;
