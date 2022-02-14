@@ -29,11 +29,15 @@
 }
 input[type="text"] {
   position: absolute;
-  border: none;
+  /* border: none; */
   width: 88%;
   right: 11px;
   top: 4px;
 }
 input[type="text"]:focus {
-  outline: none;
+  /* outline: none; */
+}
+.dataTable-input {
+  margin-top: 10px;
+  max-width: 350px;
 }
