@@ -73,13 +73,14 @@ def course_CRUD(course, method):
             'name': course.name,
             'price': float(course.price),
             'rating': float(course.rating),
-            'reviews': course.reviews,
+            'related_products': course.related_products,
             'students_count': int(course.students_count),
             'trainer': course.trainer,
             'video_link': course.video_link,
             'tag':course.tag
         }
         db.collection('Courses').document().set(new_course_data)
+        db.collection('Courses Reviews').document(course.courseID).set({'review':[]})
         pass
     elif method == 'load':
         courses = []
@@ -95,17 +96,17 @@ def course_CRUD(course, method):
             name = doc.to_dict()['name']
             price = doc.to_dict()['price']
             rating = doc.to_dict()['rating']
-            reviews = doc.to_dict()['reviews']
+            related_products = doc.to_dict()['related_products']
             students_count = doc.to_dict()['students_count']
             trainer = doc.to_dict()['trainer']
             video_link = doc.to_dict()['video_link']
             tag = doc.to_dict()['tag']
             if course=="search":
                 course_loaded = Course_For_Search(courseID, description, short_description, duration, image, learning_outcome, level, name,
-                            price, rating, reviews, students_count, trainer, video_link, tag, 0)
+                            price, rating, related_products, students_count, trainer, video_link, tag, 0)
             else:
                 course_loaded = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
-                            price, rating, reviews, students_count, trainer, video_link, tag)
+                            price, rating, related_products, students_count, trainer, video_link, tag)
             courses.append(course_loaded)
         return courses
     elif method == 'update':
@@ -128,6 +129,7 @@ def course_CRUD(course, method):
             for doc in docs:
                 key = doc.id
                 db.collection('Courses').document(key).delete()
+            db.collection('Courses Reviews').document(courseID).delete()
         except:
             print("Unable to delete course!")
 
@@ -155,7 +157,7 @@ def get_courses_from_search(search_value):
         if search_value in course.name.lower().split(" "):
             course.search_points += 2
             related_tags += list(set(course.tag) - set(related_tags))
-        if search_value in course.name.lower():
+        if search_value in course.name.lower() and len(search_value)>2:
             course.search_points += 2
             related_tags += list(set(course.tag) - set(related_tags))
         if search_value in course.tag:
@@ -653,13 +655,13 @@ def shopping_cart():
                 name = doc.to_dict()['name']
                 price = doc.to_dict()['price']
                 rating = doc.to_dict()['rating']
-                reviews = doc.to_dict()['reviews']
+                related_products = doc.to_dict()['related_products']
                 students_count = doc.to_dict()['students_count']
                 trainer = doc.to_dict()['trainer']
                 video_link = doc.to_dict()['video_link']
                 tag = doc.to_dict()['tag']
                 course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
-                            price, rating, reviews, students_count, trainer, video_link,tag)
+                            price, rating, related_products, students_count, trainer, video_link,tag)
                 courses.append(course)
                 courseID_array.append(course.courseID)
         elif shopping_cart[index][0:2]=="PR":
@@ -722,13 +724,13 @@ def Checkout():
                 name = doc.to_dict()['name']
                 price = doc.to_dict()['price']
                 rating = doc.to_dict()['rating']
-                reviews = doc.to_dict()['reviews']
+                related_products = doc.to_dict()['related_products']
                 students_count = doc.to_dict()['students_count']
                 trainer = doc.to_dict()['trainer']
                 video_link = doc.to_dict()['video_link']
                 tag = doc.to_dict()['tag']
                 course = Course(courseID, description, short_description, duration, image, learning_outcome, level,
-                                name,price, rating, reviews, students_count, trainer, video_link, tag)
+                                name,price, rating, related_products, students_count, trainer, video_link, tag)
                 courses.append(course)
                 courseID_array.append(course.courseID)
         elif shopping_cart[index][0:2] == "PR":
@@ -791,6 +793,10 @@ def Checkout():
                 index+=1
             print(shopping_cart)
             db.collection("Users").document(str(current_user.get_id())).update({"shopping_cart": shopping_cart})
+            for doc in courses_docs:
+                id = doc.id
+                students_count = doc.to_dict()['students_count']
+                db.collection("Courses").document(id).update({"students_count": students_count+1})
             docs = db.collection('Users').where("username", "==", current_user.get_username()).get()
             count = 0
             while count<len(items_not_bought_before):
@@ -870,7 +876,7 @@ def admin_page_products():
 @app.route('/admin_page/courses/new_course')
 @login_required
 def new_course():
-    return render_template('new_course.html')
+    return render_template('new_course.html',products=load_products())
 
 
 @app.route('/admin_page/courses/about_course/', methods=['GET'])
@@ -906,6 +912,8 @@ def create_new_course():
     video = request.files['video']
 
     tag = request.form['tag'].split(",")
+    related_products = request.form['productIDs_name'].split(",")
+    print(request.form['productIDs_name'])
     user1 = auth.current_user
 
     course_img_link=request.form["course_image_input"]
@@ -916,9 +924,8 @@ def create_new_course():
     # video_link = storage.child('/courses/video_of_{}'.format(courseID)).get_url(auth.current_user["idToken"])
 
     course_rating = 0
-    course_reviews = [{'rating': 0, 'reviewer': '', 'review': ''}]
     students_count = 0
-    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link,tag)
+    new_course = Course(courseID, course_desc, course_short_desc, course_duration, course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, related_products, students_count, course_trainer, video_link,tag)
     course_CRUD(course=new_course, method='create')
     return render_template('admin_page_courses.html', courses=course_CRUD(course=None, method='load'),products=load_products())
 
@@ -966,9 +973,9 @@ def update_course():
     course_img_link = request.form["course_image_input"]
     print(course_img_link)
     course_rating = ""
-    course_reviews = []
+    related_products = []
     students_count = 0
-    course = Course(courseID, course_desc, course_short_desc, course_duration,course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, course_reviews, students_count, course_trainer, video_link,tag)
+    course = Course(courseID, course_desc, course_short_desc, course_duration,course_img_link, learning_outcome, course_level, course_name, course_price, course_rating, related_products, students_count, course_trainer, video_link,tag)
     course_CRUD(course=course, method='update')
     return redirect("/admin_page/courses/")
 
@@ -1008,13 +1015,13 @@ def all_orders():
                 name = doc.to_dict()['name']
                 price = doc.to_dict()['price']
                 rating = doc.to_dict()['rating']
-                reviews = doc.to_dict()['reviews']
+                related_products = doc.to_dict()['related_products']
                 students_count = doc.to_dict()['students_count']
                 trainer = doc.to_dict()['trainer']
                 video_link = doc.to_dict()['video_link']
                 tag = doc.to_dict()['tag']
                 course = Course(courseID, description, short_description, duration, image, learning_outcome, level,
-                                name,price, rating, reviews, students_count, trainer, video_link, tag)
+                                name,price, rating, related_products, students_count, trainer, video_link, tag)
                 courses.append(course)
                 all_courses_admin.append(course.courseID)
         elif all_items_bought_admin[index][0:2] == "PR":
@@ -1117,14 +1124,14 @@ def order_history():
                 name = doc.to_dict()['name']
                 price = doc.to_dict()['price']
                 rating = doc.to_dict()['rating']
-                reviews = doc.to_dict()['reviews']
+                related_products = doc.to_dict()['related_products']
                 students_count = doc.to_dict()['students_count']
                 trainer = doc.to_dict()['trainer']
                 video_link = doc.to_dict()['video_link']
                 tag = doc.to_dict()['tag']
                 course = Course(courseID, description, short_description, duration, image, learning_outcome, level,
                                 name,
-                                price, rating, reviews, students_count, trainer, video_link, tag)
+                                price, rating, related_products, students_count, trainer, video_link, tag)
                 print(course)
                 courses.append(course)
         elif all_items_bought[index][0:2] == "PR":
@@ -1176,13 +1183,13 @@ def load_my_courses():
             name = doc.to_dict()['name']
             price = doc.to_dict()['price']
             rating = doc.to_dict()['rating']
-            reviews = doc.to_dict()['reviews']
+            related_products = doc.to_dict()['related_products']
             students_count = doc.to_dict()['students_count']
             trainer = doc.to_dict()['trainer']
             video_link = doc.to_dict()['video_link']
             tag = doc.to_dict()['tag']
             course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
-                        price, rating, reviews, students_count, trainer, video_link,tag)
+                        price, rating, related_products, students_count, trainer, video_link,tag)
             my_courses.append(course)
     return render_template('mylearning.html',my_courses=my_courses)
 
@@ -1204,13 +1211,13 @@ def load_learn_page():
         name = doc.to_dict()['name']
         price = doc.to_dict()['price']
         rating = doc.to_dict()['rating']
-        reviews = doc.to_dict()['reviews']
+        related_products = doc.to_dict()['related_products']
         students_count = doc.to_dict()['students_count']
         trainer = doc.to_dict()['trainer']
         video_link = doc.to_dict()['video_link']
         tag = doc.to_dict()['tag']
         course = Course(courseID, description, short_description, duration, image, learning_outcome, level, name,
-                    price, rating, reviews, students_count, trainer, video_link,tag)
+                    price, rating, related_products, students_count, trainer, video_link,tag)
     trainers_docs = db.collection('Users').where("username", "==", course.trainer).where("account_type", "==", "Admin").get()
     for doc in trainers_docs:
         students_count = doc.to_dict()['students_count']
@@ -1237,13 +1244,13 @@ def checkout_instant():
             name = doc.to_dict()['name']
             price = doc.to_dict()['price']
             rating = doc.to_dict()['rating']
-            reviews = doc.to_dict()['reviews']
+            related_products = doc.to_dict()['related_products']
             students_count = doc.to_dict()['students_count']
             trainer = doc.to_dict()['trainer']
             video_link = doc.to_dict()['video_link']
             tag = doc.to_dict()['tag']
             course = Course(courseID, description, short_description, duration, image, learning_outcome, level,
-                                    name, price, rating, reviews, students_count, trainer, video_link, tag)
+                                    name, price, rating, related_products, students_count, trainer, video_link, tag)
 
 
     if request.method == "POST":

@@ -32,20 +32,55 @@
     <div style="display:inline-block;">
       <h4 style="font-weight:bold;">{{course.name}}</h4>
       <p>{{course.students_count}} students enrolled | For {{course.level}}</p>
+      <p id="ratings"></p>
     </div>
+    <script type="text/javascript">
+      var ratings = "{{'%0.1f'| format(course.rating|float)}}";
+      document.getElementById('ratings').innerHTML = ratings+'<img src="../../static/images/4.5.png">'+'★';
+      if (parseFloat(ratings)==0.0) {
+        document.getElementById('ratings').innerHTML = 'No Ratings';
+      } else if (parseFloat(ratings)>=4.5) {
+        document.getElementById('ratings').innerHTML = ratings+'<img src="../../static/images/4.5.png">';
+      } else if (parseFloat(ratings)>=4.0) {
+        document.getElementById('ratings').innerHTML = ratings+'<img src="../../static/images/4.0.png">';
+      } else if (parseFloat(ratings)>=3.5) {
+        document.getElementById('ratings').innerHTML = ratings+'<img src="../../static/images/3.5.png">';
+      } else if (parseFloat(ratings)>=3.0) {
+        document.getElementById('ratings').innerHTML = ratings+'<img src="../../static/images/3.0.png">';
+      } else if (parseFloat(ratings)<3.0) {
+        document.getElementById('ratings').innerHTML = 'No Ratings';
+      }
 
+
+      window.addEventListener("load", function(){
+        db.collection("Users").where("id", "==", "{{course.trainer}}").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                db.collection("Users").doc(doc.id).get().then(function(doc) {
+                  trainer_name=doc.data().username;
+                  document.getElementById("trainer").innerText = trainer_name;
+                  document.getElementById("trainer").style.fontSize = "17px";
+                });
+            });
+        });
+      });
+    </script>
     <hr style="background-color: #eee;border:none;color: #D3D3D3;height: 2px;margin-top:5px;margin-bottom:0;width:100%;margin-right:auto;margin-left:auto;">
     <div id="tutor_info">
       <ul>
         <li style="display:inline-block;"><img id="tutor-icon" src="../../static/images/user-icon.png" alt="search"></li>
         <li style="display:inline-block;">
-          <div class="">
-            <p>{{course.trainer}}</p>
-          </div>
+            <p id="trainer" style="padding-left:10px;"></p>
         </li>
 
-        <li style="display:inline-block;float:right;"><button type="button" name="button" class="chat_btn">CHAT</button></li>
+        <li style="display:inline-block;float:right;"><button type="button" name="button" class="chat_btn">Go to profile</button></li>
       </ul>
+    </div>
+    <hr style="background-color: #eee;border:none;color: #D3D3D3;height: 2px;margin-top:5px;margin-bottom:0;width:100%;margin-right:auto;margin-left:auto;">
+    <div id="description">
+      <h6 style="font-weight:600;">Description</h6>
+      <p>{{course.description}}</p>
+      <h6 style="font-weight:600;">Learning Outcomes</h6>
+      <p>{{course.learning_outcome}}</p>
     </div>
     <hr style="background-color: #eee;border:none;color: #D3D3D3;height: 2px;margin-top:5px;margin-bottom:0;width:100%;margin-right:auto;margin-left:auto;">
   </div>

@@ -170,6 +170,7 @@ body p {
 }
 .trainer {
   color: #767676;
+  font-size: 14px;
 }
 
 .rating{
@@ -232,3 +233,13 @@ body p {
   text-decoration: none;
   background-color: black;
   color: white;
+}
+#alert{
+  display:none;
+  text-align:center;
+  border-style: solid;
+  border-color: #B33030;
+  color: #B33030;
+  border-width: thin;
+  padding-top: 20px;
+}

@@ -78,9 +78,9 @@
           <img class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
           <ul>
             <li class="name" id="name_{{course.name}}" style="font-size: 15px;padding-right:10px;">{{course.name}}</li>
-            <li class="trainer" style="font-size: 11px;">{{course.trainer}}</li>
+
             <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(course.rating|float)}}</li>
-            <li style="font-size: 13px;color: #767676;">{{course.duration}} total hours | For {{course.level}}</li>
+            <li style="font-size: 13px;color: #767676;">{{'%0.1f'| format(course.duration|float)}} total hours | For {{course.level}}</li>
           </ul>
           <div class="price_div">
             <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(course.price|float)}}</p>
@@ -99,9 +99,9 @@
           <img class="course-image" src="{{course.image}}" style="position:absolute;width:140px;height:80px;margin-top:10px;margin-left:10px;" alt="yoga_image" >
           <ul>
             <li class="name" id="name_{{course.name}}" style="font-size: 15px;padding-right:10px;">{{course.name}}</li>
-            <li class="trainer" style="font-size: 11px;">{{course.trainer}}</li>
+
             <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(course.rating|float)}}</li>
-            <li style="font-size: 13px;color: #767676;">{{course.duration}} total hours | For {{course.level}}</li>
+            <li style="font-size: 13px;color: #767676;">{{'%0.1f'| format(course.duration|float)}} total hours | For {{course.level}}</li>
           </ul>
           <div class="price_div">
             <p style="font-size: 18px;font-weight: bold;">${{'%0.2f'| format(course.price|float)}}</p>

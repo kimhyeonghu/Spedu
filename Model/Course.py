@@ -1,5 +1,5 @@
 class Course:
-    def __init__(self, courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer, video_link,tag):
+    def __init__(self, courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, related_products, students_count, trainer, video_link,tag):
         self.courseID = courseID
         self.description = description
         self.short_description = short_description
@@ -10,7 +10,7 @@ class Course:
         self.name = name
         self.price = price
         self.rating = rating
-        self.reviews = reviews
+        self.related_products = related_products
         self.students_count = students_count
         self.trainer = trainer
         self.video_link = video_link
@@ -18,6 +18,6 @@ class Course:
         
 
 class Course_For_Search(Course):
-    def __init__(self, courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer, video_link,tag, search_points):
-        Course.__init__(self, courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, reviews, students_count, trainer, video_link,tag)
+    def __init__(self, courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, related_products, students_count, trainer, video_link,tag, search_points):
+        Course.__init__(self, courseID, description, short_description, duration, image, learning_outcome, level, name, price, rating, related_products, students_count, trainer, video_link,tag)
         self.search_points = search_points

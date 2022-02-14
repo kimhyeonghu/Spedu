@@ -16,7 +16,25 @@
 {% set courses_filtered_byprice = [] %}
 {% set courses_filtered_byrating = [] %}
 {% set courses_filtered = filter_courses(courses, rating_value, price_value, level_value) %}
+<script type="text/javascript">
+  function get_trainer(trainerID,courseName) {
+    db.collection("Users").where("id", "==", trainerID).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            db.collection("Users").doc(doc.id).get().then(function(doc) {
+              trainer_name=doc.data().username;
+              document.getElementById("trainer_"+courseName).innerText = trainer_name;
+              document.getElementById("trainer_"+courseName).style.color = "#767676";
+              document.getElementById("trainer_"+courseName).style.fontSize = "13px";
+              document.getElementById("trainer_top_"+courseName).innerText = trainer_name;
+              document.getElementById("trainer_top_"+courseName).style.color = "#767676";
+              document.getElementById("trainer_top_"+courseName).style.fontSize = "13px";
+            });
+        });
+    });
+  }
+  
 
+</script>
 <div class="course-panel">
       <h2 style="font-family: 'STIXGeneral', serif;font-weight: bold;">Sports Course</h2>
       <br>
@@ -31,11 +49,11 @@
             <a onclick="submit('{{top_course.courseID}}')" class="course-a">
             <div class="course-short-detail-box">
 
-              <img id="img_{{top_course.courseID}}" class="course-image" src="{{top_course.image}}" style="width:230px;height:130px;margin-top:10px;" alt="yoga_image" >
+              <img onload="get_trainer('{{top_course.trainer}}','{{top_course.name}}')" id="img_{{top_course.courseID}}" class="course-image" src="{{top_course.image}}" style="width:230px;height:130px;margin-top:10px;" alt="yoga_image" >
               <ul>
                 <li class="name" id="name_{{top_course.name}}" style="font-size: 15px;padding-right:10px;">{{top_course.name}}</li>
 
-                <li id="trainer_{{top_course.trainer}}" class="trainer" style="font-size: 11px;"></li>
+                <li id="trainer_top_{{top_course.name}}" class="trainer" style="font-size: 11px;"></li>
 
                 <li class="rating" style="font-size: 11px;">★{{'%0.1f'| format(top_course.rating|float)}}</li>
                 <li style="font-size: 13px;">${{'%0.2f'| format(top_course.price|float)}}</li>
@@ -185,28 +203,12 @@
         {% for course in courses_filtered|sort(attribute='students_count', reverse = True) %}
         <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
-        <img class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
+        <img onload="get_trainer('{{course.trainer}}','{{course.name}}')" class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
         <ul class="course-description">
           <li class="name" id="name_{{course.name}}">{{course.name}}</li>
           <li class="description">{{course.short_description}}</li>
           <li id="trainer_{{course.name}}" class="trainer"></li>
-          <script type="text/javascript">
-            var trainerID = '{{course.trainer}}';
-            alert(db);
-            db.collection("Users").where("id", "==", "2").get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    var trainer = doc.data().username;
-                    document.getElementById('trainer_'+trainerID).innerHTML = trainer;
-                    alert(trainer);
-                });
 
-            })
-            .catch((error) => {
-                alert(error);
-            });
-            alert("hry");
-          </script>
           <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{'%0.1f'| format(course.duration|float)}} total mins | For {{course.level}}</li>
           <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
         </ul>
@@ -220,11 +222,12 @@
           {% for course in courses_filtered|sort(attribute='rating', reverse = True) %}
           <a onclick="submit('{{course.courseID}}')">
           <div class="courses-list-box">
-          <img class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
+          <img onload="get_trainer('{{course.trainer}}','{{course.name}}')"class="course-image" src="{{course.image}}"style="width:auto;width:240px;height:140px;" alt="yoga_image" >
           <ul class="course-description">
             <li class="name" id="name_{{course.name}}">{{course.name}}</li>
             <li class="description">{{course.short_description}}</li>
-            <li class="trainer">{{course.trainer}}</li>
+            <li id="trainer_{{course.trainer}}" class="trainer"></li>
+
             <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{'%0.1f'| format(course.duration|float)}} total mins | For {{course.level}}</li>
             <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
           </ul>
@@ -238,11 +241,11 @@
           {% for course in courses_filtered|sort(attribute='rating', reverse = False) %}
             <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
-            <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
+            <img onload="get_trainer('{{course.trainer}}','{{course.name}}')" class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
             <ul class="course-description">
               <li class="name" id="name_{{course.name}}">{{course.name}}</li>
               <li class="description">{{course.short_description}}</li>
-              <li class="trainer">{{course.trainer}}</li>
+              <li id="trainer_{{course.trainer}}" class="trainer"></li>
               <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{'%0.1f'| format(course.duration|float)}}total mins | For {{course.level}}</li>
               <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
             </ul>
@@ -255,11 +258,11 @@
           {% for course in courses_filtered|sort(attribute='price', reverse = True) %}
             <a onclick="submit('{{course.courseID}}')">
         <div class="courses-list-box">
-            <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
+            <img onload="get_trainer('{{course.trainer}}','{{course.name}}')" class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
             <ul class="course-description">
               <li class="name" id="name_{{course.name}}">{{course.name}}</li>
               <li class="description">{{course.short_description}}</li>
-              <li class="trainer">{{course.trainer}}</li>
+              <li id="trainer_{{course.trainer}}" class="trainer"></li>
               <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{'%0.1f'| format(course.duration|float)}} total mins | For {{course.level}}</li>
               <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
             </ul>
@@ -272,11 +275,11 @@
           {% for course in courses_filtered|sort(attribute='price', reverse = False) %}
             <a onclick="submit('{{course.courseID}}')">
           <div class="courses-list-box">
-              <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
+              <img onload="get_trainer('{{course.trainer}}','{{course.name}}')" class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
               <ul class="course-description">
                 <li class="name" id="name_{{course.name}}">{{course.name}}</li>
                 <li class="description">{{course.short_description}}</li>
-                <li class="trainer">{{course.trainer}}</li>
+                <li id="trainer_{{course.trainer}}" class="trainer"></li>
                 <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{'%0.1f'| format(course.duration|float)}} total mins | For {{course.level}}</li>
                 <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
               </ul>
@@ -289,11 +292,11 @@
           {% for course in courses_filtered|sort(attribute='students_count', reverse = True) %}
             <a onclick="submit('{{course.courseID}}')">
           <div class="courses-list-box">
-              <img class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
+              <img onload="get_trainer('{{course.trainer}}','{{course.name}}')" class="course-image" src="{{course.image}}" style="width:auto;width:240px;height:140px;" alt="yoga_image" >
               <ul class="course-description">
                 <li class="name" id="name_{{course.name}}">{{course.name}}</li>
                 <li class="description">{{course.short_description}}</li>
-                <li class="trainer">{{course.trainer}}</li>
+                <li id="trainer_{{course.trainer}}" class="trainer"></li>
                 <li class="trainer" style="color:#1E5D63;font-weight:bold;">{{'%0.1f'| format(course.duration|float)}} total mins | For {{course.level}}</li>
                 <li class="rating">★{{'%0.1f'| format(course.rating|float)}}</li>
               </ul>
